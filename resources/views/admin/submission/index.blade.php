@@ -8,20 +8,23 @@
             <p class="text-gray-500 text-sm mt-1">Pantau dan kelola seluruh pengajuan surat mahasiswa.</p>
         </div>
         <div class="flex space-x-2">
-            <select class="rounded-lg border-gray-300 text-sm focus:ring-emerald-500 focus:border-emerald-500">
-                <option value="">Semua Status</option>
-                <option value="Menunggu Verifikasi">Menunggu Verifikasi</option>
-                <option value="Diproses">Diproses</option>
-                <option value="Menunggu Tanda Tangan">Menunggu Tanda Tangan</option>
-                <option value="Selesai">Selesai</option>
-                <option value="Ditolak">Ditolak</option>
-            </select>
-            <button class="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-200 transition flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-                </svg>
-                Filter
-            </button>
+            <form method="GET" action="{{ route('admin.submission.index') }}" class="flex space-x-2">
+                <select name="status" class="rounded-lg border-gray-300 text-sm focus:ring-emerald-500 focus:border-emerald-500" onchange="this.form.submit()">
+                    <option value="">Semua Status</option>
+                    <option value="Menunggu Verifikasi" {{ request('status') == 'Menunggu Verifikasi' ? 'selected' : '' }}>Menunggu Verifikasi</option>
+                    <option value="Diproses" {{ request('status') == 'Diproses' ? 'selected' : '' }}>Diproses</option>
+                    <option value="Menunggu Tanda Tangan" {{ request('status') == 'Menunggu Tanda Tangan' ? 'selected' : '' }}>Menunggu Tanda Tangan</option>
+                    <option value="Ditolak" {{ request('status') == 'Ditolak' ? 'selected' : '' }}>Ditolak</option>
+                </select>
+                @if(request('status'))
+                <a href="{{ route('admin.submission.index') }}" class="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-200 transition flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                    Reset
+                </a>
+                @endif
+            </form>
         </div>
     </div>
 
@@ -71,17 +74,25 @@
                             </span>
                         </td>
                         <td class="px-6 py-4 text-right text-sm font-medium">
-                            <button class="text-gray-400 hover:text-gray-600" title="Lihat Detail">
+                            <a href="{{ route('admin.submission.detail', $item->id_pengajuan) }}" 
+                               class="text-blue-600 hover:text-blue-800 transition" 
+                               title="Lihat Detail">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                 </svg>
-                            </button>
+                            </a>
                         </td>
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="5" class="px-6 py-12 text-center text-gray-500">Tidak ada data pengajuan.</td>
+                        <td colspan="5" class="px-6 py-12 text-center text-gray-500">
+                            @if(request('status'))
+                                Tidak ada pengajuan dengan status "{{ request('status') }}".
+                            @else
+                                Tidak ada data pengajuan.
+                            @endif
+                        </td>
                     </tr>
                     @endforelse
                 </tbody>
@@ -89,7 +100,7 @@
         </div>
         @if($pengajuan->hasPages())
         <div class="px-6 py-4 border-t border-gray-100 bg-gray-50">
-            {{ $pengajuan->links() }}
+            {{ $pengajuan->appends(request()->query())->links() }}
         </div>
         @endif
     </div>

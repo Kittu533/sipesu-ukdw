@@ -462,6 +462,7 @@ class SubmissionController extends Controller
         }
 
         $query = PengajuanSurat::with(['mahasiswa.user', 'jenisSurat'])
+                    ->whereNotIn('status_saat_ini', ['Selesai']) // Exclude selesai
                     ->latest();
 
         // Filter status if needed
@@ -472,5 +473,53 @@ class SubmissionController extends Controller
         $pengajuan = $query->paginate(10);
 
         return view('admin.submission.index', compact('pengajuan'));
+    }
+
+    /**
+     * Menampilkan detail pengajuan untuk Admin.
+     */
+    public function adminDetail($id)
+    {
+        $user = Auth::user();
+        
+        if ($user->id_hak_akses != 2) {
+            abort(403, 'Akses ditolak.');
+        }
+
+        $pengajuan = PengajuanSurat::with([
+            'mahasiswa.user', 
+            'mahasiswa.prodi',
+            'jenisSurat',
+            'detailPengajuan',
+            'validasiStaff.user',
+            'persetujuanPejabat.pejabat.user',
+            'logStatusSurat'
+        ])->findOrFail($id);
+
+        return view('admin.submission.detail', compact('pengajuan'));
+    }
+
+    /**
+     * Cetak PDF surat yang sudah jadi untuk Admin.
+     */
+    public function adminPrint($id)
+    {
+        $user = Auth::user();
+        
+        if ($user->id_hak_akses != 2) {
+            abort(403, 'Akses ditolak.');
+        }
+
+        $pengajuan = PengajuanSurat::findOrFail($id);
+
+        // Cek apakah surat sudah selesai dan ada file PDF
+        if ($pengajuan->status_saat_ini !== 'Selesai' || !$pengajuan->file_surat_content) {
+            abort(404, 'Surat belum selesai atau file tidak tersedia.');
+        }
+
+        // Return file PDF yang sudah ada
+        return response($pengajuan->file_surat_content)
+            ->header('Content-Type', $pengajuan->file_surat_mime_type ?? 'application/pdf')
+            ->header('Content-Disposition', 'inline; filename="' . ($pengajuan->file_surat_name ?? 'surat.pdf') . '"');
     }
 }

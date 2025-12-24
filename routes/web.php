@@ -76,13 +76,18 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/mahasiswa', [App\Http\Controllers\AdminController::class, 'mahasiswaIndex'])->name('admin.mahasiswa.index');
     Route::get('/admin/prodi', [App\Http\Controllers\AdminController::class, 'prodiIndex'])->name('admin.prodi.index');
     Route::get('/admin/submissions', [SubmissionController::class, 'adminIndex'])->name('admin.submission.index');
+    Route::get('/admin/submissions/{id}/detail', [SubmissionController::class, 'adminDetail'])->name('admin.submission.detail');
+    Route::get('/admin/submissions/{id}/print', [SubmissionController::class, 'adminPrint'])->name('admin.submission.print');
     
     // --- STAFF ROUTES ---
     Route::get('/staff/validation', [App\Http\Controllers\StaffController::class, 'validationList'])->name('staff.validation.index');
     Route::post('/staff/validation/{id}', [App\Http\Controllers\StaffController::class, 'processValidation'])->name('staff.validation.process');
 
     // Arsip Surat (General Archive - bisa diakses admin/staff/pejabat)
-    Route::get('/archive', [ArchiveController::class, 'index'])->name('archive.index'); 
+    Route::get('/archive', [ArchiveController::class, 'index'])->name('archive.index');
+    Route::get('/archive/{id}/detail', [ArchiveController::class, 'detail'])->name('archive.detail');
+    Route::get('/archive/{id}/print', [ArchiveController::class, 'print'])->name('archive.print');
+    Route::get('/archive/{id}/download', [ArchiveController::class, 'download'])->name('archive.download'); 
 
     // Pengaturan
     Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
