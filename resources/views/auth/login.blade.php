@@ -30,7 +30,7 @@
                 
                 <!-- Logo and Header -->
                 <div class="text-center mb-8">
-                    <img class="mx-auto h-16 w-auto mb-6" src="https://ukdw.ac.id/wp-content/uploads/2023/07/LOGO-UKDW-WARNA-TEXT-W-PNG.png" alt="Logo UKDW">
+                    <img class="mx-auto h-16 w-auto mb-6" src="{{ asset('logo-ukdw.png') }}" alt="Logo UKDW">
                     <h2 class="text-3xl font-bold text-gray-900 mb-2">
                         Selamat Datang
                     </h2>

@@ -88,7 +88,7 @@
     <header class="p-4 border-b border-gray-200 sticky top-0 bg-white z-20 shadow-sm">
         <div class="container mx-auto flex justify-between items-center">
             <div class="flex items-center space-x-2">
-                <img src="logo.png" alt="Logo UKDW" class="h-8">
+                <img src="{{ asset('logo-ukdw.png') }}" alt="Logo UKDW" class="h-8">
                 <span class="text-xl font-bold ukdw-text-green">SiSUA</span>
             </div>
             <nav class="space-x-4 hidden md:flex">
@@ -98,6 +98,9 @@
             </nav>
             <a href="/login" class="ukdw-green text-white px-4 py-2 rounded-lg font-medium shadow-md hover:bg-teal-800 transition">
                 Masuk
+            </a>
+        </div>
+    </header>
             </a>
         </div>
     </header>
@@ -334,7 +337,7 @@
         <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
 
             <div class="fade-in fade-in-next">
-                <img src="https://www.ukdw.ac.id/wp-content/uploads/2019/07/logo-ukdw.png" alt="Logo UKDW" class="h-10 mb-4 filter brightness-0 invert">
+                <img src="{{ asset('logo-ukdw.png') }}" alt="Logo UKDW" class="h-10 mb-4 filter brightness-0 invert">
                 <p class="text-sm text-gray-400">SiSUA adalah layanan terpusat untuk efisiensi administrasi surat menyurat akademik di lingkungan UKDW.</p>
             </div>
 

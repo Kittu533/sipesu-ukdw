@@ -33,8 +33,8 @@
                             <span>Upload Gambar PNG</span>
                         </label>
                         <label class="flex items-center">
-                            <input type="radio" name="type" value="qrcode" class="mr-2" {{ old('type') === 'qrcode' ? 'checked' : '' }}>
-                            <span>Generate QR Code</span>
+                            <input type="radio" name="type" value="canvas" class="mr-2" {{ old('type') === 'canvas' ? 'checked' : '' }}>
+                            <span>Tanda Tangan Canvas</span>
                         </label>
                     </div>
                     @error('type')
@@ -53,11 +53,21 @@
                 </div>
 
                 <div id="qr-text" class="mb-4" style="display: none;">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Teks untuk QR Code</label>
-                    <textarea name="qr_text" rows="3" 
-                              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
-                              placeholder="Masukkan teks yang akan dijadikan QR Code">{{ old('qr_text') }}</textarea>
-                    @error('qr_text')
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Tanda Tangan Canvas</label>
+                    <div class="border border-gray-300 rounded-md p-4">
+                        <canvas id="signature-canvas" width="500" height="200" class="border border-gray-200 cursor-crosshair bg-white"></canvas>
+                        <div class="mt-2 flex space-x-2">
+                            <button type="button" id="clear-canvas" class="px-3 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-600">
+                                Hapus
+                            </button>
+                            <button type="button" id="save-canvas" class="px-3 py-1 bg-blue-500 text-white text-sm rounded hover:bg-blue-600">
+                                Simpan Tanda Tangan
+                            </button>
+                        </div>
+                        <p class="text-sm text-gray-500 mt-1">Gambar tanda tangan Anda di area canvas</p>
+                    </div>
+                    <input type="hidden" name="canvas_data" id="canvas-data">
+                    @error('canvas_data')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                     @enderror
                 </div>
@@ -82,15 +92,95 @@ document.addEventListener('DOMContentLoaded', function() {
     const typeRadios = document.querySelectorAll('input[name="type"]');
     const pngUpload = document.getElementById('png-upload');
     const qrText = document.getElementById('qr-text');
+    const canvas = document.getElementById('signature-canvas');
+    const ctx = canvas.getContext('2d');
+    let isDrawing = false;
+
+    // Canvas drawing functionality
+    function startDrawing(e) {
+        isDrawing = true;
+        draw(e);
+    }
+
+    function draw(e) {
+        if (!isDrawing) return;
+        
+        const rect = canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        ctx.lineWidth = 2;
+        ctx.lineCap = 'round';
+        ctx.strokeStyle = '#000';
+        
+        ctx.lineTo(x, y);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+    }
+
+    function stopDrawing() {
+        if (isDrawing) {
+            isDrawing = false;
+            ctx.beginPath();
+        }
+    }
+
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mouseup', stopDrawing);
+    canvas.addEventListener('mouseout', stopDrawing);
+
+    // Touch events for mobile
+    canvas.addEventListener('touchstart', function(e) {
+        e.preventDefault();
+        const touch = e.touches[0];
+        const mouseEvent = new MouseEvent('mousedown', {
+            clientX: touch.clientX,
+            clientY: touch.clientY
+        });
+        canvas.dispatchEvent(mouseEvent);
+    });
+
+    canvas.addEventListener('touchmove', function(e) {
+        e.preventDefault();
+        const touch = e.touches[0];
+        const mouseEvent = new MouseEvent('mousemove', {
+            clientX: touch.clientX,
+            clientY: touch.clientY
+        });
+        canvas.dispatchEvent(mouseEvent);
+    });
+
+    canvas.addEventListener('touchend', function(e) {
+        e.preventDefault();
+        const mouseEvent = new MouseEvent('mouseup', {});
+        canvas.dispatchEvent(mouseEvent);
+    });
+
+    // Clear canvas
+    document.getElementById('clear-canvas').addEventListener('click', function() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        document.getElementById('canvas-data').value = '';
+    });
+
+    // Save canvas data
+    document.getElementById('save-canvas').addEventListener('click', function() {
+        const dataURL = canvas.toDataURL('image/png');
+        document.getElementById('canvas-data').value = dataURL;
+        alert('Tanda tangan berhasil disimpan!');
+    });
 
     typeRadios.forEach(radio => {
         radio.addEventListener('change', function() {
             if (this.value === 'png') {
                 pngUpload.style.display = 'block';
                 qrText.style.display = 'none';
-            } else if (this.value === 'qrcode') {
+            } else if (this.value === 'canvas') {
                 pngUpload.style.display = 'none';
                 qrText.style.display = 'block';
+                // Clear canvas when switching
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
             }
         });
     });

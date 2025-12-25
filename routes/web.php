@@ -74,10 +74,24 @@ Route::middleware(['auth'])->group(function () {
     
     // --- ADMIN ROUTES ---
     Route::get('/admin/mahasiswa', [App\Http\Controllers\AdminController::class, 'mahasiswaIndex'])->name('admin.mahasiswa.index');
+    Route::get('/admin/mahasiswa/{id}/edit', [App\Http\Controllers\AdminController::class, 'mahasiswaEdit'])->name('admin.mahasiswa.edit');
+    Route::put('/admin/mahasiswa/{id}', [App\Http\Controllers\AdminController::class, 'mahasiswaUpdate'])->name('admin.mahasiswa.update');
+    Route::get('/admin/export/laporan', [App\Http\Controllers\AdminController::class, 'exportLaporan'])->name('admin.export.laporan');
+    Route::get('/admin/mahasiswa/import', [App\Http\Controllers\AdminController::class, 'mahasiswaImportForm'])->name('admin.mahasiswa.import.form');
+    Route::post('/admin/mahasiswa/import', [App\Http\Controllers\AdminController::class, 'mahasiswaImport'])->name('admin.mahasiswa.import');
+    Route::get('/admin/mahasiswa/import/preview', [App\Http\Controllers\AdminController::class, 'mahasiswaImportPreview'])->name('admin.mahasiswa.import.preview');
+    Route::post('/admin/mahasiswa/import/store', [App\Http\Controllers\AdminController::class, 'mahasiswaImportStore'])->name('admin.mahasiswa.import.store');
+    Route::get('/admin/mahasiswa/template', [App\Http\Controllers\AdminController::class, 'mahasiswaTemplate'])->name('admin.mahasiswa.template');
     Route::get('/admin/prodi', [App\Http\Controllers\AdminController::class, 'prodiIndex'])->name('admin.prodi.index');
+    Route::get('/admin/prodi/create', [App\Http\Controllers\AdminController::class, 'prodiCreate'])->name('admin.prodi.create');
+    Route::post('/admin/prodi', [App\Http\Controllers\AdminController::class, 'prodiStore'])->name('admin.prodi.store');
+    Route::get('/admin/prodi/{id}/edit', [App\Http\Controllers\AdminController::class, 'prodiEdit'])->name('admin.prodi.edit');
+    Route::put('/admin/prodi/{id}', [App\Http\Controllers\AdminController::class, 'prodiUpdate'])->name('admin.prodi.update');
+    Route::delete('/admin/prodi/{id}', [App\Http\Controllers\AdminController::class, 'prodiDestroy'])->name('admin.prodi.destroy');
     Route::get('/admin/submissions', [SubmissionController::class, 'adminIndex'])->name('admin.submission.index');
     Route::get('/admin/submissions/{id}/detail', [SubmissionController::class, 'adminDetail'])->name('admin.submission.detail');
     Route::get('/admin/submissions/{id}/print', [SubmissionController::class, 'adminPrint'])->name('admin.submission.print');
+    Route::post('/admin/submissions/{id}/validate', [SubmissionController::class, 'validateSubmission'])->name('admin.submission.validate');
     
     // --- STAFF ROUTES ---
     Route::get('/staff/validation', [App\Http\Controllers\StaffController::class, 'validationList'])->name('staff.validation.index');

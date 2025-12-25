@@ -41,7 +41,39 @@ class DashboardController extends Controller
                 $data['total_pengajuan'] = \App\Models\PengajuanSurat::count();
                 $data['total_mahasiswa'] = \App\Models\Mahasiswa::count();
                 $data['total_prodi'] = \App\Models\ProgramStudi::count();
-                $data['pengajuan_terbaru'] = \App\Models\PengajuanSurat::with(['mahasiswa.user', 'jenisSurat'])->latest()->take(10)->get();
+                
+                // Pengajuan terbaru dengan pencarian
+                $pengajuanQuery = \App\Models\PengajuanSurat::with(['mahasiswa.user', 'jenisSurat']);
+                
+                if (request('search')) {
+                    $search = request('search');
+                    $pengajuanQuery->where(function($q) use ($search) {
+                        $q->whereHas('mahasiswa.user', function($u) use ($search) {
+                            $u->where('nama_lengkap', 'like', "%{$search}%");
+                        })->orWhereHas('jenisSurat', function($j) use ($search) {
+                            $j->where('nama_surat', 'like', "%{$search}%");
+                        })->orWhereHas('mahasiswa', function($m) use ($search) {
+                            $m->where('nim', 'like', "%{$search}%");
+                        });
+                    });
+                }
+                
+                $data['pengajuan_terbaru'] = $pengajuanQuery->latest()->take(10)->get();
+                
+                // Data untuk chart
+                $data['pengajuan_per_bulan'] = \App\Models\PengajuanSurat::selectRaw('MONTH(created_at) as bulan, COUNT(*) as total')
+                    ->whereYear('created_at', date('Y'))
+                    ->groupBy('bulan')
+                    ->orderBy('bulan')
+                    ->get();
+                
+                $data['pengajuan_per_status'] = \App\Models\PengajuanSurat::selectRaw('status_saat_ini, COUNT(*) as total')
+                    ->groupBy('status_saat_ini')
+                    ->get();
+                
+                $data['mahasiswa_per_prodi'] = \App\Models\ProgramStudi::withCount('mahasiswa')
+                    ->get();
+                
                 return view('dashboard.admin', compact('user', 'data'));
 
             case 3: // Staff Pelayanan Jurusan

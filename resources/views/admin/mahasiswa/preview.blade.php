@@ -1,0 +1,199 @@
+@extends('layouts.app')
+
+@section('content')
+<div class="space-y-6">
+    <!-- Alert Messages -->
+    @if(session('success'))
+    <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+        <div class="flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-600 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            <span class="text-green-800 text-sm">{{ session('success') }}</span>
+        </div>
+    </div>
+    @endif
+
+    @if(session('error'))
+    <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+        <div class="flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-600 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+            <span class="text-red-800 text-sm">{{ session('error') }}</span>
+        </div>
+    </div>
+    @endif
+
+    <div class="flex justify-between items-center">
+        <div>
+            <h2 class="text-2xl font-bold text-gray-900">Preview Data Import</h2>
+            <p class="text-gray-500 text-sm mt-1">Periksa data sebelum disimpan ke database. Total: {{ $totalData }} data (Halaman {{ $currentPage }} dari {{ $totalPages }})</p>
+            @if(config('app.debug'))
+            <details class="mt-2">
+                <summary class="text-xs text-gray-400 cursor-pointer">Debug Info</summary>
+                <pre class="text-xs bg-gray-100 p-2 rounded mt-1 overflow-auto max-h-32">{{ json_encode($paginatedData, JSON_PRETTY_PRINT) }}</pre>
+            </details>
+            @endif
+        </div>
+        <div class="flex space-x-2">
+            <a href="{{ route('admin.mahasiswa.import.form') }}" class="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-200 transition flex items-center border border-gray-300">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Kembali
+            </a>
+        </div>
+    </div>
+
+    <form action="{{ route('admin.mahasiswa.import.store') }}" method="POST" id="importForm">
+        @csrf
+        <input type="hidden" name="current_page" value="{{ $currentPage }}">
+        
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-gray-50 text-gray-600 text-xs uppercase tracking-wider font-semibold">
+                            <th class="px-4 py-4 w-8">#</th>
+                            <th class="px-4 py-4">Nama Lengkap</th>
+                            <th class="px-4 py-4">NIM</th>
+                            <th class="px-4 py-4">Email</th>
+                            <th class="px-4 py-4">Program Studi</th>
+                            <th class="px-4 py-4">Angkatan</th>
+                            <th class="px-4 py-4">IPK</th>
+                            <th class="px-4 py-4 w-16">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        @forelse($paginatedData as $index => $row)
+                        @php $actualIndex = ($currentPage - 1) * $perPage + $loop->iteration - 1; @endphp
+                        <tr class="hover:bg-gray-50 transition duration-150" id="row-{{ $actualIndex }}">
+                            <td class="px-4 py-4 text-sm text-gray-500">{{ ($currentPage - 1) * $perPage + $loop->iteration }}</td>
+                            <td class="px-4 py-4">
+                                <div class="text-sm font-medium text-gray-900">{{ $row['nama_lengkap'] ?? $row['Nama Lengkap'] ?? $row['nama'] ?? '-' }}</div>
+                                <input type="hidden" name="data[{{ $actualIndex }}][nama_lengkap]" value="{{ $row['nama_lengkap'] ?? $row['Nama Lengkap'] ?? $row['nama'] ?? '' }}">
+                            </td>
+                            <td class="px-4 py-4">
+                                <div class="text-sm font-mono text-gray-900">{{ $row['nim'] ?? $row['NIM'] ?? $row['Nim'] ?? '-' }}</div>
+                                <input type="hidden" name="data[{{ $actualIndex }}][nim]" value="{{ $row['nim'] ?? $row['NIM'] ?? $row['Nim'] ?? '' }}">
+                            </td>
+                            <td class="px-4 py-4">
+                                <div class="text-sm text-gray-900">{{ $row['email'] ?? $row['Email'] ?? '-' }}</div>
+                                <input type="hidden" name="data[{{ $actualIndex }}][email]" value="{{ $row['email'] ?? $row['Email'] ?? '' }}">
+                            </td>
+                            <td class="px-4 py-4">
+                                @php
+                                    $prodiId = $row['id_prodi'] ?? $row['Id Prodi'] ?? '';
+                                    $prodi = $prodiList->firstWhere('kode_prodi', $prodiId);
+                                @endphp
+                                <div class="text-sm text-gray-900">{{ $prodi->nama_prodi ?? ($prodiId ? "ID: $prodiId" : '-') }}</div>
+                                <input type="hidden" name="data[{{ $actualIndex }}][id_prodi]" value="{{ $prodiId }}">
+                            </td>
+                            <td class="px-4 py-4">
+                                <div class="text-sm text-gray-900">{{ $row['angkatan'] ?? $row['Angkatan'] ?? '-' }}</div>
+                                <input type="hidden" name="data[{{ $actualIndex }}][angkatan]" value="{{ $row['angkatan'] ?? $row['Angkatan'] ?? '' }}">
+                            </td>
+                            <td class="px-4 py-4">
+                                <div class="text-sm text-gray-900">{{ $row['ipk_terakhir'] ?? $row['IPK'] ?? $row['ipk'] ?? '-' }}</div>
+                                <input type="hidden" name="data[{{ $actualIndex }}][ipk_terakhir]" value="{{ $row['ipk_terakhir'] ?? $row['IPK'] ?? $row['ipk'] ?? '' }}">
+                            </td>
+                            <td class="px-4 py-4">
+                                <button type="button" onclick="removeRow({{ $actualIndex }})" 
+                                        class="text-red-600 hover:text-red-800 transition" 
+                                        title="Hapus Baris">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                    </svg>
+                                </button>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="8" class="px-6 py-12 text-center text-gray-500">
+                                <p class="font-medium text-gray-900">Tidak ada data untuk ditampilkan.</p>
+                                <p class="text-sm">Pastikan file Excel/CSV memiliki data yang valid.</p>
+                            </td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="px-6 py-4 border-t border-gray-100 bg-gray-50">
+                <div class="flex justify-between items-center">
+                    <div class="text-sm text-gray-600">
+                        Menampilkan {{ ($currentPage - 1) * $perPage + 1 }} - {{ min($currentPage * $perPage, $totalData) }} dari {{ $totalData }} data
+                    </div>
+                    
+                    <!-- Pagination Controls -->
+                    @if($totalPages > 1)
+                    <div class="flex items-center space-x-2">
+                        <!-- Previous Button -->
+                        @if($currentPage > 1)
+                        <a href="{{ request()->fullUrlWithQuery(['page' => $currentPage - 1]) }}" 
+                           class="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50">
+                            Sebelumnya
+                        </a>
+                        @endif
+                        
+                        <!-- Page Numbers -->
+                        @for($i = max(1, $currentPage - 2); $i <= min($totalPages, $currentPage + 2); $i++)
+                        <a href="{{ request()->fullUrlWithQuery(['page' => $i]) }}" 
+                           class="px-3 py-2 text-sm font-medium {{ $i == $currentPage ? 'text-emerald-600 bg-emerald-50 border-emerald-300' : 'text-gray-500 bg-white border-gray-300 hover:bg-gray-50' }} border rounded-lg">
+                            {{ $i }}
+                        </a>
+                        @endfor
+                        
+                        <!-- Next Button -->
+                        @if($currentPage < $totalPages)
+                        <a href="{{ request()->fullUrlWithQuery(['page' => $currentPage + 1]) }}" 
+                           class="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50">
+                            Selanjutnya
+                        </a>
+                        @endif
+                    </div>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <!-- Submit Actions -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+        <div class="flex justify-between items-center">
+            <div class="text-sm text-gray-600">
+                <span id="totalRows">{{ $totalData }}</span> data siap diimport
+            </div>
+            <div class="flex space-x-3">
+                <a href="{{ route('admin.mahasiswa.import.form') }}" 
+                   class="bg-gray-100 text-gray-700 px-6 py-3 rounded-lg text-sm font-medium hover:bg-gray-200 transition">
+                    Batal
+                </a>
+                <button type="submit" form="importForm"
+                        class="bg-emerald-600 text-white px-6 py-3 rounded-lg text-sm font-medium hover:bg-emerald-700 transition flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    Simpan ke Database
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function removeRow(index) {
+    const row = document.getElementById('row-' + index);
+    if (row) {
+        row.remove();
+        updateRowCount();
+    }
+}
+
+function updateRowCount() {
+    const rows = document.querySelectorAll('tbody tr:not([style*="display: none"])');
+    document.getElementById('totalRows').textContent = rows.length;
+}
+</script>
+@endsection

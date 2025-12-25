@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ProgramStudi extends Model
 {
@@ -16,14 +17,16 @@ class ProgramStudi extends Model
     protected $fillable = [
         'kode_prodi',
         'nama_prodi',
-        'id_jurusan',
+        'id_fakultas',
     ];
 
-    /**
-     * Relationship: Program Studi memiliki banyak Mahasiswa
-     */
     public function mahasiswa(): HasMany
     {
         return $this->hasMany(Mahasiswa::class, 'id_prodi', 'id_prodi');
+    }
+
+    public function fakultas(): BelongsTo
+    {
+        return $this->belongsTo(Fakultas::class, 'id_fakultas', 'id_fakultas');
     }
 }

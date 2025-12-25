@@ -16,13 +16,13 @@
         </div>
     </div>
     
-    <div class="flex justify-end space-x-2">
-        <button class="bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 font-medium py-2 px-4 rounded shadow-sm transition">
-            Laporan
-        </button>
-        <button class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded shadow-lg transition duration-200">
-            Kelola Data
-        </button>
+    <div class="flex justify-end">
+        <a href="{{ route('admin.export.laporan') }}" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 px-4 rounded shadow-lg transition duration-200 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            Export Laporan
+        </a>
     </div>
 
     <!-- Stats Cards -->
@@ -73,18 +73,39 @@
         </div>
     </div>
 
-    <!-- All Submissions Table -->
+    <!-- Charts Section -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Pengajuan per Bulan Chart -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Pengajuan per Bulan ({{ date('Y') }})</h3>
+            <canvas id="pengajuanChart" width="400" height="200"></canvas>
+        </div>
+
+        <!-- Status Pengajuan Chart -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Status Pengajuan</h3>
+            <canvas id="statusChart" width="400" height="200"></canvas>
+        </div>
+
+        <!-- Mahasiswa per Prodi Chart -->
+        <div class="bg-white rounded-xl shadow-sm p-6 lg:col-span-2">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Mahasiswa per Program Studi</h3>
+            <canvas id="prodiChart" width="800" height="300"></canvas>
+        </div>
+    </div>
+
+    <!-- Recent Submissions Table -->
     <div class="bg-white rounded-xl shadow-sm overflow-hidden">
         <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
-            <h3 class="font-semibold text-gray-800">Semua Pengajuan Masuk</h3>
-            <div class="flex space-x-2">
-                <input type="text" placeholder="Cari..." class="text-sm border border-gray-300 rounded-md px-3 py-1 focus:outline-none focus:ring-1 focus:ring-emerald-500">
-                <button class="text-gray-500 hover:text-emerald-600">
+            <h3 class="font-semibold text-gray-800">Pengajuan Masuk Terbaru</h3>
+            <form method="GET" action="{{ route('dashboard') }}" class="flex space-x-2">
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari mahasiswa atau jenis surat..." class="text-sm border border-gray-300 rounded-md px-3 py-1 focus:outline-none focus:ring-1 focus:ring-emerald-500 w-64">
+                <button type="submit" class="text-gray-500 hover:text-emerald-600">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
                 </button>
-            </div>
+            </form>
         </div>
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
@@ -94,7 +115,6 @@
                         <th class="px-6 py-3 font-medium">Jenis Surat</th>
                         <th class="px-6 py-3 font-medium">Tanggal</th>
                         <th class="px-6 py-3 font-medium">Status</th>
-                        <th class="px-6 py-3 font-medium text-right">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100">
@@ -118,14 +138,10 @@
                                 {{ $pengajuan->status_saat_ini }}
                             </span>
                         </td>
-                        <td class="px-6 py-4 text-right text-sm font-medium">
-                            <a href="#" class="text-emerald-600 hover:text-emerald-900 mr-3">Detail</a>
-                            <a href="#" class="text-blue-600 hover:text-blue-900">Cetak</a>
-                        </td>
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="5" class="px-6 py-8 text-center text-gray-500">Belum ada data pengajuan.</td>
+                        <td colspan="4" class="px-6 py-8 text-center text-gray-500">Belum ada data pengajuan.</td>
                     </tr>
                     @endforelse
                 </tbody>
@@ -133,4 +149,110 @@
         </div>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+// Data dari controller
+const pengajuanPerBulan = @json($data['pengajuan_per_bulan']);
+const pengajuanPerStatus = @json($data['pengajuan_per_status']);
+const mahasiswaPerProdi = @json($data['mahasiswa_per_prodi']);
+
+// Chart 1: Pengajuan per Bulan
+const bulanNames = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des'];
+const pengajuanData = new Array(12).fill(0);
+pengajuanPerBulan.forEach(item => {
+    pengajuanData[item.bulan - 1] = item.total;
+});
+
+new Chart(document.getElementById('pengajuanChart'), {
+    type: 'line',
+    data: {
+        labels: bulanNames,
+        datasets: [{
+            label: 'Jumlah Pengajuan',
+            data: pengajuanData,
+            borderColor: '#10b981',
+            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+            tension: 0.4,
+            fill: true
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                display: false
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    stepSize: 1
+                }
+            }
+        }
+    }
+});
+
+// Chart 2: Status Pengajuan
+const statusLabels = pengajuanPerStatus.map(item => item.status_saat_ini);
+const statusData = pengajuanPerStatus.map(item => item.total);
+const statusColors = ['#3b82f6', '#f59e0b', '#10b981', '#ef4444', '#8b5cf6'];
+
+new Chart(document.getElementById('statusChart'), {
+    type: 'doughnut',
+    data: {
+        labels: statusLabels,
+        datasets: [{
+            data: statusData,
+            backgroundColor: statusColors.slice(0, statusLabels.length),
+            borderWidth: 2,
+            borderColor: '#ffffff'
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'bottom'
+            }
+        }
+    }
+});
+
+// Chart 3: Mahasiswa per Prodi
+const prodiLabels = mahasiswaPerProdi.map(item => item.nama_prodi);
+const prodiData = mahasiswaPerProdi.map(item => item.mahasiswa_count);
+
+new Chart(document.getElementById('prodiChart'), {
+    type: 'bar',
+    data: {
+        labels: prodiLabels,
+        datasets: [{
+            label: 'Jumlah Mahasiswa',
+            data: prodiData,
+            backgroundColor: '#6366f1',
+            borderColor: '#4f46e5',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                display: false
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    stepSize: 1
+                }
+            }
+        }
+    }
+});
+</script>
 @endsection

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
+use Endroid\QrCode\Logo\Logo;
 use App\Models\DigitalSignature;
 
 class DigitalSignatureController extends Controller
@@ -28,9 +29,9 @@ class DigitalSignatureController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'type' => 'required|in:png,qrcode',
+            'type' => 'required|in:png,canvas',
             'signature_file' => 'required_if:type,png|image|mimes:png|max:2048',
-            'qr_text' => 'required_if:type,qrcode|string|max:500',
+            'canvas_data' => 'required_if:type,canvas|string',
         ]);
 
         $path = null;
@@ -40,20 +41,72 @@ class DigitalSignatureController extends Controller
             $request->file('signature_file')->storeAs('signatures', $filename, 'public');
             $path = 'signatures/' . $filename;
         } else {
-            $filename = time() . '_qr_signature.png';
-            $qrCode = new QrCode($request->qr_text);
+            // Process canvas data and generate QR code
+            $canvasData = $request->canvas_data;
+            $imageData = str_replace('data:image/png;base64,', '', $canvasData);
+            $imageData = str_replace(' ', '+', $imageData);
+            $decodedImage = base64_decode($imageData);
+            
+            // Save canvas signature
+            $canvasFilename = time() . '_canvas_signature.png';
+            Storage::disk('public')->put('signatures/' . $canvasFilename, $decodedImage);
+            
+            // Generate QR code with small UKDW logo
+            $qrFilename = time() . '_qr_signature.png';
+            $qrText = "Digital Signature: " . auth()->user()->nama_lengkap . " - " . now()->format('Y-m-d H:i:s');
+            
+            $qrCode = new QrCode($qrText);
+            
             $writer = new PngWriter();
             $result = $writer->write($qrCode);
-            Storage::disk('public')->put('signatures/' . $filename, $result->getString());
-            $path = 'signatures/' . $filename;
+            
+            // Add small UKDW logo manually to center
+            $qrImage = imagecreatefromstring($result->getString());
+            $logoPath = public_path('logo-ukdw.png');
+            
+            if (file_exists($logoPath)) {
+                $logo = imagecreatefrompng($logoPath);
+                $qrWidth = imagesx($qrImage);
+                $qrHeight = imagesy($qrImage);
+                
+                // Make logo small (15% of QR code size)
+                $logoSize = min($qrWidth, $qrHeight) * 0.15;
+                $logoResized = imagescale($logo, $logoSize, $logoSize);
+                
+                // Center the logo
+                $logoX = ($qrWidth - $logoSize) / 2;
+                $logoY = ($qrHeight - $logoSize) / 2;
+                
+                // Add white background circle for logo
+                $white = imagecolorallocate($qrImage, 255, 255, 255);
+                imagefilledellipse($qrImage, $qrWidth/2, $qrHeight/2, $logoSize + 10, $logoSize + 10, $white);
+                
+                // Place logo on QR code
+                imagecopy($qrImage, $logoResized, $logoX, $logoY, 0, 0, $logoSize, $logoSize);
+                
+                // Save the final image
+                ob_start();
+                imagepng($qrImage);
+                $finalImage = ob_get_contents();
+                ob_end_clean();
+                
+                Storage::disk('public')->put('signatures/' . $qrFilename, $finalImage);
+                
+                imagedestroy($qrImage);
+                imagedestroy($logo);
+                imagedestroy($logoResized);
+            } else {
+                Storage::disk('public')->put('signatures/' . $qrFilename, $result->getString());
+            }
+            $path = 'signatures/' . $qrFilename;
         }
 
         DigitalSignature::create([
             'user_id' => auth()->user()->id_user,
             'name' => $request->name,
-            'type' => $request->type,
+            'type' => $request->type === 'canvas' ? 'qrcode' : $request->type,
             'path' => $path,
-            'qr_text' => $request->qr_text,
+            'qr_text' => $request->type === 'canvas' ? $qrText : null,
         ]);
 
         return redirect()->route('pejabat.digital-signature.index')
@@ -95,9 +148,49 @@ class DigitalSignatureController extends Controller
             
             $filename = time() . '_qr_signature.png';
             $qrCode = new QrCode($request->qr_text);
+            
             $writer = new PngWriter();
             $result = $writer->write($qrCode);
-            Storage::disk('public')->put('signatures/' . $filename, $result->getString());
+            
+            // Add small UKDW logo manually to center
+            $qrImage = imagecreatefromstring($result->getString());
+            $logoPath = public_path('logo-ukdw.png');
+            
+            if (file_exists($logoPath)) {
+                $logo = imagecreatefrompng($logoPath);
+                $qrWidth = imagesx($qrImage);
+                $qrHeight = imagesy($qrImage);
+                
+                // Make logo small (15% of QR code size)
+                $logoSize = min($qrWidth, $qrHeight) * 0.15;
+                $logoResized = imagescale($logo, $logoSize, $logoSize);
+                
+                // Center the logo
+                $logoX = ($qrWidth - $logoSize) / 2;
+                $logoY = ($qrHeight - $logoSize) / 2;
+                
+                // Add white background circle for logo
+                $white = imagecolorallocate($qrImage, 255, 255, 255);
+                imagefilledellipse($qrImage, $qrWidth/2, $qrHeight/2, $logoSize + 10, $logoSize + 10, $white);
+                
+                // Place logo on QR code
+                imagecopy($qrImage, $logoResized, $logoX, $logoY, 0, 0, $logoSize, $logoSize);
+                
+                // Save the final image
+                ob_start();
+                imagepng($qrImage);
+                $finalImage = ob_get_contents();
+                ob_end_clean();
+                
+                Storage::disk('public')->put('signatures/' . $filename, $finalImage);
+                
+                imagedestroy($qrImage);
+                imagedestroy($logo);
+                imagedestroy($logoResized);
+            } else {
+                Storage::disk('public')->put('signatures/' . $filename, $result->getString());
+            }
+            
             $signature->path = 'signatures/' . $filename;
             $signature->qr_text = $request->qr_text;
         }

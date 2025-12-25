@@ -20,10 +20,17 @@ class Mahasiswa extends Model
         'id_prodi',
         'angkatan',
         'ipk_terakhir',
+        'tempat_lahir',
+        'tanggal_lahir',
+        'nama_orang_tua',
+        'nip_orang_tua',
+        'pangkat_orang_tua',
+        'instansi_orang_tua',
     ];
 
     protected $casts = [
         'ipk_terakhir' => 'decimal:2',
+        'tanggal_lahir' => 'date',
     ];
 
     /**

@@ -5,12 +5,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use App\Models\JenisSurat;
 use App\Models\PengajuanSurat;
 use App\Models\LogStatusSurat;
-use Illuminate\Support\Facades\DB;
 
 class SubmissionController extends Controller
 {
@@ -186,7 +185,7 @@ class SubmissionController extends Controller
                 $pengajuan->nomor_surat_resmi = "$nomorUrut/$kodeSurat/$bulanRomawi/$tahun";
                 
                 // Generate and store PDF content in BLOB
-                $pdfContent = $this->generatePDFContent($pengajuan);
+                $pdfContent = $this->generatePDFContent($pengajuan, $digitalSignature);
                 $pengajuan->file_surat_content = $pdfContent;
                 $pengajuan->file_surat_name = 'surat-' . $pengajuan->id_pengajuan . '.pdf';
                 $pengajuan->file_surat_mime_type = 'application/pdf';
@@ -202,26 +201,24 @@ class SubmissionController extends Controller
             // Catat Log
             LogStatusSurat::create([
                 'id_pengajuan' => $pengajuan->id_pengajuan,
+                'status_lama' => $pengajuan->getOriginal('status_saat_ini'),
                 'status_baru' => $statusBaru,
                 'tgl_perubahan' => now(),
                 'diubah_oleh_user' => $user->id_user,
                 'keterangan' => $keterangan,
             ]);
 
-            // Simpan record persetujuan di tabel persetujuan_pejabat (jika ada)
-            // ...
-
             DB::commit();
 
             if ($request->action == 'approve') {
-                return redirect()->route('pejabat.approval')->with('success', 'Surat berhasil disetujui dan ditandatangani secara digital. Status surat telah diubah menjadi Selesai dan dapat diunduh oleh mahasiswa.');
+                return redirect()->route('pejabat.approval')->with('success', 'Surat berhasil disetujui dan ditandatangani secara digital.');
             } else {
-                return redirect()->route('pejabat.approval')->with('success', 'Surat telah ditolak dan mahasiswa akan mendapat notifikasi.');
+                return redirect()->route('pejabat.approval')->with('success', 'Surat telah ditolak.');
             }
 
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->withErrors(['msg' => 'Terjadi kesalahan: ' . $e->getMessage()]);
+            return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
 
@@ -252,7 +249,7 @@ class SubmissionController extends Controller
     /**
      * Generate PDF content for storage in BLOB
      */
-    private function generatePDFContent($pengajuan)
+    private function generatePDFContent($pengajuan, $digitalSignature)
     {
         // Load relationships
         $pengajuan->load(['mahasiswa.user', 'mahasiswa.prodi', 'jenisSurat']);
@@ -260,45 +257,57 @@ class SubmissionController extends Controller
         // Generate PDF based on letter type
         switch($pengajuan->id_jenis_surat) {
             case 1: // Surat Keterangan Aktif Kuliah
-                return $this->generateActiveStudentPDFContent($pengajuan);
+                return $this->generateActiveStudentPDFContent($pengajuan, $digitalSignature);
             case 2: // Surat Keterangan Alumni
-                return $this->generateAlumniPDFContent($pengajuan);
+                return $this->generateAlumniPDFContent($pengajuan, $digitalSignature);
             case 3: // Surat Keterangan Pengunduran Diri
-                return $this->generateWithdrawalPDFContent($pengajuan);
+                return $this->generateWithdrawalPDFContent($pengajuan, $digitalSignature);
             case 4: // Statement Letter
-                return $this->generateStatementLetterPDFContent($pengajuan);
+                return $this->generateStatementLetterPDFContent($pengajuan, $digitalSignature);
             default:
                 throw new \Exception('Jenis surat tidak ditemukan');
         }
     }
 
-    private function generateActiveStudentPDFContent($pengajuan)
+    private function prepareDigitalSignatureData($digitalSignature)
+    {
+        return [
+            'type' => $digitalSignature->type,
+            'path' => $digitalSignature->path,
+            'qr_text' => $digitalSignature->qr_text,
+            'base64' => base64_encode(file_get_contents(storage_path('app/public/' . $digitalSignature->path))),
+        ];
+    }
+
+    private function generateActiveStudentPDFContent($pengajuan, $digitalSignature)
     {
         $mahasiswa = $pengajuan->mahasiswa;
         $user = $mahasiswa->user;
+        $currentUser = Auth::user(); // Pejabat yang menandatangani
         
         $data = [
             'student' => [
                 'nama' => $user->nama_lengkap,
-                'tempat_lahir' => 'Jakarta',
-                'tanggal_lahir' => '01 Januari 2000',
+                'tempat_lahir' => $mahasiswa->tempat_lahir ?? 'Yogyakarta',
+                'tanggal_lahir' => $mahasiswa->tanggal_lahir ? $mahasiswa->tanggal_lahir->locale('id')->translatedFormat('d F Y') : '01 Januari 2000',
                 'nim' => $mahasiswa->nim,
-                'fakultas' => 'Teknologi Informasi',
+                'fakultas' => $mahasiswa->prodi->fakultas->nama_fakultas ?? 'Teknologi Informasi',
                 'prodi' => $mahasiswa->prodi->nama_prodi ?? 'Teknik Informatika',
                 'semester_aktif' => 'Gasal 2025/2026',
             ],
             'parent' => [
-                'nama' => 'Nama Orang Tua',
-                'nip' => '123456789',
-                'pangkat' => 'Pembina, IV/a',
-                'instansi' => 'Instansi Kerja',
+                'nama' => $mahasiswa->nama_orang_tua ?? 'Nama Orang Tua',
+                'nip' => $mahasiswa->nip_orang_tua ?? '123456789',
+                'pangkat' => $mahasiswa->pangkat_orang_tua ?? 'Pembina, IV/a',
+                'instansi' => $mahasiswa->instansi_orang_tua ?? 'Instansi Kerja',
             ],
             'signatory' => [
-                'nama' => 'Drs. Wimmie Handiwidjojo, MIT',
-                'nik' => '894 E 090',
-                'pangkat' => 'Pembina Utama, IV/e',
-                'jabatan' => 'Kepala Biro Administrasi Akademik',
+                'nama' => $currentUser->nama_lengkap,
+                'nik' => $currentUser->pejabat->nip ?? '-',
+                'pangkat' => $currentUser->pejabat->pangkat ?? '-',
+                'jabatan' => $currentUser->pejabat->jabatan->nama_jabatan ?? 'Pejabat Berwenang',
             ],
+            'digital_signature' => $this->prepareDigitalSignatureData($digitalSignature),
             'nomor_surat' => $pengajuan->nomor_surat_resmi,
             'tanggal_surat' => now()->locale('id')->translatedFormat('d F Y'),
         ];
@@ -307,29 +316,31 @@ class SubmissionController extends Controller
         return $pdf->output();
     }
 
-    private function generateAlumniPDFContent($pengajuan)
+    private function generateAlumniPDFContent($pengajuan, $digitalSignature)
     {
         $mahasiswa = $pengajuan->mahasiswa;
         $user = $mahasiswa->user;
+        $currentUser = Auth::user(); // Pejabat yang menandatangani
         
         $data = [
             'alumni' => [
                 'nama' => $user->nama_lengkap,
-                'tempat_lahir' => 'Jakarta',
-                'tanggal_lahir' => '01 Januari 2000',
+                'tempat_lahir' => $mahasiswa->tempat_lahir ?? 'Yogyakarta',
+                'tanggal_lahir' => $mahasiswa->tanggal_lahir ? $mahasiswa->tanggal_lahir->locale('id')->translatedFormat('d F Y') : '01 Januari 2000',
                 'nim' => $mahasiswa->nim,
-                'fakultas' => 'Teknologi Informasi',
+                'fakultas' => $mahasiswa->prodi->fakultas->nama_fakultas ?? 'Teknologi Informasi',
                 'prodi' => $mahasiswa->prodi->nama_prodi ?? 'Teknik Informatika',
                 'status' => 'Lulus',
                 'tanggal_lulus' => '20 September 2023',
                 'nomor_ijazah' => '1612 T.I 2023',
             ],
             'signatory' => [
-                'nama' => 'Drs. Wimmie Handiwidjojo, MIT',
-                'nik' => '894 E 090',
-                'pangkat' => 'Pembina Utama, IV/e',
-                'jabatan' => 'Kepala Biro Administrasi Akademik',
+                'nama' => $currentUser->nama_lengkap,
+                'nik' => $currentUser->pejabat->nip ?? '-',
+                'pangkat' => $currentUser->pejabat->pangkat ?? '-',
+                'jabatan' => $currentUser->pejabat->jabatan->nama_jabatan ?? 'Pejabat Berwenang',
             ],
+            'digital_signature' => $this->prepareDigitalSignatureData($digitalSignature),
             'nomor_surat' => $pengajuan->nomor_surat_resmi,
             'tanggal_surat' => now()->locale('id')->translatedFormat('d F Y'),
         ];
@@ -338,18 +349,19 @@ class SubmissionController extends Controller
         return $pdf->output();
     }
 
-    private function generateWithdrawalPDFContent($pengajuan)
+    private function generateWithdrawalPDFContent($pengajuan, $digitalSignature)
     {
         $mahasiswa = $pengajuan->mahasiswa;
         $user = $mahasiswa->user;
+        $currentUser = Auth::user(); // Pejabat yang menandatangani
         
         $data = [
             'student' => [
                 'nama' => $user->nama_lengkap,
-                'tempat_lahir' => 'Jakarta',
-                'tanggal_lahir' => '01 Januari 2000',
+                'tempat_lahir' => $mahasiswa->tempat_lahir ?? 'Yogyakarta',
+                'tanggal_lahir' => $mahasiswa->tanggal_lahir ? $mahasiswa->tanggal_lahir->locale('id')->translatedFormat('d F Y') : '01 Januari 2000',
                 'nim' => $mahasiswa->nim,
-                'fakultas' => 'Teknologi Informasi',
+                'fakultas' => $mahasiswa->prodi->fakultas->nama_fakultas ?? 'Teknologi Informasi',
                 'prodi' => $mahasiswa->prodi->nama_prodi ?? 'Teknik Informatika',
                 'akreditasi' => 'B',
                 'sk_ban_pt' => '1234/SK/BAN-PT/Ak-PPJ/S/V/2023',
@@ -359,11 +371,12 @@ class SubmissionController extends Controller
                 'referensi_surat' => 'Surat Keterangan Wakil Rektor Bidang Akademik dan Riset',
             ],
             'signatory' => [
-                'nama' => 'Drs. Wimmie Handiwidjojo, MIT',
-                'nik' => '894 E 090',
-                'pangkat' => 'Pembina Utama, IV/e',
-                'jabatan' => 'Kepala Biro Administrasi Akademik',
+                'nama' => $currentUser->nama_lengkap,
+                'nik' => $currentUser->pejabat->nip ?? '-',
+                'pangkat' => $currentUser->pejabat->pangkat ?? '-',
+                'jabatan' => $currentUser->pejabat->jabatan->nama_jabatan ?? 'Pejabat Berwenang',
             ],
+            'digital_signature' => $this->prepareDigitalSignatureData($digitalSignature),
             'nomor_surat' => $pengajuan->nomor_surat_resmi,
             'tanggal_surat' => now()->locale('id')->translatedFormat('d F Y'),
         ];
@@ -372,27 +385,29 @@ class SubmissionController extends Controller
         return $pdf->output();
     }
 
-    private function generateStatementLetterPDFContent($pengajuan)
+    private function generateStatementLetterPDFContent($pengajuan, $digitalSignature)
     {
         $mahasiswa = $pengajuan->mahasiswa;
         $user = $mahasiswa->user;
+        $currentUser = Auth::user(); // Pejabat yang menandatangani
         
         $data = [
             'student' => [
                 'full_name' => strtoupper($user->nama_lengkap),
-                'date_of_birth' => 'January 01, 2000',
+                'date_of_birth' => $mahasiswa->tanggal_lahir ? $mahasiswa->tanggal_lahir->format('F d, Y') : 'January 01, 2000',
                 'student_id' => $mahasiswa->nim,
                 'institution' => 'Universitas Kristen Duta Wacana',
-                'faculty' => 'Information Technology',
-                'department' => 'Informatics',
+                'faculty' => $mahasiswa->prodi->fakultas->nama_fakultas ?? 'Information Technology',
+                'department' => $mahasiswa->prodi->nama_prodi ?? 'Informatics',
                 'study_period' => 'August 2020 - August 2024',
                 'degree_awarded' => 'Bachelor of Informatics / B.Inf.',
                 'graduation_date' => 'August 2024',
             ],
             'signatory' => [
-                'name' => 'Drs. Wimmie Handiwidjojo, MIT',
-                'position' => 'Head of Academic Administration Bureau',
+                'name' => $currentUser->nama_lengkap,
+                'position' => $currentUser->pejabat->jabatan->nama_jabatan ?? 'Authorized Official',
             ],
+            'digital_signature' => $this->prepareDigitalSignatureData($digitalSignature),
             'document_number' => $pengajuan->nomor_surat_resmi,
             'issue_date' => now()->format('F d, Y'),
         ];
@@ -457,7 +472,8 @@ class SubmissionController extends Controller
     {
         $user = Auth::user();
         
-        if ($user->id_hak_akses != 2) {
+        // Izinkan admin dan staf untuk melihat daftar pengajuan
+        if (!in_array($user->id_hak_akses, [2, 3])) {
             abort(403, 'Akses ditolak.');
         }
 
@@ -468,6 +484,20 @@ class SubmissionController extends Controller
         // Filter status if needed
         if ($request->has('status') && $request->status != '') {
             $query->where('status_saat_ini', $request->status);
+        }
+
+        // Filter search if needed
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->whereHas('mahasiswa.user', function($u) use ($search) {
+                    $u->where('nama_lengkap', 'like', "%{$search}%");
+                })->orWhereHas('jenisSurat', function($j) use ($search) {
+                    $j->where('nama_surat', 'like', "%{$search}%");
+                })->orWhereHas('mahasiswa', function($m) use ($search) {
+                    $m->where('nim', 'like', "%{$search}%");
+                });
+            });
         }
 
         $pengajuan = $query->paginate(10);
@@ -482,7 +512,8 @@ class SubmissionController extends Controller
     {
         $user = Auth::user();
         
-        if ($user->id_hak_akses != 2) {
+        // Izinkan admin dan staf untuk melihat detail
+        if (!in_array($user->id_hak_akses, [2, 3])) {
             abort(403, 'Akses ditolak.');
         }
 
@@ -521,5 +552,72 @@ class SubmissionController extends Controller
         return response($pengajuan->file_surat_content)
             ->header('Content-Type', $pengajuan->file_surat_mime_type ?? 'application/pdf')
             ->header('Content-Disposition', 'inline; filename="' . ($pengajuan->file_surat_name ?? 'surat.pdf') . '"');
+    }
+
+    public function validateSubmission(Request $request, $id)
+    {
+        $user = Auth::user();
+        
+        // Hanya staff yang bisa validasi
+        if ($user->id_hak_akses != 3) {
+            abort(403, 'Akses ditolak.');
+        }
+
+        $pengajuan = PengajuanSurat::findOrFail($id);
+        
+        // Hanya bisa validasi jika status Menunggu Verifikasi
+        if ($pengajuan->status_saat_ini != 'Menunggu Verifikasi') {
+            return back()->with('error', 'Pengajuan tidak dapat divalidasi pada status saat ini.');
+        }
+
+        $request->validate([
+            'action' => 'required|in:approve,reject',
+            'catatan' => 'nullable|string|max:500',
+        ]);
+
+        try {
+            DB::beginTransaction();
+            
+            $action = $request->action;
+            $catatan = $request->catatan;
+            
+            if ($action === 'approve') {
+                // Update status pengajuan
+                $pengajuan->update(['status_saat_ini' => 'Diproses']);
+                
+                // Buat log status
+                \App\Models\LogStatusSurat::create([
+                    'id_pengajuan' => $pengajuan->id_pengajuan,
+                    'status_lama' => 'Menunggu Verifikasi',
+                    'status_baru' => 'Diproses',
+                    'tgl_perubahan' => now(),
+                    'keterangan' => $catatan ?: 'Disetujui oleh staff',
+                ]);
+                
+                $message = 'Pengajuan berhasil disetujui.';
+            } else {
+                // Update status pengajuan
+                $pengajuan->update(['status_saat_ini' => 'Ditolak']);
+                
+                // Buat log status
+                \App\Models\LogStatusSurat::create([
+                    'id_pengajuan' => $pengajuan->id_pengajuan,
+                    'status_lama' => 'Menunggu Verifikasi',
+                    'status_baru' => 'Ditolak',
+                    'tgl_perubahan' => now(),
+                    'keterangan' => $catatan ?: 'Ditolak oleh staff',
+                ]);
+                
+                $message = 'Pengajuan berhasil ditolak.';
+            }
+            
+            DB::commit();
+            
+            return redirect()->route('admin.submission.index')->with('success', $message);
+            
+        } catch (\Exception $e) {
+            DB::rollback();
+            return back()->with('error', 'Gagal memproses validasi: ' . $e->getMessage());
+        }
     }
 }

@@ -64,7 +64,6 @@
                         <th class="px-6 py-3 font-medium">Jenis Surat</th>
                         <th class="px-6 py-3 font-medium">Keperluan</th>
                         <th class="px-6 py-3 font-medium">Tanggal</th>
-                        <th class="px-6 py-3 font-medium text-right">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100">
@@ -77,18 +76,10 @@
                         <td class="px-6 py-4 text-gray-600 text-sm">{{ $pengajuan->jenisSurat->nama_surat ?? '-' }}</td>
                         <td class="px-6 py-4 text-gray-600 text-sm truncate max-w-xs">{{ $pengajuan->keterangan_mahasiswa ?? '-' }}</td>
                         <td class="px-6 py-4 text-gray-600 text-sm">{{ $pengajuan->created_at->format('d/m/Y H:i') }}</td>
-                        <td class="px-6 py-4 text-right text-sm font-medium">
-                            <button class="bg-emerald-100 text-emerald-700 hover:bg-emerald-200 px-3 py-1 rounded-md transition mr-2">
-                                Validasi
-                            </button>
-                            <button class="bg-red-100 text-red-700 hover:bg-red-200 px-3 py-1 rounded-md transition">
-                                Tolak
-                            </button>
-                        </td>
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="5" class="px-6 py-8 text-center text-gray-500">Tidak ada pengajuan yang perlu divalidasi saat ini.</td>
+                        <td colspan="4" class="px-6 py-8 text-center text-gray-500">Tidak ada pengajuan yang perlu divalidasi saat ini.</td>
                     </tr>
                     @endforelse
                 </tbody>

@@ -15,64 +15,85 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 <!-- Pencarian -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Cari</label>
-                    <input type="text" name="search" value="{{ request('search') }}" 
-                           placeholder="NIM, Nama, atau Nomor Surat" 
-                           class="w-full rounded-lg border-gray-300 text-sm focus:ring-emerald-500 focus:border-emerald-500">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Cari</label>
+                    <div class="relative">
+                        <input type="text" name="search" value="{{ request('search') }}" 
+                               placeholder="NIM, Nama, atau Nomor Surat" 
+                               class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors">
+                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Program Studi -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Program Studi</label>
-                    <select name="prodi" class="w-full rounded-lg border-gray-300 text-sm focus:ring-emerald-500 focus:border-emerald-500">
-                        <option value="">Semua Prodi</option>
-                        @foreach($prodiList as $prodi)
-                        <option value="{{ $prodi->id_prodi }}" {{ request('prodi') == $prodi->id_prodi ? 'selected' : '' }}>
-                            {{ $prodi->nama_prodi }}
-                        </option>
-                        @endforeach
-                    </select>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Program Studi</label>
+                    <div class="relative">
+                        <select name="prodi" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors appearance-none bg-white">
+                            <option value="">Semua Prodi</option>
+                            @foreach($prodiList as $prodi)
+                            <option value="{{ $prodi->id_prodi }}" {{ request('prodi') == $prodi->id_prodi ? 'selected' : '' }}>
+                                {{ $prodi->nama_prodi }}
+                            </option>
+                            @endforeach
+                        </select>
+                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Jenis Surat -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Jenis Surat</label>
-                    <select name="jenis_surat" class="w-full rounded-lg border-gray-300 text-sm focus:ring-emerald-500 focus:border-emerald-500">
-                        <option value="">Semua Jenis</option>
-                        @foreach($jenisSuratList as $jenis)
-                        <option value="{{ $jenis->id_jenis_surat }}" {{ request('jenis_surat') == $jenis->id_jenis_surat ? 'selected' : '' }}>
-                            {{ $jenis->nama_surat }}
-                        </option>
-                        @endforeach
-                    </select>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Jenis Surat</label>
+                    <div class="relative">
+                        <select name="jenis_surat" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors appearance-none bg-white">
+                            <option value="">Semua Jenis</option>
+                            @foreach($jenisSuratList as $jenis)
+                            <option value="{{ $jenis->id_jenis_surat }}" {{ request('jenis_surat') == $jenis->id_jenis_surat ? 'selected' : '' }}>
+                                {{ $jenis->nama_surat }}
+                            </option>
+                            @endforeach
+                        </select>
+                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Tanggal Dari -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Tanggal Dari</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Tanggal Dari</label>
                     <input type="date" name="tanggal_dari" value="{{ request('tanggal_dari') }}" 
-                           class="w-full rounded-lg border-gray-300 text-sm focus:ring-emerald-500 focus:border-emerald-500">
+                           class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors">
                 </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 <!-- Tanggal Sampai -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Tanggal Sampai</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Tanggal Sampai</label>
                     <input type="date" name="tanggal_sampai" value="{{ request('tanggal_sampai') }}" 
-                           class="w-full rounded-lg border-gray-300 text-sm focus:ring-emerald-500 focus:border-emerald-500">
+                           class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors">
                 </div>
 
                 <!-- Tombol Filter -->
                 <div class="flex items-end space-x-2">
-                    <button type="submit" class="bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-emerald-700 transition flex items-center">
+                    <button type="submit" class="bg-emerald-600 text-white px-6 py-3 rounded-lg text-sm font-medium hover:bg-emerald-700 transition flex items-center border-2 border-emerald-600">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
                         </svg>
                         Filter
                     </button>
                     @if(request()->hasAny(['search', 'prodi', 'jenis_surat', 'tanggal_dari', 'tanggal_sampai']))
-                    <a href="{{ route('archive.index') }}" class="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-200 transition flex items-center">
+                    <a href="{{ route('archive.index') }}" class="bg-gray-100 text-gray-700 px-6 py-3 rounded-lg text-sm font-medium hover:bg-gray-200 transition flex items-center border-2 border-gray-300">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                         </svg>

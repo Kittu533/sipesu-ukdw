@@ -1,7 +1,12 @@
 <nav class="flex flex-col bg-white w-64 border-r border-gray-200 card-shadow">
-    <div class="p-6">
-        <h2 class="text-2xl font-bold text-emerald-700">SIPESU</h2>
-        <p class="text-xs text-gray-500">Sistem Pengajuan Surat</p>
+    <div class="p-6 border-b border-gray-100">
+        <div class="flex items-center space-x-3">
+            <img src="{{ asset('logo-ukdw.png') }}" alt="Logo UKDW" class="h-10 w-10">
+            <div>
+                <h2 class="text-xl font-bold text-emerald-700">SIPESU</h2>
+                <p class="text-xs text-gray-500">Sistem Pengajuan Surat</p>
+            </div>
+        </div>
     </div>
 
     <div class="flex-1 space-y-2 p-4">

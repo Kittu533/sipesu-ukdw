@@ -12,8 +12,8 @@ class ArchiveController extends Controller
 {
     public function index(Request $request)
     {
-        // Authorize admin access
-        if (Auth::user()->id_hak_akses != 2) {
+        // Authorize admin and staff access
+        if (!in_array(Auth::user()->id_hak_akses, [2, 3])) {
             abort(403, 'Akses ditolak.');
         }
 
@@ -67,7 +67,7 @@ class ArchiveController extends Controller
 
     public function download($id)
     {
-        if (Auth::user()->id_hak_akses != 2) {
+        if (!in_array(Auth::user()->id_hak_akses, [2, 3])) {
             abort(403, 'Akses ditolak.');
         }
 
@@ -84,7 +84,7 @@ class ArchiveController extends Controller
 
     public function detail($id)
     {
-        if (Auth::user()->id_hak_akses != 2) {
+        if (!in_array(Auth::user()->id_hak_akses, [2, 3])) {
             abort(403, 'Akses ditolak.');
         }
 
@@ -103,7 +103,7 @@ class ArchiveController extends Controller
 
     public function print($id)
     {
-        if (Auth::user()->id_hak_akses != 2) {
+        if (!in_array(Auth::user()->id_hak_akses, [2, 3])) {
             abort(403, 'Akses ditolak.');
         }
 
