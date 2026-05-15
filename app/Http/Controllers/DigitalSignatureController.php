@@ -64,7 +64,7 @@ class DigitalSignatureController extends Controller
             
             // Generate QR code with small UKDW logo
             $qrFilename = time() . '_qr_signature.png';
-            $qrText = "Digital Signature: " . $this->formattedSignerName() . " - " . now()->format('Y-m-d H:i:s');
+            $qrText = $this->formattedSignerName();
             
             $qrCode = new QrCode($qrText);
             
