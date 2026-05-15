@@ -121,20 +121,22 @@ class UserAndRoleDataSeeder extends Seeder
         );
 
         // --- 5. GENERATE 100 DUMMY MAHASISWA (BERBAGAI PRODI) ---
-        $faker = \Faker\Factory::create('id_ID');
+        $namaDepan = ['Ahmad', 'Budi', 'Citra', 'Dewi', 'Eka', 'Fajar', 'Gita', 'Hana', 'Indra', 'Joko', 'Kartika', 'Lina', 'Maya', 'Nanda', 'Putri', 'Rama', 'Sari', 'Tono', 'Vina', 'Yoga'];
+        $namaBelakang = ['Pratama', 'Santoso', 'Wijaya', 'Lestari', 'Permana', 'Saputra', 'Wulandari', 'Nugroho', 'Kusuma', 'Hidayat'];
+        $prodiIndex = array_values($daftarProdi);
 
         // Counter untuk nomor urut per prodi & angkatan (untuk NIM)
         // Format key: "KodeProdi-Tahun2Digit"
         $counters = [];
 
         for ($i = 0; $i < 100; $i++) {
-            // Pilih Prodi Random dari daftarProdi yang sudah dibuat di atas
-            $fakerProdi = $faker->randomElement($daftarProdi);
+            // Pilih Prodi dari daftarProdi yang sudah dibuat di atas
+            $fakerProdi = $prodiIndex[$i % count($prodiIndex)];
             $kodeProdi = $fakerProdi['kode'];
             $idProdi = $prodiIds[$kodeProdi];
 
-            // Pilih Angkatan Random (2020 - 2024)
-            $angkatan = $faker->numberBetween(2020, 2024);
+            // Sebar angkatan 2020 - 2024
+            $angkatan = 2020 + ($i % 5);
             $tahunDuaDigit = substr((string)$angkatan, -2); 
 
             // Hitung nomor urut
@@ -153,7 +155,7 @@ class UserAndRoleDataSeeder extends Seeder
                 ['username' => $nim],
                 [
                     'id_hak_akses' => $hakAkses['mahasiswa'],
-                    'nama_lengkap' => $faker->name,
+                    'nama_lengkap' => $namaDepan[$i % count($namaDepan)] . ' ' . $namaBelakang[$i % count($namaBelakang)],
                     'email' => $nim . '@students.ukdw.ac.id',
                     'password_hash' => Hash::make($nim),
                     'status_aktif' => true,
@@ -167,7 +169,7 @@ class UserAndRoleDataSeeder extends Seeder
                     'nim' => $nim,
                     'id_prodi' => $idProdi,
                     'angkatan' => $angkatan,
-                    'ipk_terakhir' => $faker->randomFloat(2, 2.50, 4.00),
+                    'ipk_terakhir' => round(2.50 + (($i % 151) / 100), 2),
                     'status_mahasiswa' => 'aktif',
                 ]
             );
