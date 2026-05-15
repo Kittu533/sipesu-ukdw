@@ -8,6 +8,7 @@ use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
 use Endroid\QrCode\Logo\Logo;
 use App\Models\DigitalSignature;
+use App\Models\Pejabat;
 
 class DigitalSignatureController extends Controller
 {
@@ -101,12 +102,17 @@ class DigitalSignatureController extends Controller
             $path = 'signatures/' . $qrFilename;
         }
 
-        DigitalSignature::create([
+        $signature = DigitalSignature::create([
             'user_id' => auth()->user()->id_user,
             'name' => $request->name,
             'type' => $request->type === 'canvas' ? 'qrcode' : $request->type,
             'path' => $path,
             'qr_text' => $request->type === 'canvas' ? $qrText : null,
+        ]);
+
+        Pejabat::where('id_user', auth()->user()->id_user)->update([
+            'tanda_tangan_digital_path' => $signature->path,
+            'is_aktif_ttd' => true,
         ]);
 
         return redirect()->route('pejabat.digital-signature.index')
