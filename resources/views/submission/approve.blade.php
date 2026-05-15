@@ -144,6 +144,9 @@
                                             <div>
                                                 <p class="font-medium text-gray-900">{{ $signature->name }}</p>
                                                 <p class="text-sm text-gray-500">{{ strtoupper($signature->type) }}</p>
+                                                @if($signature->qr_text)
+                                                    <p class="mt-1 text-xs text-gray-500">{{ $signature->qr_text }}</p>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>

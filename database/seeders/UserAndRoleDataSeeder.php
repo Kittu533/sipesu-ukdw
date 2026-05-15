@@ -78,7 +78,7 @@ class UserAndRoleDataSeeder extends Seeder
             ['username' => 'kaprodi_if'],
             [
                 'id_hak_akses' => $hakAkses['pejabat'],
-                'nama_lengkap' => 'Dr. Budi Santoso, M.Kom.',
+                'nama_lengkap' => 'Drs. Wimmie Handiwidjojo, MIT',
                 'email' => 'kaprodi.if@sipesu.id',
                 'password_hash' => Hash::make('pejabat123'),
                 'status_aktif' => true,

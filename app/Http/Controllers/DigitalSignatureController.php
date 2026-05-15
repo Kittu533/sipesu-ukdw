@@ -12,6 +12,16 @@ use App\Models\Pejabat;
 
 class DigitalSignatureController extends Controller
 {
+    private function formattedSignerName(): string
+    {
+        $name = trim(auth()->user()->nama_lengkap);
+        $name = preg_replace('/\b(Drs?|Dra|Prof|Ir|Hj?)\.\s*/', '$1. ', $name);
+        $name = preg_replace('/\s*,\s*/', ', ', $name);
+        $name = preg_replace('/\s+/', ' ', $name);
+
+        return trim($name);
+    }
+
     public function index()
     {
         $signatures = DigitalSignature::where('user_id', auth()->user()->id_user)
@@ -54,7 +64,7 @@ class DigitalSignatureController extends Controller
             
             // Generate QR code with small UKDW logo
             $qrFilename = time() . '_qr_signature.png';
-            $qrText = "Digital Signature: " . auth()->user()->nama_lengkap . " - " . now()->format('Y-m-d H:i:s');
+            $qrText = "Digital Signature: " . $this->formattedSignerName() . " - " . now()->format('Y-m-d H:i:s');
             
             $qrCode = new QrCode($qrText);
             

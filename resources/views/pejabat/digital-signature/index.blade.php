@@ -34,6 +34,11 @@
                         <tr>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                 {{ $signature->name }}
+                                @if($signature->qr_text)
+                                    <div class="mt-1 text-xs font-normal text-gray-500 whitespace-normal max-w-md">
+                                        {{ $signature->qr_text }}
+                                    </div>
+                                @endif
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
