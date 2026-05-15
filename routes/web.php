@@ -11,12 +11,20 @@ use App\Http\Controllers\WithdrawalCertificateController;
 use App\Http\Controllers\ActiveStudentCertificateController;
 use App\Http\Controllers\StatementLetterController;
 use App\Http\Controllers\DigitalSignatureController;
+use App\Http\Controllers\DekanController;
+use App\Http\Controllers\NotifikasiController;
 use App\Http\Controllers\Controller;
 
-
+Route::get('/storage/signatures/{filename}', function ($filename) {
+    $path = storage_path('app/public/signatures/' . $filename);
+    if (!file_exists($path)) {
+        abort(404);
+    }
+    return response()->file($path);
+})->where('filename', '.*');
 
 Route::get('/', function () {
-    return view('landing'); // 'landing' merujuk pada file landing.blade.php
+    return redirect()->route('login');
 });
 
 Route::get('/panduan/pengajuan', function () {
@@ -91,17 +99,26 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/submissions', [SubmissionController::class, 'adminIndex'])->name('admin.submission.index');
     Route::get('/admin/submissions/{id}/detail', [SubmissionController::class, 'adminDetail'])->name('admin.submission.detail');
     Route::get('/admin/submissions/{id}/print', [SubmissionController::class, 'adminPrint'])->name('admin.submission.print');
+    Route::post('/admin/submissions/{id}/verify', [SubmissionController::class, 'adminVerify'])->name('admin.submission.verify');
     Route::post('/admin/submissions/{id}/validate', [SubmissionController::class, 'validateSubmission'])->name('admin.submission.validate');
+    Route::post('/admin/submissions/{id}/final-process', [SubmissionController::class, 'finalProcess'])->name('admin.submission.final_process');
     
-    // --- STAFF ROUTES ---
-    Route::get('/staff/validation', [App\Http\Controllers\StaffController::class, 'validationList'])->name('staff.validation.index');
-    Route::post('/staff/validation/{id}', [App\Http\Controllers\StaffController::class, 'processValidation'])->name('staff.validation.process');
+    // --- DEKAN FAKULTAS ROUTES ---
+    Route::get('/dekan/validation', [DekanController::class, 'validationList'])->name('dekan.validation.index');
+    Route::post('/dekan/validation/{id}', [DekanController::class, 'processValidation'])->name('dekan.validation.process');
 
-    // Arsip Surat (General Archive - bisa diakses admin/staff/pejabat)
+    // --- NOTIFIKASI ROUTES ---
+    Route::get('/notifications', [NotifikasiController::class, 'index'])->name('notifications.index');
+    Route::get('/notifications/{id}/read', [NotifikasiController::class, 'markAsRead'])->name('notifications.read');
+    Route::post('/notifications/read-all', [NotifikasiController::class, 'markAllRead'])->name('notifications.read-all');
+    Route::get('/notifications/unread-count', [NotifikasiController::class, 'getUnreadCount'])->name('notifications.unread-count');
+
+    // Arsip Surat (General Archive - bisa diakses admin/dekan/pejabat)
     Route::get('/archive', [ArchiveController::class, 'index'])->name('archive.index');
     Route::get('/archive/{id}/detail', [ArchiveController::class, 'detail'])->name('archive.detail');
     Route::get('/archive/{id}/print', [ArchiveController::class, 'print'])->name('archive.print');
-    Route::get('/archive/{id}/download', [ArchiveController::class, 'download'])->name('archive.download'); 
+    Route::get('/archive/{id}/download', [ArchiveController::class, 'download'])->name('archive.download');
+    Route::post('/archive/{id}/send-email', [ArchiveController::class, 'sendEmail'])->name('archive.send_email'); 
 
     // Pengaturan
     Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');

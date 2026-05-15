@@ -1,4 +1,4 @@
-nama_lengkap,nim,email,id_prodi,angkatan,ipk_terakhir
+nama_lengkap,nim,email,id_prodi,angkatan,ipk_terakhir,tempat_lahir,tanggal_lahir,nama_orang_tua,nip_orang_tua,pangkat_orang_tua,instansi_orang_tua
 Citra Gunawan,72220023,72220023@students.ukdw.ac.id,72,2022,3.45
 Dedi Sartika,81240024,81240024@students.ukdw.ac.id,81,2024,3.70
 Erna Purnomo,50230025,50230025@students.ukdw.ac.id,50,2023,3.55
@@ -177,3 +177,18 @@ Agus Saputra,72220197,72220197@students.ukdw.ac.id,72,2022,3.40
 Bayu Fitri,81240198,81240198@students.ukdw.ac.id,81,2024,3.85
 Candra Maulana,01230199,01230199@students.ukdw.ac.id,01,2023,3.50
 Dewi Sinta,11220200,11220200@students.ukdw.ac.id,11,2022,3.65
+Lestari Wijaya,71250001,71250001@students.ukdw.ac.id,71,2025,3.85,Jakarta,1995-03-15,Dr. Bambang Wijaya,196503151990031001,Pembina Utama Muda,Kementerian Kesehatan RI
+Muhammad Rizki Pratama,72250002,72250002@students.ukdw.ac.id,72,2025,3.92,Bandung,1995-07-22,Ir. Ahmad Rizki,196507221988121002,Pembina,PT Telkom Indonesia
+Nur Aini Sari,50250003,50250003@students.ukdw.ac.id,50,2025,3.67,Surabaya,1995-11-08,Dra. Siti Nurhasanah,196511081987032001,Penata Tk I,Dinas Pendidikan Jawa Timur
+Oki Pratama Putra,57250004,57250004@students.ukdw.ac.id,57,2025,3.78,Yogyakarta,1995-02-14,Prof. Dr. Oki Setiawan,196502141985031003,Pembina Utama Madya,Universitas Gadjah Mada
+Putri Maharani,01250005,01250005@students.ukdw.ac.id,01,2025,3.45,Medan,1995-09-30,S.H. Maharani Putri,196509301989032002,Penata,Pengadilan Negeri Medan
+Qori Santoso,11250006,11250006@students.ukdw.ac.id,11,2025,3.89,Makassar,1995-12-05,Drs. Qori Hakim,196512051990121001,Pembina,Kantor Wilayah Kemenag Sulsel
+Rina Kusuma Dewi,12250007,12250007@students.ukdw.ac.id,12,2025,3.56,Palembang,1995-04-18,dr. Kusuma Wardani,196504181988032003,Penata Tk I,RSUD Palembang
+Sandi Permata,13250008,13250008@students.ukdw.ac.id,13,2025,3.73,Semarang,1995-08-12,Ir. Sandi Wijaya,196508121987121002,Pembina,Dinas PU Jawa Tengah
+Tina Rahayu,31250009,31250009@students.ukdw.ac.id,31,2025,3.81,Denpasar,1995-06-25,Dra. Rahayu Sari,196506251989032001,Penata Tk I,Dinas Pariwisata Bali
+Umar Fadillah,32250010,32250010@students.ukdw.ac.id,32,2025,3.64,Balikpapan,1995-10-03,S.T. Umar Hakim,196510031990031004,Pembina,PT Pertamina
+Vina Lestari,33250011,33250011@students.ukdw.ac.id,33,2025,3.90,Pontianak,1995-01-17,Drs. Lestari Budi,196501171988121003,Penata,Kantor Gubernur Kalbar
+Wahyu Indra,34250012,34250012@students.ukdw.ac.id,34,2025,3.52,Manado,1995-05-28,dr. Indra Wahyu,196505281987031002,Penata Tk I,RSUP Prof. Kandou
+Xenia Putri,35250013,35250013@students.ukdw.ac.id,35,2025,3.87,Jayapura,1995-09-11,S.Pd. Xenia Sari,196509111989032004,Pembina,Dinas Pendidikan Papua
+Yoga Pratama,36250014,36250014@students.ukdw.ac.id,36,2025,3.75,Ambon,1995-03-07,Drs. Yoga Santoso,196503071990121001,Penata Tk I,Kantor Walikota Ambon
+Zahra Amelia,37250015,37250015@students.ukdw.ac.id,37,2025,3.68,Pekanbaru,1995-11-20,S.E. Amelia Zahra,196511201988032002,Pembina,Bank Indonesia Pekanbaru

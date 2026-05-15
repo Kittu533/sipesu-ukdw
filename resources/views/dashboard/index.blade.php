@@ -2,10 +2,21 @@
 
 @section('content')
 
+    @php
+        $roleId = Auth::user()->id_hak_akses ?? 0;
+        $roleInfo = [
+            1 => ['name' => 'Mahasiswa', 'desc' => 'Mengajukan surat dan melihat status pengajuan.'],
+            2 => ['name' => 'Admin Akademik', 'desc' => 'Mengelola Mahasiswa, program studi, dan pengarsipan.'],
+            3 => ['name' => 'Dekan Fakultas', 'desc' => 'Validasi pengajuan surat dan arsip jurusan.'],
+            4 => ['name' => 'Pejabat Berwenang', 'desc' => 'Menyetujui surat dan mengelola tanda tangan digital.'],
+        ];
+        $currentRole = $roleInfo[$roleId] ?? ['name' => 'Tidak Dikenal', 'desc' => ''];
+    @endphp
+
     <div class="grid grid-cols-4 gap-4 mb-6">
         <div class="p-4 bg-emerald-50 rounded-xl border border-emerald-200">
-            <h4 class="font-semibold text-sm text-emerald-700">Role Anda: Admin Akademik</h4>
-            <p class="text-xs text-gray-500 mt-1">Mengelola Mahasiswa, program studi, dan pengarsipan.</p>
+            <h4 class="font-semibold text-sm text-emerald-700">Role Anda: {{ $currentRole['name'] }}</h4>
+            <p class="text-xs text-gray-500 mt-1">{{ $currentRole['desc'] }}</p>
         </div>
         </div>
 

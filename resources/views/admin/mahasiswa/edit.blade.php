@@ -93,6 +93,23 @@
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                     @enderror
                 </div>
+
+                <div>
+                    <label for="status_mahasiswa" class="block text-sm font-medium text-gray-700 mb-2">Status Mahasiswa</label>
+                    <select name="status_mahasiswa" id="status_mahasiswa" 
+                            class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors @error('status_mahasiswa') border-red-300 @enderror" 
+                            required>
+                        <option value="">Pilih Status</option>
+                        <option value="aktif" {{ old('status_mahasiswa', $mahasiswa->status_mahasiswa) == 'aktif' ? 'selected' : '' }}>Aktif</option>
+                        <option value="tidak_aktif" {{ old('status_mahasiswa', $mahasiswa->status_mahasiswa) == 'tidak_aktif' ? 'selected' : '' }}>Tidak Aktif</option>
+                        <option value="lulus" {{ old('status_mahasiswa', $mahasiswa->status_mahasiswa) == 'lulus' ? 'selected' : '' }}>Lulus</option>
+                        <option value="undur_diri" {{ old('status_mahasiswa', $mahasiswa->status_mahasiswa) == 'undur_diri' ? 'selected' : '' }}>Undur Diri</option>
+                        <option value="cuti" {{ old('status_mahasiswa', $mahasiswa->status_mahasiswa) == 'cuti' ? 'selected' : '' }}>Cuti</option>
+                    </select>
+                    @error('status_mahasiswa')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
             </div>
 
             <div class="flex justify-end space-x-3 mt-6 pt-6 border-t border-gray-100">

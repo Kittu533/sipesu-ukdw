@@ -22,7 +22,7 @@ class DashboardController extends Controller
                 if ($mahasiswa) {
                     $query = \App\Models\PengajuanSurat::where('id_mahasiswa', $mahasiswa->id_mahasiswa);
                     $data['total_pengajuan'] = $query->count();
-                    $data['menunggu'] = (clone $query)->whereIn('status_saat_ini', ['Menunggu Verifikasi', 'Diproses', 'Menunggu Tanda Tangan'])->count();
+                    $data['menunggu'] = (clone $query)->whereIn('status_saat_ini', ['Menunggu Verifikasi Admin', 'Menunggu Verifikasi', 'Diproses', 'Menunggu Tanda Tangan'])->count();
                     $data['selesai'] = (clone $query)->where('status_saat_ini', 'Selesai')->count();
                     $data['ditolak'] = (clone $query)->where('status_saat_ini', 'Ditolak')->count();
                     $data['pengajuan_terbaru'] = (clone $query)->with('jenisSurat')->latest()->take(5)->get();
@@ -41,6 +41,7 @@ class DashboardController extends Controller
                 $data['total_pengajuan'] = \App\Models\PengajuanSurat::count();
                 $data['total_mahasiswa'] = \App\Models\Mahasiswa::count();
                 $data['total_prodi'] = \App\Models\ProgramStudi::count();
+                $data['menunggu_verifikasi_admin'] = \App\Models\PengajuanSurat::where('status_saat_ini', 'Menunggu Verifikasi Admin')->count();
                 
                 // Pengajuan terbaru dengan pencarian
                 $pengajuanQuery = \App\Models\PengajuanSurat::with(['mahasiswa.user', 'jenisSurat']);
@@ -76,15 +77,12 @@ class DashboardController extends Controller
                 
                 return view('dashboard.admin', compact('user', 'data'));
 
-            case 3: // Staff Pelayanan Jurusan
-                // Asumsi staff bisa melihat semua pengajuan atau difilter berdasarkan jurusan (perlu relasi lebih lanjut)
-                // Untuk saat ini kita tampilkan semua yang butuh verifikasi
-                $data['menunggu_validasi'] = \App\Models\PengajuanSurat::where('status_saat_ini', 'Menunggu Verifikasi')->count();
-                $data['diproses'] = \App\Models\PengajuanSurat::where('status_saat_ini', 'Diproses')->count();
+            case 3: // Dekan Fakultas
+                $data['menunggu_validasi'] = \App\Models\PengajuanSurat::where('status_saat_ini', 'Menunggu Validasi Dekan')->count();
                 $data['daftar_pengajuan'] = \App\Models\PengajuanSurat::with(['mahasiswa.user', 'jenisSurat'])
-                                            ->where('status_saat_ini', 'Menunggu Verifikasi')
+                                            ->where('status_saat_ini', 'Menunggu Validasi Dekan')
                                             ->latest()->take(10)->get();
-                return view('dashboard.staff', compact('user', 'data'));
+                return view('dashboard.dekan', compact('user', 'data'));
 
             case 4: // Pejabat Berwenang
                 $pejabat = $user->pejabat;

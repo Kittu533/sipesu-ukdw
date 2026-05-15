@@ -16,8 +16,10 @@ class LogStatusSurat extends Model
     protected $fillable = [
         'id_pengajuan',
         'tgl_perubahan',
+        'status_lama',
         'status_baru',
         'diubah_oleh_user',
+        'keterangan',
     ];
 
     protected $casts = [

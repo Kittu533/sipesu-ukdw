@@ -1,0 +1,50 @@
+Berdasarkan coretan di bagian atas gambar: 11 - 25 - _ _ _ _Dua Digit Pertama: Kode Program Studi (Contoh: 11 untuk Manajemen).Dua Digit Kedua: Kode Tahun Angkatan (Contoh: 25 berarti angkatan tahun 2025).Digit Terakhir (4 digit kosong): Merupakan Nomor Urut mahasiswa di dalam program studi tersebut.2. Daftar Kode Program StudiBerikut adalah tabel referensi kode program studi berdasarkan catatan tersebut:KodeProgram Studi01Teologi11Manajemen12Akuntansi13Magister Manajemen (S2)31Biologi41Kedokteran61Arsitektur62Desain Produk71Informatika72Sistem Informasi81Pend. Bahasa Inggris50Magister Filsafat Keilahian (S2)57Dr. Teologi (S3)
+
+. Skema Segmentasi NPM (8 Digit)
+Struktur data dalam database sebaiknya mengikuti pembagian ini:
+
+Segment A (Digit 1-2): prodi_id (e.g., 71)
+
+Segment B (Digit 3-4): entry_year (e.g., 25 untuk 2025)
+
+Segment C (Digit 5-8): sequence_number (e.g., 0001 s/d 9999)
+
+2. Aturan Validasi & Business Logic (Rules)
+Untuk memastikan tidak ada NPM ganda atau format yang salah, terapkan aturan berikut pada backend Anda:
+
+A. Aturan Auto-Increment Bersyarat
+Sistem tidak boleh menggunakan auto-increment global. Nomor urut harus dihitung berdasarkan filter:
+
+SELECT MAX(sequence_number) FROM students WHERE prodi_id = 'XX' AND entry_year = 'YY'
+
+Jika hasil NULL, maka sequence_number = 1.
+
+Jika ditemukan, maka sequence_number = MAX + 1.
+
+B. Aturan String Padding (Leading Zeros)
+Karena nomor urut terdiri dari 4 digit, sistem wajib menambahkan angka "0" di depan jika nomor urut di bawah 1000.
+
+Contoh: Urutan ke-5 menjadi 0005, bukan 5.
+
+Dalam JavaScript/Node.js, Anda bisa menggunakan: .padStart(4, '0').
+
+C. Aturan Penanganan Tahun
+Gunakan dua digit terakhir dari tahun kalender akademik saat mahasiswa melakukan registrasi.
+
+Case: Jika mahasiswa mendaftar di Desember 2025 untuk tahun ajaran 2026, pastikan sistem menggunakan kode 26, bukan 25. Ini harus disinkronkan dengan settingan "Tahun Ajaran Aktif" di sistem Anda.
+
+D. Aturan Integritas Data (Constraints)
+Data Type: Gunakan VARCHAR(8) atau CHAR(8). Jangan gunakan INTEGER karena angka nol di depan prodi (seperti Teologi 01) akan hilang.
+
+Unique Index: Buatlah unique constraint pada kolom npm di database untuk mencegah race condition jika ada dua mahasiswa mendaftar di detik yang sama.
+
+3. Contoh Alur Eksekusi Program
+Input: Admin memilih Prodi "Informatika" (71) dan Tahun Ajaran "2025" (25).
+
+Proses: * Sistem mencari: Berapa nomor urut terakhir untuk kode depan 7125?
+
+Ditemukan: 71250010.
+
+Generate baru: 7125 + (0010 + 1) = 71250011.
+
+Output: Mahasiswa mendapatkan NPM 71250011.

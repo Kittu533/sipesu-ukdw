@@ -14,16 +14,17 @@ class HakAksesSeeder extends Seeder
         $roles = [
             'mahasiswa',
             'admin administrasi akademik',
-            'staff pelayanan jurusan',
+            'dekan fakultas',
             'pejabat yg berwenang',
         ];
 
         foreach ($roles as $role) {
-            // Gunakan updateOrCreate untuk menghindari duplikasi jika seeder dijalankan ulang
             HakAkses::updateOrCreate(
                 ['nama_hak_akses' => $role],
                 ['nama_hak_akses' => $role]
             );
         }
+
+        HakAkses::where('nama_hak_akses', 'staff pelayanan jurusan')->delete();
     }
 }

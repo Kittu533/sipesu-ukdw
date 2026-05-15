@@ -7,12 +7,14 @@ use App\Models\PengajuanSurat;
 use App\Models\ProgramStudi;
 use App\Models\JenisSurat;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SuratMail;
 
 class ArchiveController extends Controller
 {
     public function index(Request $request)
     {
-        // Authorize admin and staff access
+        // Authorize admin and Dekan access
         if (!in_array(Auth::user()->id_hak_akses, [2, 3])) {
             abort(403, 'Akses ditolak.');
         }
@@ -116,5 +118,31 @@ class ArchiveController extends Controller
         return response($pengajuan->file_surat_content)
             ->header('Content-Type', $pengajuan->file_surat_mime_type ?? 'application/pdf')
             ->header('Content-Disposition', 'inline; filename="' . ($pengajuan->file_surat_name ?? 'surat.pdf') . '"');
+    }
+
+    public function sendEmail($id)
+    {
+        if (!in_array(Auth::user()->id_hak_akses, [2, 3])) {
+            abort(403, 'Akses ditolak.');
+        }
+
+        $pengajuan = PengajuanSurat::with(['mahasiswa.user', 'jenisSurat'])
+                        ->where('status_saat_ini', 'Selesai')
+                        ->findOrFail($id);
+
+        if (!$pengajuan->file_surat_content) {
+            return back()->with('error', 'File surat tidak tersedia untuk dikirim.');
+        }
+
+        if (!$pengajuan->mahasiswa->user->email) {
+            return back()->with('error', 'Mahasiswa tidak memiliki alamat email.');
+        }
+
+        try {
+            Mail::to($pengajuan->mahasiswa->user->email)->send(new SuratMail($pengajuan));
+            return back()->with('success', 'Surat berhasil dikirim ke email ' . $pengajuan->mahasiswa->user->email);
+        } catch (\Exception $e) {
+            return back()->with('error', 'Gagal mengirim email: ' . $e->getMessage());
+        }
     }
 }

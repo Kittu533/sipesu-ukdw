@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - SiSUA UKDW</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <title>Login - SIPESU UKDW</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     
     <style>
         .ukdw-green { background-color: #00796B; }
@@ -88,11 +88,11 @@
                             </label>
                         </div>
 
-                        <div class="text-sm">
+                        {{-- <div class="text-sm">
                             <a href="#" class="font-medium text-teal-600 hover:text-teal-500 transition duration-200">
                                 Lupa password?
                             </a>
-                        </div>
+                        </div> --}}
                     </div>
 
                     <div>

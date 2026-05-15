@@ -3,12 +3,18 @@
 @section('content')
 <div class="space-y-6">
     <!-- Header -->
-    <div class="flex justify-between items-end">
+    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-end space-y-4 sm:space-y-0">
         <div>
-            <h2 class="text-3xl font-bold text-gray-900 tracking-tight">Dashboard Mahasiswa</h2>
-            <p class="text-gray-500 mt-2">Selamat datang, <span class="font-semibold text-emerald-700">{{ Auth::user()->nama_lengkap }}</span>. Berikut adalah ringkasan pengajuan surat Anda.</p>
+            <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight">Dashboard Mahasiswa</h2>
+            <p class="text-gray-500 mt-1 sm:mt-2 text-sm sm:text-base">Selamat datang, <span class="font-semibold text-emerald-700">{{ Auth::user()->nama_lengkap }}</span>. Berikut adalah ringkasan pengajuan surat Anda.</p>
         </div>
-        <div class="hidden md:block">
+        <div class="sm:hidden">
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 border border-emerald-200">
+                <svg class="mr-1 h-3 w-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                Mahasiswa
+            </span>
+        </div>
+        <div class="hidden sm:block">
             <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-emerald-100 text-emerald-800 border border-emerald-200">
                 <svg class="mr-2 h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
                 Mahasiswa
@@ -17,25 +23,26 @@
     </div>
     
     <div class="flex justify-end">
-        <a href="{{ route('submission.create') }}" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded shadow-lg transition duration-200 flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <a href="{{ route('submission.create') }}" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-3 sm:py-2 sm:px-4 rounded shadow-lg transition duration-200 flex items-center text-sm sm:text-base">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 mr-1 sm:mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
             </svg>
-            Buat Pengajuan Baru
+            <span class="hidden sm:inline">Buat Pengajuan Baru</span>
+            <span class="sm:hidden">Buat Pengajuan</span>
         </a>
     </div>
 
     <!-- Stats Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
         <!-- Total Pengajuan -->
-        <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-blue-500">
+        <div class="bg-white rounded-lg sm:rounded-xl shadow-sm p-3 sm:p-6 border-l-4 border-blue-500">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-sm font-medium text-gray-500">Total Pengajuan</p>
-                    <p class="text-3xl font-bold text-gray-800">{{ $data['total_pengajuan'] }}</p>
+                    <p class="text-xs sm:text-sm font-medium text-gray-500">Total Pengajuan</p>
+                    <p class="text-xl sm:text-3xl font-bold text-gray-800">{{ $data['total_pengajuan'] }}</p>
                 </div>
-                <div class="p-3 bg-blue-100 rounded-full text-blue-600">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div class="p-2 sm:p-3 bg-blue-100 rounded-full text-blue-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
                 </div>
@@ -43,14 +50,14 @@
         </div>
 
         <!-- Menunggu -->
-        <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-yellow-500">
+        <div class="bg-white rounded-lg sm:rounded-xl shadow-sm p-3 sm:p-6 border-l-4 border-yellow-500">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-sm font-medium text-gray-500">Menunggu Proses</p>
-                    <p class="text-3xl font-bold text-gray-800">{{ $data['menunggu'] }}</p>
+                    <p class="text-xs sm:text-sm font-medium text-gray-500">Menunggu Proses</p>
+                    <p class="text-xl sm:text-3xl font-bold text-gray-800">{{ $data['menunggu'] }}</p>
                 </div>
-                <div class="p-3 bg-yellow-100 rounded-full text-yellow-600">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div class="p-2 sm:p-3 bg-yellow-100 rounded-full text-yellow-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                 </div>
@@ -58,14 +65,14 @@
         </div>
 
         <!-- Selesai -->
-        <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-emerald-500">
+        <div class="bg-white rounded-lg sm:rounded-xl shadow-sm p-3 sm:p-6 border-l-4 border-emerald-500">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-sm font-medium text-gray-500">Selesai</p>
-                    <p class="text-3xl font-bold text-gray-800">{{ $data['selesai'] }}</p>
+                    <p class="text-xs sm:text-sm font-medium text-gray-500">Selesai</p>
+                    <p class="text-xl sm:text-3xl font-bold text-gray-800">{{ $data['selesai'] }}</p>
                 </div>
-                <div class="p-3 bg-emerald-100 rounded-full text-emerald-600">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div class="p-2 sm:p-3 bg-emerald-100 rounded-full text-emerald-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                     </svg>
                 </div>
@@ -73,14 +80,14 @@
         </div>
 
         <!-- Ditolak -->
-        <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-red-500">
+        <div class="bg-white rounded-lg sm:rounded-xl shadow-sm p-3 sm:p-6 border-l-4 border-red-500">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-sm font-medium text-gray-500">Ditolak</p>
-                    <p class="text-3xl font-bold text-gray-800">{{ $data['ditolak'] }}</p>
+                    <p class="text-xs sm:text-sm font-medium text-gray-500">Ditolak</p>
+                    <p class="text-xl sm:text-3xl font-bold text-gray-800">{{ $data['ditolak'] }}</p>
                 </div>
-                <div class="p-3 bg-red-100 rounded-full text-red-600">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div class="p-2 sm:p-3 bg-red-100 rounded-full text-red-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </div>

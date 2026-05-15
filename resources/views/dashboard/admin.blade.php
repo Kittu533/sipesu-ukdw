@@ -3,12 +3,18 @@
 @section('content')
 <div class="space-y-6">
     <!-- Header -->
-    <div class="flex justify-between items-end">
+    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-end space-y-4 sm:space-y-0">
         <div>
-            <h2 class="text-3xl font-bold text-gray-900 tracking-tight">Dashboard Admin Akademik</h2>
-            <p class="text-gray-500 mt-2">Selamat datang, <span class="font-semibold text-emerald-700">{{ Auth::user()->nama_lengkap }}</span>. Berikut adalah ringkasan data akademik.</p>
+            <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight">Dashboard Admin Akademik</h2>
+            <p class="text-gray-500 mt-1 sm:mt-2 text-sm sm:text-base">Selamat datang, <span class="font-semibold text-emerald-700">{{ Auth::user()->nama_lengkap }}</span>. Berikut adalah ringkasan data akademik.</p>
         </div>
-        <div class="hidden md:block">
+        <div class="sm:hidden">
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 border border-emerald-200">
+                <svg class="mr-1 h-3 w-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                Admin Akademik
+            </span>
+        </div>
+        <div class="hidden sm:block">
             <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-emerald-100 text-emerald-800 border border-emerald-200">
                 <svg class="mr-2 h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
                 Admin Akademik
@@ -17,57 +23,73 @@
     </div>
     
     <div class="flex justify-end">
-        <a href="{{ route('admin.export.laporan') }}" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 px-4 rounded shadow-lg transition duration-200 flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <a href="{{ route('admin.export.laporan') }}" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 px-3 sm:px-4 rounded shadow-lg transition duration-200 flex items-center text-sm sm:text-base">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 mr-1 sm:mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
-            Export Laporan
+            <span class="hidden sm:inline">Export Laporan</span>
+            <span class="sm:hidden">Export</span>
         </a>
     </div>
 
     <!-- Stats Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <!-- Total Pengajuan -->
-        <div class="bg-white rounded-xl shadow-sm p-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        <!-- Menunggu Verifikasi Admin -->
+        <div class="bg-white rounded-lg sm:rounded-xl shadow-sm p-4 sm:p-6">
             <div class="flex items-center">
-                <div class="p-3 bg-blue-100 rounded-full text-blue-600 mr-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div class="p-2 sm:p-3 bg-orange-100 rounded-full text-orange-600 mr-3 sm:mr-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-8 sm:w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <div>
+                    <p class="text-xs sm:text-sm font-medium text-gray-500">Menunggu Verifikasi Admin</p>
+                    <p class="text-xl sm:text-2xl font-bold text-gray-800">{{ $data['menunggu_verifikasi_admin'] }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Pengajuan -->
+        <div class="bg-white rounded-lg sm:rounded-xl shadow-sm p-4 sm:p-6">
+            <div class="flex items-center">
+                <div class="p-2 sm:p-3 bg-blue-100 rounded-full text-blue-600 mr-3 sm:mr-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-8 sm:w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
                 </div>
                 <div>
-                    <p class="text-sm font-medium text-gray-500">Total Pengajuan</p>
-                    <p class="text-2xl font-bold text-gray-800">{{ $data['total_pengajuan'] }}</p>
+                    <p class="text-xs sm:text-sm font-medium text-gray-500">Total Pengajuan</p>
+                    <p class="text-xl sm:text-2xl font-bold text-gray-800">{{ $data['total_pengajuan'] }}</p>
                 </div>
             </div>
         </div>
 
         <!-- Total Mahasiswa -->
-        <div class="bg-white rounded-xl shadow-sm p-6">
+        <div class="bg-white rounded-lg sm:rounded-xl shadow-sm p-4 sm:p-6">
             <div class="flex items-center">
-                <div class="p-3 bg-indigo-100 rounded-full text-indigo-600 mr-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div class="p-2 sm:p-3 bg-indigo-100 rounded-full text-indigo-600 mr-3 sm:mr-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-8 sm:w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                     </svg>
                 </div>
                 <div>
-                    <p class="text-sm font-medium text-gray-500">Total Mahasiswa</p>
-                    <p class="text-2xl font-bold text-gray-800">{{ $data['total_mahasiswa'] }}</p>
+                    <p class="text-xs sm:text-sm font-medium text-gray-500">Total Mahasiswa</p>
+                    <p class="text-xl sm:text-2xl font-bold text-gray-800">{{ $data['total_mahasiswa'] }}</p>
                 </div>
             </div>
         </div>
 
         <!-- Total Prodi -->
-        <div class="bg-white rounded-xl shadow-sm p-6">
+        <div class="bg-white rounded-lg sm:rounded-xl shadow-sm p-4 sm:p-6">
             <div class="flex items-center">
-                <div class="p-3 bg-purple-100 rounded-full text-purple-600 mr-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div class="p-2 sm:p-3 bg-purple-100 rounded-full text-purple-600 mr-3 sm:mr-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-8 sm:w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                     </svg>
                 </div>
                 <div>
-                    <p class="text-sm font-medium text-gray-500">Program Studi</p>
-                    <p class="text-2xl font-bold text-gray-800">{{ $data['total_prodi'] }}</p>
+                    <p class="text-xs sm:text-sm font-medium text-gray-500">Program Studi</p>
+                    <p class="text-xl sm:text-2xl font-bold text-gray-800">{{ $data['total_prodi'] }}</p>
                 </div>
             </div>
         </div>

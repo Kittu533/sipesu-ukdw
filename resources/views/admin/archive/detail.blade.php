@@ -2,12 +2,45 @@
 
 @section('content')
 <div class="space-y-6">
+    @if(session('success'))
+    <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+        <div class="flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-600 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            <span class="text-green-800 text-sm">{{ session('success') }}</span>
+        </div>
+    </div>
+    @endif
+
+    @if(session('error'))
+    <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+        <div class="flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-600 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+            <span class="text-red-800 text-sm">{{ session('error') }}</span>
+        </div>
+    </div>
+    @endif
+
     <div class="flex justify-between items-center">
         <div>
             <h2 class="text-2xl font-bold text-gray-900">Detail Arsip Surat</h2>
             <p class="text-gray-500 text-sm mt-1">Detail lengkap surat yang telah selesai diproses.</p>
         </div>
         <div class="flex space-x-2">
+            @if($pengajuan->file_surat_content)
+            <form action="{{ route('archive.send_email', $pengajuan->id_pengajuan) }}" method="POST" style="display: inline;" onsubmit="return confirm('Kirim surat ke email mahasiswa ({{ $pengajuan->mahasiswa->user->email ?? 'email tidak tersedia' }})?');">
+                @csrf
+                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                    Kirim Email
+                </button>
+            </form>
+            @endif
             <a href="{{ route('archive.print', $pengajuan->id_pengajuan) }}" 
                class="bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-700 transition flex items-center"
                target="_blank">

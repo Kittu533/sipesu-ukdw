@@ -42,7 +42,7 @@
 
         <!-- Filter Form -->
         <form action="{{ route('admin.mahasiswa.index') }}" method="GET" class="space-y-4">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
                 <!-- Filter Prodi -->
                 <div>
                     <label for="prodi" class="block text-sm font-medium text-gray-700 mb-2">Program Studi</label>
@@ -83,8 +83,28 @@
                     </div>
                 </div>
 
+                <!-- Filter Status -->
+                <div>
+                    <label for="status" class="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                    <div class="relative">
+                        <select name="status" id="status" onchange="this.form.submit()" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors appearance-none bg-white">
+                            <option value="">Semua Status</option>
+                            <option value="aktif" {{ request('status') == 'aktif' ? 'selected' : '' }}>Aktif</option>
+                            <option value="tidak_aktif" {{ request('status') == 'tidak_aktif' ? 'selected' : '' }}>Tidak Aktif</option>
+                            <option value="lulus" {{ request('status') == 'lulus' ? 'selected' : '' }}>Lulus</option>
+                            <option value="undur_diri" {{ request('status') == 'undur_diri' ? 'selected' : '' }}>Undur Diri</option>
+                            <option value="cuti" {{ request('status') == 'cuti' ? 'selected' : '' }}>Cuti</option>
+                        </select>
+                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Search -->
-                <div class="md:col-span-2">
+                <div class="lg:col-span-2">
                     <label for="search" class="block text-sm font-medium text-gray-700 mb-2">Cari Nama / NIM</label>
                     <div class="relative">
                         <input type="text" name="search" id="search" value="{{ request('search') }}" 
@@ -103,7 +123,7 @@
             </div>
 
             <!-- Reset Button -->
-            @if(request()->hasAny(['prodi', 'angkatan', 'search']))
+            @if(request()->hasAny(['prodi', 'angkatan', 'search', 'status']))
             <div class="flex justify-end">
                 <a href="{{ route('admin.mahasiswa.index') }}" class="bg-gray-100 text-gray-700 px-6 py-3 rounded-lg text-sm font-medium hover:bg-gray-200 transition flex items-center border-2 border-gray-300">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -126,7 +146,7 @@
                         <th class="px-6 py-4">Nama / NIM</th>
                         <th class="px-6 py-4">Program Studi</th>
                         <th class="px-6 py-4">Angkatan</th>
-                        <th class="px-6 py-4">IPK</th>
+                        <th class="px-6 py-4">Status</th>
                         <th class="px-6 py-4 text-right">Aksi</th>
                     </tr>
                 </thead>
@@ -146,7 +166,29 @@
                         </td>
                         <td class="px-6 py-4 text-sm text-gray-600">{{ $mhs->prodi->nama_prodi ?? '-' }}</td>
                         <td class="px-6 py-4 text-sm text-gray-600">{{ $mhs->angkatan ?? '-' }}</td>
-                        <td class="px-6 py-4 text-sm text-gray-600 font-mono">{{ $mhs->ipk_terakhir ?? '-' }}</td>
+                        <td class="px-6 py-4">
+                            @php
+                                $statusClass = match($mhs->status_mahasiswa) {
+                                    'aktif' => 'bg-green-100 text-green-800',
+                                    'tidak_aktif' => 'bg-gray-100 text-gray-800',
+                                    'lulus' => 'bg-blue-100 text-blue-800',
+                                    'undur_diri' => 'bg-red-100 text-red-800',
+                                    'cuti' => 'bg-yellow-100 text-yellow-800',
+                                    default => 'bg-gray-100 text-gray-800'
+                                };
+                                $statusLabel = match($mhs->status_mahasiswa) {
+                                    'aktif' => 'Aktif',
+                                    'tidak_aktif' => 'Tidak Aktif',
+                                    'lulus' => 'Lulus',
+                                    'undur_diri' => 'Undur Diri',
+                                    'cuti' => 'Cuti',
+                                    default => $mhs->status_mahasiswa
+                                };
+                            @endphp
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $statusClass }}">
+                                {{ $statusLabel }}
+                            </span>
+                        </td>
                         <td class="px-6 py-4 text-right text-sm font-medium">
                             <div class="flex justify-end">
                                 <a href="{{ route('admin.mahasiswa.edit', $mhs->id_mahasiswa) }}" 
@@ -161,7 +203,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="5" class="px-6 py-12 text-center text-gray-500">
+                        <td colspan="6" class="px-6 py-12 text-center text-gray-500">
                             <p class="font-medium text-gray-900">Data tidak ditemukan.</p>
                             <p class="text-sm">Coba ubah filter pencarian Anda.</p>
                         </td>

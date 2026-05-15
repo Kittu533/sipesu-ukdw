@@ -32,7 +32,7 @@ class ArsipSurat extends Model
     }
 
     /**
-     * Relationship: Arsip Surat diarsipkan oleh User (Admin/Staff)
+     * Relationship: Arsip Surat diarsipkan oleh User (Admin/Dekan)
      */
     public function userPengarsip(): BelongsTo
     {

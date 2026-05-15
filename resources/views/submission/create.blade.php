@@ -22,8 +22,92 @@
         </nav>
         <h1 class="text-3xl font-bold text-gray-900 tracking-tight">Formulir Pengajuan Surat</h1>
         <p class="mt-2 text-gray-600">Lengkapi data di bawah ini untuk memulai proses pengajuan surat akademik Anda.</p>
+        @if($statusMahasiswa === 'lulus')
+        <div class="mt-3 p-3 bg-blue-50 border-l-4 border-blue-500 rounded-md">
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    <svg class="h-5 w-5 text-blue-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm text-blue-700"><strong>Catatan:</strong> Status mahasiswa Anda adalah <strong>Lulus</strong>. Anda hanya dapat mengajukan Surat Keterangan Alumni atau Surat Keterangan Lulus.</p>
+                </div>
+            </div>
+        </div>
+        @elseif($statusMahasiswa === 'tidak_aktif')
+        <div class="mt-3 p-3 bg-yellow-50 border-l-4 border-yellow-500 rounded-md">
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    <svg class="h-5 w-5 text-yellow-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm text-yellow-700"><strong>Catatan:</strong> Status mahasiswa Anda adalah <strong>Tidak Aktif</strong>. Anda hanya dapat mengajukan Surat Keterangan Pengunduran Diri.</p>
+                </div>
+            </div>
+        </div>
+        @elseif($statusMahasiswa === 'undur_diri')
+        <div class="mt-3 p-3 bg-yellow-50 border-l-4 border-yellow-500 rounded-md">
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    <svg class="h-5 w-5 text-yellow-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm text-yellow-700"><strong>Catatan:</strong> Status mahasiswa Anda adalah <strong>Undur Diri</strong>. Anda hanya dapat mengajukan Surat Keterangan Pengunduran Diri.</p>
+                </div>
+            </div>
+        </div>
+        @elseif($statusMahasiswa === 'cuti')
+        <div class="mt-3 p-3 bg-red-50 border-l-4 border-red-500 rounded-md">
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    <svg class="h-5 w-5 text-red-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm text-red-700"><strong>Catatan:</strong> Status mahasiswa Anda adalah <strong>Cuti</strong>. Anda tidak dapat mengajukan surat apa pun saat berstatus cuti.</p>
+                </div>
+            </div>
+        </div>
+        @else
+        <div class="mt-3 p-3 bg-green-50 border-l-4 border-green-500 rounded-md">
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    <svg class="h-5 w-5 text-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm text-green-700"><strong>Catatan:</strong> Status mahasiswa Anda adalah <strong>Aktif</strong>. Anda dapat mengajukan Surat Keterangan Aktif Kuliah, Surat Keterangan Pengunduran Diri, atau Surat Cuti Akademik.</p>
+                </div>
+            </div>
+        </div>
+        @endif
     </div>
 
+    @if($statusMahasiswa === 'cuti')
+    <div class="bg-white rounded-xl shadow-lg border border-gray-100 p-8">
+        <div class="flex items-start">
+            <div class="flex-shrink-0 rounded-lg bg-red-100 p-3 text-red-600">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 115.636 5.636m12.728 12.728L5.636 5.636" />
+                </svg>
+            </div>
+            <div class="ml-4">
+                <h2 class="text-lg font-bold text-gray-900">Pengajuan Surat Tidak Tersedia</h2>
+                <p class="mt-1 text-sm text-gray-600">Mahasiswa dengan status cuti tidak dapat mengajukan surat melalui sistem. Silakan hubungi Admin Akademik jika status Anda perlu diperbarui.</p>
+                <a href="{{ route('dashboard') }}" class="mt-5 inline-flex items-center px-4 py-2 rounded-md bg-emerald-600 text-white text-sm font-medium hover:bg-emerald-700 transition">
+                    Kembali ke Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+    @else
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
         <!-- Left Column: Form -->
         <div class="lg:col-span-2">
@@ -61,13 +145,24 @@
                                     class="block w-full pl-3 pr-10 py-3 text-base border-gray-300 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm rounded-md shadow-sm transition duration-150 ease-in-out bg-gray-50 hover:bg-white border">
                                     <option value="" disabled selected>-- Pilih Jenis Surat --</option>
                                     @foreach($jenisSurat as $jenis)
-                                        <option value="{{ $jenis->id_jenis_surat }}" {{ old('id_jenis_surat') == $jenis->id_jenis_surat ? 'selected' : '' }}>
+                                        <option value="{{ $jenis->id_jenis_surat }}" data-perlu-dekan="{{ $jenis->perlu_validasi_dekan ? 'true' : 'false' }}" {{ old('id_jenis_surat') == $jenis->id_jenis_surat ? 'selected' : '' }}>
                                             {{ $jenis->nama_surat }}
                                         </option>
                                     @endforeach
                                 </select>
                             </div>
                             <p class="mt-1 text-xs text-gray-500">Pilih jenis surat yang sesuai dengan kebutuhan Anda.</p>
+                            
+                            <!-- Flow Info -->
+                            <div id="flow-info" class="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg hidden">
+                                <div class="flex items-center">
+                                    <svg class="h-5 w-5 text-blue-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    <span class="text-sm font-medium text-blue-800">Alur Pengajuan:</span>
+                                </div>
+                                <p id="flow-text" class="text-sm text-blue-700 mt-1"></p>
+                            </div>
                         </div>
 
                         <!-- Keperluan / Keterangan -->
@@ -77,28 +172,6 @@
                                 class="shadow-sm focus:ring-emerald-500 focus:border-emerald-500 block w-full sm:text-sm border-gray-300 rounded-md bg-gray-50 hover:bg-white transition duration-150 ease-in-out p-3"
                                 placeholder="Contoh: Untuk keperluan magang di PT. XYZ mulai tanggal 1 Januari 2024.">{{ old('keterangan_mahasiswa') }}</textarea>
                             <p class="mt-1 text-xs text-gray-500">Jelaskan secara singkat dan jelas tujuan pengajuan surat ini.</p>
-                        </div>
-
-                        <!-- Upload Lampiran (Opsional) -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Lampiran Pendukung (Opsional)</label>
-                            <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md hover:border-emerald-500 transition duration-150 ease-in-out group bg-gray-50 hover:bg-emerald-50">
-                                <div class="space-y-1 text-center">
-                                    <svg class="mx-auto h-12 w-12 text-gray-400 group-hover:text-emerald-500 transition" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
-                                        <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                    </svg>
-                                    <div class="flex text-sm text-gray-600 justify-center">
-                                        <label for="lampiran" class="relative cursor-pointer bg-white rounded-md font-medium text-emerald-600 hover:text-emerald-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-emerald-500 px-2">
-                                            <span>Upload file</span>
-                                            <input id="lampiran" name="lampiran" type="file" class="sr-only">
-                                        </label>
-                                        <p class="pl-1">atau drag and drop</p>
-                                    </div>
-                                    <p class="text-xs text-gray-500">
-                                        PDF, JPG, PNG hingga 2MB
-                                    </p>
-                                </div>
-                            </div>
                         </div>
 
                         <!-- Action Buttons -->
@@ -141,14 +214,7 @@
                             <div class="flex-shrink-0 h-6 w-6 flex items-center justify-center rounded-full bg-emerald-200 text-emerald-800 font-bold text-xs mt-0.5">2</div>
                             <div class="ml-3">
                                 <p class="text-sm font-medium text-emerald-900">Isi Keterangan</p>
-                                <p class="text-xs text-emerald-700 mt-1">Jelaskan tujuan pembuatan surat dengan detail agar staff dapat memverifikasi dengan cepat.</p>
-                            </div>
-                        </div>
-                        <div class="flex">
-                            <div class="flex-shrink-0 h-6 w-6 flex items-center justify-center rounded-full bg-emerald-200 text-emerald-800 font-bold text-xs mt-0.5">3</div>
-                            <div class="ml-3">
-                                <p class="text-sm font-medium text-emerald-900">Upload Lampiran</p>
-                                <p class="text-xs text-emerald-700 mt-1">Jika diperlukan, lampirkan dokumen pendukung (KTM, Bukti Pembayaran, dll).</p>
+                                <p class="text-xs text-emerald-700 mt-1">Jelaskan tujuan pembuatan surat dengan detail agar Dekan dapat memverifikasi dengan cepat.</p>
                             </div>
                         </div>
                     </div>
@@ -157,14 +223,46 @@
                 <!-- Help Card -->
                 <div class="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
                     <h4 class="font-semibold text-gray-800 mb-2">Butuh Bantuan?</h4>
-                    <p class="text-sm text-gray-600 mb-4">Jika Anda mengalami kendala dalam pengajuan surat, silakan hubungi staff tata usaha.</p>
+                    <p class="text-sm text-gray-600 mb-4">Jika Anda mengalami kendala dalam pengajuan surat, silakan hubungi Dekan fakultas.</p>
                     <a href="#" class="text-sm font-medium text-emerald-600 hover:text-emerald-700 flex items-center">
-                        Hubungi Staff
+                        Hubungi Dekan
                         <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
                     </a>
                 </div>
             </div>
         </div>
     </div>
+    @endif
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    var select = document.getElementById('id_jenis_surat');
+
+    if (select) {
+        select.addEventListener('change', function() {
+            var selectedOption = this.options[this.selectedIndex];
+            var flowInfo = document.getElementById('flow-info');
+            var flowText = document.getElementById('flow-text');
+
+            if (this.value) {
+                flowInfo.classList.remove('hidden');
+
+                if (selectedOption.dataset.perluDekan === 'true') {
+                    flowText.textContent = 'Alur Panjang: Mahasiswa → Admin → Administrasi → Kepala Biro → Dekan. Surat memerlukan validasi Dekan Fakultas setelah ditandatangani.';
+                } else {
+                    flowText.textContent = 'Alur Pendek: Mahasiswa → Admin → Administrasi → Kepala Biro. Surat tidak memerlukan validasi Dekan dan langsung ditandatangani.';
+                }
+            } else {
+                flowInfo.classList.add('hidden');
+            }
+        });
+
+        // Trigger change event if option is already selected
+        if (select.value) {
+            select.dispatchEvent(new Event('change'));
+        }
+    }
+</script>
+@endpush

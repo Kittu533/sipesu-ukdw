@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use App\Models\JenisSurat;
 
 class JenisSuratSeeder extends Seeder
 {
@@ -15,39 +15,47 @@ class JenisSuratSeeder extends Seeder
     {
         $jenisSurat = [
             [
-                'nama_surat' => 'Surat Keterangan Aktif Kuliah',
+                'nama_surat' => JenisSurat::AKTIF_KULIAH,
                 'template_path' => 'pdf.active-student-certificate',
                 'pejabat_yg_menandatangani' => 'Kepala Biro Administrasi Akademik',
                 'perlu_validasi_staff' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
+                'perlu_validasi_dekan' => false,
             ],
             [
-                'nama_surat' => 'Surat Keterangan Alumni',
+                'nama_surat' => JenisSurat::ALUMNI,
                 'template_path' => 'pdf.alumni-certificate',
                 'pejabat_yg_menandatangani' => 'Kepala Biro Administrasi Akademik',
                 'perlu_validasi_staff' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
+                'perlu_validasi_dekan' => false,
             ],
             [
-                'nama_surat' => 'Surat Keterangan Pengunduran Diri',
+                'nama_surat' => JenisSurat::PENGUNDURAN_DIRI,
                 'template_path' => 'pdf.withdrawal-certificate',
                 'pejabat_yg_menandatangani' => 'Kepala Biro Administrasi Akademik',
                 'perlu_validasi_staff' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
+                'perlu_validasi_dekan' => true,
             ],
             [
-                'nama_surat' => 'Surat Keterangan Lulus (Statement Letter)',
+                'nama_surat' => JenisSurat::LULUS,
                 'template_path' => 'pdf.statement-letter',
                 'pejabat_yg_menandatangani' => 'Kepala Biro Administrasi Akademik',
                 'perlu_validasi_staff' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
+                'perlu_validasi_dekan' => false,
+            ],
+            [
+                'nama_surat' => JenisSurat::CUTI_AKADEMIK,
+                'template_path' => 'pdf.academic-leave-certificate',
+                'pejabat_yg_menandatangani' => 'Kepala Biro Administrasi Akademik',
+                'perlu_validasi_staff' => true,
+                'perlu_validasi_dekan' => true,
             ],
         ];
 
-        DB::table('jenis_surat')->insert($jenisSurat);
+        foreach ($jenisSurat as $surat) {
+            JenisSurat::updateOrCreate(
+                ['nama_surat' => $surat['nama_surat']],
+                $surat
+            );
+        }
     }
 }

@@ -1,15 +1,15 @@
-<nav class="flex flex-col bg-white w-64 border-r border-gray-200 card-shadow">
-    <div class="p-6 border-b border-gray-100">
-        <div class="flex items-center space-x-3">
-            <img src="{{ asset('logo-ukdw.png') }}" alt="Logo UKDW" class="h-10 w-10">
+<nav id="sidebar" class="flex flex-col bg-white w-64 border-r border-gray-200 card-shadow fixed lg:static inset-y-0 left-0 z-50 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out">
+    <div class="p-4 sm:p-6 border-b border-gray-100">
+        <div class="flex items-center space-x-2 sm:space-x-3">
+            <img src="{{ asset('logo-ukdw.png') }}" alt="Logo UKDW" class="h-8 w-8 sm:h-10 sm:w-10">
             <div>
-                <h2 class="text-xl font-bold text-emerald-700">SIPESU</h2>
+                <h2 class="text-lg sm:text-xl font-bold text-emerald-700">SIPESU</h2>
                 <p class="text-xs text-gray-500">Sistem Pengajuan Surat</p>
             </div>
         </div>
     </div>
 
-    <div class="flex-1 space-y-2 p-4">
+    <div class="flex-1 space-y-1 sm:space-y-2 p-3 sm:p-4 overflow-y-auto">
         @php
             $roleId = Auth::user()->id_hak_akses ?? 0;
             $menus = [];
@@ -20,6 +20,7 @@
                     ['name' => 'Buat Pengajuan', 'icon' => 'plus-circle', 'link' => route('submission.create')],
                     ['name' => 'Status Pengajuan', 'icon' => 'clock', 'link' => route('submission.status')],
                     ['name' => 'Riwayat Selesai', 'icon' => 'archive', 'link' => route('submission.history')],
+                    ['name' => 'Notifikasi', 'icon' => 'bell', 'link' => route('notifications.index')],
                     ['name' => 'Panduan Pengajuan', 'icon' => 'book-open', 'link' => route('panduan.pengajuan')],
                 ];
             } elseif ($roleId == 2) { // Admin
@@ -29,12 +30,14 @@
                     ['name' => 'Data Prodi', 'icon' => 'academic-cap', 'link' => route('admin.prodi.index')], 
                     ['name' => 'Kelola Pengajuan', 'icon' => 'clipboard-list', 'link' => route('admin.submission.index')],
                     ['name' => 'Arsip Surat', 'icon' => 'archive', 'link' => route('archive.index')],
+                    ['name' => 'Notifikasi', 'icon' => 'bell', 'link' => route('notifications.index')],
                 ];
-            } elseif ($roleId == 3) { // Staff
+            } elseif ($roleId == 3) { // Dekan
                 $menus = [
                     ['name' => 'Dashboard', 'icon' => 'home', 'link' => route('dashboard')],
-                    ['name' => 'Validasi Pengajuan', 'icon' => 'check-square', 'link' => route('staff.validation.index')],
+                    ['name' => 'Validasi Pengajuan', 'icon' => 'check-square', 'link' => route('dekan.validation.index')],
                     ['name' => 'Arsip Jurusan', 'icon' => 'archive', 'link' => route('archive.index')],
+                    ['name' => 'Notifikasi', 'icon' => 'bell', 'link' => route('notifications.index')],
                 ];
             } elseif ($roleId == 4) { // Pejabat
                 $menus = [
@@ -42,6 +45,7 @@
                     ['name' => 'Persetujuan Surat', 'icon' => 'pen-tool', 'link' => route('pejabat.approval')],
                     ['name' => 'Riwayat Persetujuan', 'icon' => 'archive', 'link' => route('pejabat.history')],
                     ['name' => 'Tanda Tangan Digital', 'icon' => 'signature', 'link' => route('pejabat.digital-signature.index')],
+                    ['name' => 'Notifikasi', 'icon' => 'bell', 'link' => route('notifications.index')],
                 ];
             } else {
                 $menus = [
@@ -51,10 +55,10 @@
         @endphp
 
         @foreach ($menus as $menu)
-            <a href="{{ $menu['link'] }}" class="flex items-center space-x-3 p-3 rounded-xl transition duration-150 
+            <a href="{{ $menu['link'] }}" class="flex items-center space-x-2 sm:space-x-3 p-2 sm:p-3 rounded-lg sm:rounded-xl transition duration-150 text-sm sm:text-base
                 @if(request()->url() == $menu['link']) bg-emerald-100 text-emerald-700 font-semibold card-shadow 
                 @else text-gray-600 hover:bg-gray-50 hover:text-gray-800 @endif">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     @if($menu['icon'] == 'home')
                         <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 12v10a1 1 0 001 1h3v-7h6v7h3a1 1 0 001-1V12" />
                     @elseif($menu['icon'] == 'plus-circle')
@@ -80,20 +84,22 @@
                     @elseif($menu['icon'] == 'signature')
                          <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4" />
-                    @else
+                    @elseif($menu['icon'] == 'bell')
+                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                     @else
                         <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h7" />
                     @endif
                 </svg>
-                <span>{{ $menu['name'] }}</span>
+                <span class="truncate">{{ $menu['name'] }}</span>
             </a>
         @endforeach
     </div>
 
-    <div class="p-4 border-t border-gray-200">
+    <div class="p-3 sm:p-4 border-t border-gray-200">
         <form action="{{ route('logout') }}" method="POST">
             @csrf
-            <button type="submit" class="w-full flex items-center space-x-3 p-3 rounded-xl text-red-500 hover:bg-red-50 transition duration-150">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3v-3m0 0v-4a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
+            <button type="submit" class="w-full flex items-center space-x-2 sm:space-x-3 p-2 sm:p-3 rounded-lg sm:rounded-xl text-red-500 hover:bg-red-50 transition duration-150 text-sm sm:text-base">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3v-3m0 0v-4a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
                 <span>Logout</span>
             </button>
         </form>

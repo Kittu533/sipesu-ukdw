@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
+use App\Services\NpmService;
 
 class AdminController extends Controller
 {
@@ -36,6 +37,11 @@ class AdminController extends Controller
             $query->where('angkatan', $request->angkatan);
         }
 
+        // Filter berdasarkan Status
+        if ($request->filled('status')) {
+            $query->where('status_mahasiswa', $request->status);
+        }
+
         // Filter Pencarian (Nama/NIM)
         if ($request->filled('search')) {
             $search = $request->search;
@@ -50,7 +56,7 @@ class AdminController extends Controller
         // Jika tidak ada filter, jangan tampilkan semua data (kosongkan atau limit)
         // Sesuai request: "nanti menampilkan prodi dulu... baru memunculkan bagian mahasiswanya"
         // Jadi jika tidak ada filter, kita bisa return collection kosong atau paginate kosong
-        if (!$request->filled('prodi') && !$request->filled('angkatan') && !$request->filled('search')) {
+        if (!$request->filled('prodi') && !$request->filled('angkatan') && !$request->filled('search') && !$request->filled('status')) {
             $mahasiswa = collect([]); // Kosongkan jika belum ada filter
             $showData = false;
         } else {
@@ -82,6 +88,7 @@ class AdminController extends Controller
             'id_prodi' => 'required|exists:program_studi,id_prodi',
             'angkatan' => 'required|integer|min:2000|max:' . (date('Y') + 1),
             'ipk_terakhir' => 'nullable|numeric|min:0|max:4',
+            'status_mahasiswa' => 'required|in:aktif,tidak_aktif,lulus,undur_diri,cuti',
         ]);
 
         try {
@@ -102,6 +109,7 @@ class AdminController extends Controller
                 'id_prodi' => $request->id_prodi,
                 'angkatan' => $request->angkatan,
                 'ipk_terakhir' => $request->ipk_terakhir,
+                'status_mahasiswa' => $request->status_mahasiswa,
             ]);
             
             DB::commit();
@@ -260,32 +268,49 @@ class AdminController extends Controller
     private function parseFromCsv($file)
     {
         $content = file_get_contents($file->getRealPath());
+        
+        // Remove BOM if present
+        if (substr($content, 0, 3) === "\xEF\xBB\xBF") {
+            $content = substr($content, 3);
+        }
+        
+        // Normalize line endings
+        $content = str_replace(["\r\n", "\r"], "\n", $content);
+        
         $lines = explode("\n", $content);
         $data = [];
         
         if (count($lines) > 0) {
             // Get headers - handle both comma and tab separated
             $headerLine = trim($lines[0]);
-            if (strpos($headerLine, "\t") !== false) {
-                $headers = explode("\t", $headerLine);
-            } else {
-                $headers = str_getcsv($headerLine);
-            }
             
-            // Clean headers
-            $headers = array_map('trim', $headers);
+            // Detect delimiter
+            $delimiter = (strpos($headerLine, "\t") !== false) ? "\t" : ',';
+            $headers = str_getcsv($headerLine, $delimiter);
+            
+            // Clean headers - remove BOM and trim
+            $headers = array_map(function($h) {
+                $h = trim($h);
+                // Remove BOM from first header if present
+                if (substr($h, 0, 3) === "\xEF\xBB\xBF") {
+                    $h = substr($h, 3);
+                }
+                return $h;
+            }, $headers);
+            
+            // Normalize column names (handle both angkatan and tahun_masuk, nim and npm)
+            $normalizedHeaders = [];
+            foreach ($headers as $header) {
+                $normalizedHeaders[] = $this->normalizeColumnName($header);
+            }
+            $headers = $normalizedHeaders;
             
             // Process data rows
             for ($i = 1; $i < count($lines); $i++) {
                 $line = trim($lines[$i]);
                 if (empty($line)) continue;
                 
-                // Handle both comma and tab separated
-                if (strpos($headerLine, "\t") !== false) {
-                    $row = explode("\t", $line);
-                } else {
-                    $row = str_getcsv($line);
-                }
+                $row = str_getcsv($line, $delimiter);
                 
                 if (count($row) >= count($headers)) {
                     $rowData = [];
@@ -294,7 +319,11 @@ class AdminController extends Controller
                     }
                     
                     // Only add if has required data
-                    if (!empty($rowData['nama_lengkap']) || !empty($rowData['nim'])) {
+                    if (!empty($rowData['nama_lengkap']) && !empty($rowData['email'])) {
+                        // Use tahun_masuk if angkatan exists, or vice versa
+                        if (empty($rowData['tahun_masuk']) && !empty($rowData['angkatan'])) {
+                            $rowData['tahun_masuk'] = $rowData['angkatan'];
+                        }
                         $data[] = $rowData;
                     }
                 }
@@ -303,10 +332,28 @@ class AdminController extends Controller
         
         return $data;
     }
+    
+    private function normalizeColumnName($header)
+    {
+        $header = trim($header);
+        $map = [
+            'npm' => 'nim',
+            'tahun_masuk' => 'tahun_masuk',
+            'angkatan' => 'tahun_masuk',
+            'status' => 'status_mahasiswa',
+            'ipk' => 'ipk_terakhir',
+            'tempat_lahir' => 'tempat_lahir',
+            'tanggal_lahir' => 'tanggal_lahir',
+        ];
+        
+        return $map[$header] ?? $header;
+    }
 
     private function parseFromExcel($file)
     {
-        // For Excel files, treat as CSV for now
+        // For Excel files (.xlsx, .xls), we still use CSV parsing approach
+        // since most Excel exports can be read as text
+        // For better Excel support, consider using PhpSpreadsheet package
         return $this->parseFromCsv($file);
     }
 
@@ -325,13 +372,72 @@ class AdminController extends Controller
             // Add BOM for UTF-8
             fprintf($file, chr(0xEF).chr(0xBB).chr(0xBF));
             
-            // Headers
-            fputcsv($file, ['nama_lengkap', 'nim', 'email', 'id_prodi', 'angkatan', 'ipk_terakhir']);
+            // Headers - NPM will be auto-generated
+            // Format NPM: [Kode Prodi 2 digit][Tahun Masuk 2 digit][No. Urut 4 digit]
+            fputcsv($file, [
+                'nama_lengkap', 
+                'email', 
+                'id_prodi', 
+                'tahun_masuk',
+                'ipk_terakhir',
+                'status_mahasiswa',
+                'tempat_lahir',
+                'tanggal_lahir',
+                'nama_orang_tua',
+                'nip_orang_tua',
+                'pangkat_orang_tua',
+                'instansi_orang_tua'
+            ]);
             
-            // Sample data
-            fputcsv($file, ['Ahmad Fikri', '71230001', '71230001@students.ukdw.ac.id', '71', '2023', '3.75']);
-            fputcsv($file, ['Siti Aminah', '71230002', '71230002@students.ukdw.ac.id', '71', '2023', '3.82']);
-            fputcsv($file, ['Budi Santoso', '72240001', '72240001@students.ukdw.ac.id', '72', '2024', '3.20']);
+            // Sample data with complete information
+            // id_prodi: 71=Informatika, 72=Sistem Informasi, 11=Manajemen, dll
+            // tahun_masuk: 2 digit tahun (25 = 2025)
+            // status_mahasiswa: aktif, tidak_aktif, lulus, undur_diri, cuti
+            // NPM akan di-generate otomatis oleh sistem
+            fputcsv($file, [
+                'Ahmad Fikri Pratama', 
+                'ahmad.fikri@students.ukdw.ac.id', 
+                '71', 
+                '2025', 
+                '3.75',
+                'aktif',
+                'Jakarta',
+                '1995-03-15',
+                'Dr. Ahmad Pratama',
+                '196503151990031001',
+                'Pembina Utama Muda',
+                'Kementerian Kesehatan RI'
+            ]);
+            
+            fputcsv($file, [
+                'Siti Aminah Putri', 
+                'siti.aminah@students.ukdw.ac.id', 
+                '72', 
+                '2025', 
+                '3.82',
+                'aktif',
+                'Bandung',
+                '1995-07-22',
+                'Ir. Siti Aminah',
+                '196507221988121002',
+                'Pembina',
+                'PT Telkom Indonesia'
+            ]);
+            
+            fputcsv($file, [
+                'Budi Santoso', 
+                'budi.santoso@students.ukdw.ac.id', 
+                '11', 
+                '2024', 
+                '3.20',
+                'aktif',
+                'Surabaya',
+                '1995-11-08',
+                'Drs. Budi Santoso',
+                '196511081987032001',
+                'Penata Tk I',
+                'Dinas Pendidikan Jawa Timur'
+            ]);
             
             fclose($file);
         };
@@ -368,9 +474,9 @@ class AdminController extends Controller
 
     private function createMahasiswa($data)
     {
-        // Check if NIM already exists
-        if (Mahasiswa::where('nim', $data['nim'])->exists()) {
-            throw new \Exception("NIM {$data['nim']} sudah ada dalam database.");
+        // Validate required fields
+        if (empty($data['nama_lengkap']) || empty($data['email']) || empty($data['id_prodi'])) {
+            throw new \Exception("Data tidak lengkap: nama_lengkap, email, dan id_prodi wajib diisi.");
         }
 
         // Check if email already exists
@@ -378,29 +484,80 @@ class AdminController extends Controller
             throw new \Exception("Email {$data['email']} sudah ada dalam database.");
         }
 
-        // Find prodi by kode_prodi
-        $prodi = ProgramStudi::where('kode_prodi', $data['id_prodi'])->first();
+        // Find prodi by id_prodi (direct ID) or kode_prodi (fallback)
+        $prodi = null;
+        if (is_numeric($data['id_prodi'])) {
+            $prodi = ProgramStudi::find($data['id_prodi']);
+        }
+        
         if (!$prodi) {
-            throw new \Exception("Program studi dengan kode {$data['id_prodi']} tidak ditemukan.");
+            $prodi = ProgramStudi::where('kode_prodi', str_pad($data['id_prodi'], 2, '0', STR_PAD_LEFT))->first();
+        }
+        
+        if (!$prodi) {
+            throw new \Exception("Program studi dengan ID/kode {$data['id_prodi']} tidak ditemukan.");
+        }
+
+        // Validate angkatan (tahun masuk)
+        $currentYear = date('Y');
+        $tahunMasuk = !empty($data['tahun_masuk']) ? $data['tahun_masuk'] : (!empty($data['angkatan']) ? $data['angkatan'] : date('Y'));
+        
+        if (!is_numeric($tahunMasuk) || $tahunMasuk < 2000 || $tahunMasuk > ($currentYear + 1)) {
+            throw new \Exception("Tahun masuk {$tahunMasuk} tidak valid. Harus antara 2000 - " . ($currentYear + 1));
+        }
+
+        // Generate NPM automatically
+        $npmService = new NpmService();
+        $npm = $npmService->generateNpm($prodi->id_prodi, (int) $tahunMasuk);
+
+        // Validate status_mahasiswa if provided
+        $validStatuses = ['aktif', 'tidak_aktif', 'lulus', 'undur_diri', 'cuti'];
+        $status = !empty($data['status_mahasiswa']) ? strtolower(trim($data['status_mahasiswa'])) : 'aktif';
+        if (!in_array($status, $validStatuses)) {
+            throw new \Exception("Status mahasiswa {$data['status_mahasiswa']} tidak valid. Harus salah satu dari: " . implode(', ', $validStatuses));
+        }
+
+        // Validate tanggal_lahir format if provided
+        $tanggalLahir = null;
+        if (!empty($data['tanggal_lahir'])) {
+            try {
+                $tanggalLahir = \Carbon\Carbon::createFromFormat('Y-m-d', $data['tanggal_lahir'])->format('Y-m-d');
+            } catch (\Exception $e) {
+                throw new \Exception("Format tanggal lahir tidak valid. Gunakan format YYYY-MM-DD (contoh: 1995-03-15)");
+            }
         }
 
         // Create user first
         $user = User::create([
-            'nama_lengkap' => $data['nama_lengkap'],
-            'username' => $data['nim'], // Use NIM as username
-            'email' => $data['email'],
-            'password_hash' => Hash::make($data['nim']), // Use password_hash field
+            'nama_lengkap' => trim($data['nama_lengkap']),
+            'username' => $npm,
+            'email' => strtolower(trim($data['email'])),
+            'password_hash' => Hash::make($npm), // Password default = NPM
             'id_hak_akses' => 1, // Mahasiswa
+            'status_aktif' => true,
         ]);
 
-        // Create mahasiswa
+        // Create mahasiswa with all schema fields
         Mahasiswa::create([
-            'id_user' => $user->id_user, // Use id_user from created user
-            'nim' => $data['nim'],
-            'id_prodi' => $prodi->id_prodi, // Use actual id_prodi from database
-            'angkatan' => $data['angkatan'],
-            'ipk_terakhir' => $data['ipk_terakhir'] ?? null,
+            'id_user' => $user->id_user,
+            'nim' => $npm,
+            'id_prodi' => $prodi->id_prodi,
+            'angkatan' => $tahunMasuk,
+            'ipk_terakhir' => !empty($data['ipk_terakhir']) ? floatval($data['ipk_terakhir']) : null,
+            'status_mahasiswa' => $status,
+            'tempat_lahir' => !empty($data['tempat_lahir']) ? trim($data['tempat_lahir']) : null,
+            'tanggal_lahir' => $tanggalLahir,
+            'nama_orang_tua' => !empty($data['nama_orang_tua']) ? trim($data['nama_orang_tua']) : null,
+            'nip_orang_tua' => !empty($data['nip_orang_tua']) ? trim($data['nip_orang_tua']) : null,
+            'pangkat_orang_tua' => !empty($data['pangkat_orang_tua']) ? trim($data['pangkat_orang_tua']) : null,
+            'instansi_orang_tua' => !empty($data['instansi_orang_tua']) ? trim($data['instansi_orang_tua']) : null,
         ]);
+
+        return [
+            'nim' => $npm,
+            'nama' => $data['nama_lengkap'],
+            'prodi' => $prodi->nama_prodi
+        ];
     }
 
     // --- MANAJEMEN PRODI ---

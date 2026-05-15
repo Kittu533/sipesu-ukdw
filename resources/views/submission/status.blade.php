@@ -55,6 +55,7 @@
                         <td class="px-6 py-4">
                             @php
                                 $statusClass = match($item->status_saat_ini) {
+                                    'Menunggu Verifikasi Admin' => 'bg-orange-100 text-orange-700',
                                     'Menunggu Verifikasi' => 'bg-yellow-100 text-yellow-700',
                                     'Diproses' => 'bg-blue-100 text-blue-700',
                                     'Menunggu Tanda Tangan' => 'bg-purple-100 text-purple-700',

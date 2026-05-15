@@ -18,9 +18,11 @@
                 <div class="relative">
                     <select name="status" id="status" onchange="this.form.submit()" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors appearance-none bg-white">
                         <option value="">Semua Status</option>
-                        <option value="Menunggu Verifikasi" {{ request('status') == 'Menunggu Verifikasi' ? 'selected' : '' }}>Menunggu Verifikasi</option>
-                        <option value="Diproses" {{ request('status') == 'Diproses' ? 'selected' : '' }}>Diproses</option>
+                        <option value="Menunggu Verifikasi Admin" {{ request('status') == 'Menunggu Verifikasi Admin' ? 'selected' : '' }}>Menunggu Verifikasi Admin</option>
+                        <option value="Menunggu Verifikasi" {{ request('status') == 'Menunggu Verifikasi' ? 'selected' : '' }}>Verifikasi Administrasi</option>
                         <option value="Menunggu Tanda Tangan" {{ request('status') == 'Menunggu Tanda Tangan' ? 'selected' : '' }}>Menunggu Tanda Tangan</option>
+                        <option value="Menunggu Validasi Dekan" {{ request('status') == 'Menunggu Validasi Dekan' ? 'selected' : '' }}>Menunggu Validasi Dekan</option>
+                        <option value="Diproses" {{ request('status') == 'Diproses' ? 'selected' : '' }}>Diproses</option>
                         <option value="Ditolak" {{ request('status') == 'Ditolak' ? 'selected' : '' }}>Ditolak</option>
                     </select>
                     <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
@@ -96,6 +98,7 @@
                         <td class="px-6 py-4 text-center">
                             @php
                                 $statusClass = match($item->status_saat_ini) {
+                                    'Menunggu Verifikasi Admin' => 'bg-orange-100 text-orange-800',
                                     'Menunggu Verifikasi' => 'bg-yellow-100 text-yellow-800',
                                     'Diproses' => 'bg-blue-100 text-blue-800',
                                     'Menunggu Tanda Tangan' => 'bg-purple-100 text-purple-800',

@@ -42,7 +42,7 @@ class UserAndRoleDataSeeder extends Seeder
         $hakAkses = [
             'mahasiswa' => HakAkses::where('nama_hak_akses', 'mahasiswa')->first()->id_hak_akses ?? 1,
             'admin' => HakAkses::where('nama_hak_akses', 'admin administrasi akademik')->first()->id_hak_akses ?? 2,
-            'staff' => HakAkses::where('nama_hak_akses', 'staff pelayanan jurusan')->first()->id_hak_akses ?? 3,
+            'dekan' => HakAkses::where('nama_hak_akses', 'dekan fakultas')->first()->id_hak_akses ?? 3,
             'pejabat' => HakAkses::where('nama_hak_akses', 'pejabat yg berwenang')->first()->id_hak_akses ?? 4,
         ];
         
@@ -61,14 +61,14 @@ class UserAndRoleDataSeeder extends Seeder
             ]
         );
 
-        // --- 2. STAFF PELAYANAN JURUSAN ---
-        $staffUser = User::firstOrCreate(
-            ['username' => 'staff_jurusan'],
+        // --- 2. DEKAN FAKULTAS ---
+        $dekanUser = User::firstOrCreate(
+            ['username' => 'dekan_fakultas'],
             [
-                'id_hak_akses' => $hakAkses['staff'],
-                'nama_lengkap' => 'Staff Pelayanan Informatika',
-                'email' => 'staff@sipesu.id',
-                'password_hash' => Hash::make('staff123'),
+                'id_hak_akses' => $hakAkses['dekan'],
+                'nama_lengkap' => 'Dekan Fakultas Informatika',
+                'email' => 'dekan@fakultasi.id',
+                'password_hash' => Hash::make('dekan123'),
                 'status_aktif' => true,
             ]
         );
@@ -96,14 +96,15 @@ class UserAndRoleDataSeeder extends Seeder
         );
 
 
-        // --- 4. MAHASISWA ---
+        // --- 4. MAHASISWA (NIM baru format 8 digit: KodeProdi+Tahun+Urut) ---
+        // Format: 71230001 = Informatika(71) + 2023(23) + 0001
         $mahasiswaUser = User::firstOrCreate(
-            ['username' => '2023001001'],
+            ['username' => '71230001'],
             [
                 'id_hak_akses' => $hakAkses['mahasiswa'],
                 'nama_lengkap' => 'Siti Aisyah',
                 'email' => 'siti.aisyah@student.id',
-                'password_hash' => Hash::make('mahasiswa123'),
+                'password_hash' => Hash::make('71230001'),
                 'status_aktif' => true,
             ]
         );
@@ -111,10 +112,11 @@ class UserAndRoleDataSeeder extends Seeder
         Mahasiswa::firstOrCreate(
             ['id_user' => $mahasiswaUser->id_user],
             [
-                'nim' => '2023001001',
+                'nim' => '71230001',
                 'id_prodi' => $prodiInformatika,
                 'angkatan' => 2023,
                 'ipk_terakhir' => 3.85,
+                'status_mahasiswa' => 'aktif',
             ]
         );
 
@@ -166,6 +168,7 @@ class UserAndRoleDataSeeder extends Seeder
                     'id_prodi' => $idProdi,
                     'angkatan' => $angkatan,
                     'ipk_terakhir' => $faker->randomFloat(2, 2.50, 4.00),
+                    'status_mahasiswa' => 'aktif',
                 ]
             );
         }

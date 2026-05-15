@@ -19,18 +19,18 @@
             </a>
             @endif
             
-            @if(Auth::user()->id_hak_akses == 3 && $pengajuan->status_saat_ini == 'Menunggu Verifikasi')
-            <form action="{{ route('staff.validation.process', $pengajuan->id_pengajuan) }}" method="POST" style="display: inline;" onsubmit="return confirm('Apakah data sudah lengkap dan valid?');">
+            @if(Auth::user()->id_hak_akses == 2 && $pengajuan->status_saat_ini == 'Menunggu Verifikasi Admin')
+            <form action="{{ route('admin.submission.verify', $pengajuan->id_pengajuan) }}" method="POST" style="display: inline;" onsubmit="return confirm('Apakah data sudah lengkap dan valid?');">
                 @csrf
-                <input type="hidden" name="action" value="accept">
+                <input type="hidden" name="action" value="approve">
                 <button type="submit" class="bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-emerald-700 transition flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                     </svg>
-                    Validasi
+                    Verifikasi
                 </button>
             </form>
-            <button onclick="openRejectModal('{{ $pengajuan->id_pengajuan }}')" class="bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-red-700 transition flex items-center">
+            <button onclick="openRejectModal('{{ $pengajuan->id_pengajuan }}', 'admin')" class="bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-red-700 transition flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
@@ -38,7 +38,61 @@
             </button>
             @endif
             
-            <a href="{{ Auth::user()->id_hak_akses == 3 ? route('staff.validation.index') : route('admin.submission.index') }}" 
+            @if(Auth::user()->id_hak_akses == 3 && $pengajuan->status_saat_ini == 'Menunggu Validasi Dekan')
+            <form action="{{ route('dekan.validation.process', $pengajuan->id_pengajuan) }}" method="POST" style="display: inline;" onsubmit="return confirm('Apakah data sudah lengkap dan valid?');">
+                @csrf
+                <input type="hidden" name="action" value="accept">
+                <button type="submit" class="bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-emerald-700 transition flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    Validasi Dekan
+                </button>
+            </form>
+            <button onclick="openRejectModal('{{ $pengajuan->id_pengajuan }}', 'dekan')" class="bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-red-700 transition flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+                Tolak
+            </button>
+            @endif
+            
+            @if(Auth::user()->id_hak_akses == 2 && $pengajuan->status_saat_ini == 'Menunggu Proses Admin')
+            <div class="flex space-x-2">
+                <form action="{{ route('admin.submission.final_process', $pengajuan->id_pengajuan) }}" method="POST" style="display: inline;">
+                    @csrf
+                    <input type="hidden" name="action" value="cetak_email">
+                    <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-700 transition flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                        </svg>
+                        Cetak & Kirim Email
+                    </button>
+                </form>
+                <form action="{{ route('admin.submission.final_process', $pengajuan->id_pengajuan) }}" method="POST" style="display: inline;">
+                    @csrf
+                    <input type="hidden" name="action" value="cetak">
+                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                        </svg>
+                        Cetak Saja
+                    </button>
+                </form>
+                <form action="{{ route('admin.submission.final_process', $pengajuan->id_pengajuan) }}" method="POST" style="display: inline;">
+                    @csrf
+                    <input type="hidden" name="action" value="kirim_email">
+                    <button type="submit" class="bg-purple-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-purple-700 transition flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                        Kirim Email Saja
+                    </button>
+                </form>
+            </div>
+            @endif
+            
+            <a href="{{ Auth::user()->id_hak_akses == 3 ? route('dekan.validation.index') : route('admin.submission.index') }}" 
                class="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-200 transition">
                 Kembali
             </a>
@@ -80,6 +134,20 @@
                         <p class="text-gray-900 font-medium">{{ $pengajuan->jenisSurat->nama_surat ?? '-' }}</p>
                     </div>
                     <div>
+                        <label class="block text-sm font-medium text-gray-500">Alur Pengajuan</label>
+                        <p class="text-gray-900 font-medium">
+                            @if($pengajuan->jenisSurat->perlu_validasi_dekan ?? true)
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                    Panjang (Admin → Kepala Biro → Dekan)
+                                </span>
+                            @else
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                    Pendek (Admin → Kepala Biro)
+                                </span>
+                            @endif
+                        </p>
+                    </div>
+                    <div>
                         <label class="block text-sm font-medium text-gray-500">Tanggal Pengajuan</label>
                         <p class="text-gray-900">{{ $pengajuan->created_at->format('d/m/Y H:i') }}</p>
                     </div>
@@ -87,13 +155,15 @@
                         <label class="block text-sm font-medium text-gray-500">Nomor Surat</label>
                         <p class="text-gray-900 font-mono">{{ $pengajuan->nomor_surat_resmi ?? 'Belum ada' }}</p>
                     </div>
-                    <div>
+                    <div class="md:col-span-2">
                         <label class="block text-sm font-medium text-gray-500">Status Saat Ini</label>
                         @php
                             $statusClass = match($pengajuan->status_saat_ini) {
+                                'Menunggu Verifikasi Admin' => 'bg-orange-100 text-orange-800',
                                 'Menunggu Verifikasi' => 'bg-yellow-100 text-yellow-800',
-                                'Diproses' => 'bg-blue-100 text-blue-800',
                                 'Menunggu Tanda Tangan' => 'bg-purple-100 text-purple-800',
+                                'Menunggu Validasi Dekan' => 'bg-purple-100 text-purple-800',
+                                'Menunggu Proses Admin' => 'bg-blue-100 text-blue-800',
                                 'Selesai' => 'bg-emerald-100 text-emerald-800',
                                 'Ditolak' => 'bg-red-100 text-red-800',
                                 default => 'bg-gray-100 text-gray-800'
@@ -152,14 +222,14 @@
                 </div>
             </div>
 
-            <!-- Validasi Staff -->
+            <!-- Validasi Dekan -->
             @if($pengajuan->validasiStaff->count() > 0)
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                <h3 class="text-lg font-semibold text-gray-900 mb-4">Validasi Staff</h3>
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Validasi Dekan</h3>
                 @foreach($pengajuan->validasiStaff as $validasi)
                 <div class="mb-3 last:mb-0">
                     <div class="flex items-center justify-between">
-                        <span class="text-sm font-medium text-gray-900">{{ $validasi->user->nama_lengkap ?? 'Staff' }}</span>
+                        <span class="text-sm font-medium text-gray-900">{{ $validasi->user->nama_lengkap ?? 'Dekan' }}</span>
                         <span class="text-xs px-2 py-1 rounded-full {{ $validasi->status_validasi == 'Disetujui' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
                             {{ $validasi->status_validasi }}
                         </span>
@@ -237,8 +307,12 @@
 </div>
 
 <script>
-    function openRejectModal(id) {
-        document.getElementById('rejectForm').action = "/staff/validation/" + id;
+    function openRejectModal(id, type) {
+        if (type === 'admin') {
+            document.getElementById('rejectForm').action = "/admin/submissions/" + id + "/verify";
+        } else {
+            document.getElementById('rejectForm').action = "/dekan/validation/" + id;
+        }
         document.getElementById('rejectModal').classList.remove('hidden');
     }
 

@@ -2,6 +2,28 @@
 
 @section('content')
 <div class="space-y-6">
+    @if(session('success'))
+    <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+        <div class="flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-600 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            <span class="text-green-800 text-sm">{{ session('success') }}</span>
+        </div>
+    </div>
+    @endif
+
+    @if(session('error'))
+    <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+        <div class="flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-600 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+            <span class="text-red-800 text-sm">{{ session('error') }}</span>
+        </div>
+    </div>
+    @endif
+
     <div class="flex justify-between items-center">
         <div>
             <h2 class="text-2xl font-bold text-gray-900">Validasi Pengajuan</h2>
@@ -67,7 +89,7 @@
                                 </button>
                                 
                                 <!-- Form Terima -->
-                                <form action="{{ route('staff.validation.process', $item->id_pengajuan) }}" method="POST" onsubmit="return confirm('Apakah data sudah lengkap dan valid?');">
+                                <form action="{{ route('dekan.validation.process', $item->id_pengajuan) }}" method="POST" onsubmit="console.log('Form submitted for:', {{ $item->id_pengajuan }}); alert('Submitting...'); return confirm('Apakah data sudah lengkap dan valid?');">
                                     @csrf
                                     <input type="hidden" name="action" value="accept">
                                     <button type="submit" class="text-white bg-emerald-600 hover:bg-emerald-700 px-3 py-1.5 rounded-lg transition flex items-center shadow-sm">
@@ -144,7 +166,8 @@
 
 <script>
     function openRejectModal(id) {
-        document.getElementById('rejectForm').action = "/staff/validation/" + id;
+        console.log('Opening reject modal for:', id);
+        document.getElementById('rejectForm').action = "/dekan/validation/" + id;
         document.getElementById('rejectModal').classList.remove('hidden');
     }
 

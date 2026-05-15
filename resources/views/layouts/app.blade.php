@@ -18,24 +18,77 @@
 
     <div class="flex h-screen overflow-hidden">
 
+        <!-- Mobile menu overlay -->
+        <div id="mobile-menu-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden hidden"></div>
+
         @include('components.sidebar')
 
         <div class="flex-1 flex flex-col overflow-hidden">
             <header class="bg-white card-shadow p-4 flex justify-between items-center z-10">
-                <h1 class="text-xl font-semibold text-gray-800">Dashboard</h1>
-                <div class="flex items-center space-x-4">
-                    <span class="text-sm text-gray-600">Selamat datang, {{ Auth::user()->nama_lengkap ?? 'User' }}</span>
-                    <button class="text-gray-500 hover:text-emerald-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>
+                <div class="flex items-center space-x-3">
+                    <!-- Mobile menu button -->
+                    <button id="mobile-menu-button" class="lg:hidden text-gray-600 hover:text-emerald-600 focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
                     </button>
+                    <h1 class="text-lg sm:text-xl font-semibold text-gray-800">Dashboard</h1>
+                </div>
+                <div class="flex items-center space-x-2 sm:space-x-4">
+                    <span class="text-xs sm:text-sm text-gray-600 hidden sm:block">Selamat datang, {{ Auth::user()->nama_lengkap ?? 'User' }}</span>
+                    <span class="text-xs text-gray-600 sm:hidden">{{ explode(' ', Auth::user()->nama_lengkap ?? 'User')[0] }}</span>
+                    
+                    <!-- Notification Bell -->
+                    <div class="relative">
+                        @php
+                            $roleName = App\Models\Notifikasi::getRoleName(Auth::user()->id_hak_akses);
+                            $unreadCount = App\Models\Notifikasi::where(function($q) use ($roleName) {
+                                $q->where('id_user_penerima', Auth::user()->id_user)
+                                  ->orWhere('role_penerima', $roleName);
+                            })->where('is_read', false)->count();
+                            $recentNotifications = App\Models\Notifikasi::where(function($q) use ($roleName) {
+                                $q->where('id_user_penerima', Auth::user()->id_user)
+                                  ->orWhere('role_penerima', $roleName);
+                            })->orderBy('tgl_kirim', 'desc')->take(5)->get();
+                        @endphp
+                        @include('components.notification-bell')
+                    </div>
                 </div>
             </header>
 
-            <main class="flex-1 overflow-x-hidden overflow-y-auto p-6">
+            <main class="flex-1 overflow-x-hidden overflow-y-auto p-3 sm:p-6">
                 @yield('content')
             </main>
 
         </div>
     </div>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+        const sidebar = document.getElementById('sidebar');
+
+        mobileMenuButton.addEventListener('click', function() {
+            sidebar.classList.toggle('-translate-x-full');
+            mobileMenuOverlay.classList.toggle('hidden');
+        });
+
+        mobileMenuOverlay.addEventListener('click', function() {
+            sidebar.classList.add('-translate-x-full');
+            mobileMenuOverlay.classList.add('hidden');
+        });
+
+        // Close mobile menu when clicking on menu items
+        const menuItems = sidebar.querySelectorAll('a');
+        menuItems.forEach(item => {
+            item.addEventListener('click', function() {
+                if (window.innerWidth < 1024) {
+                    sidebar.classList.add('-translate-x-full');
+                    mobileMenuOverlay.classList.add('hidden');
+                }
+            });
+        });
+    </script>
 </body>
 </html>

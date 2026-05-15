@@ -29,7 +29,7 @@
                     <label class="block text-sm font-medium text-gray-700 mb-2">Tipe Tanda Tangan</label>
                     <div class="space-y-2">
                         <label class="flex items-center">
-                            <input type="radio" name="type" value="png" class="mr-2" {{ old('type') === 'png' ? 'checked' : '' }}>
+                            <input type="radio" name="type" value="png" class="mr-2" {{ old('type') === 'canvas' ? '' : 'checked' }}>
                             <span>Upload Gambar PNG</span>
                         </label>
                         <label class="flex items-center">
@@ -42,7 +42,7 @@
                     @enderror
                 </div>
 
-                <div id="png-upload" class="mb-4" style="display: none;">
+                <div id="png-upload" class="mb-4">
                     <label class="block text-sm font-medium text-gray-700 mb-2">Upload File PNG</label>
                     <input type="file" name="signature_file" accept=".png"
                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500">
@@ -96,7 +96,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const ctx = canvas.getContext('2d');
     let isDrawing = false;
 
-    // Canvas drawing functionality
     function startDrawing(e) {
         isDrawing = true;
         draw(e);
@@ -131,7 +130,6 @@ document.addEventListener('DOMContentLoaded', function() {
     canvas.addEventListener('mouseup', stopDrawing);
     canvas.addEventListener('mouseout', stopDrawing);
 
-    // Touch events for mobile
     canvas.addEventListener('touchstart', function(e) {
         e.preventDefault();
         const touch = e.touches[0];
@@ -158,13 +156,11 @@ document.addEventListener('DOMContentLoaded', function() {
         canvas.dispatchEvent(mouseEvent);
     });
 
-    // Clear canvas
     document.getElementById('clear-canvas').addEventListener('click', function() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         document.getElementById('canvas-data').value = '';
     });
 
-    // Save canvas data
     document.getElementById('save-canvas').addEventListener('click', function() {
         const dataURL = canvas.toDataURL('image/png');
         document.getElementById('canvas-data').value = dataURL;
@@ -179,17 +175,24 @@ document.addEventListener('DOMContentLoaded', function() {
             } else if (this.value === 'canvas') {
                 pngUpload.style.display = 'none';
                 qrText.style.display = 'block';
-                // Clear canvas when switching
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
             }
         });
     });
 
-    // Trigger change event for pre-selected option
     const checkedRadio = document.querySelector('input[name="type"]:checked');
     if (checkedRadio) {
         checkedRadio.dispatchEvent(new Event('change'));
     }
+
+    const form = document.querySelector('form');
+    form.addEventListener('submit', function(e) {
+        const selectedType = document.querySelector('input[name="type"]:checked');
+        if (selectedType && selectedType.value === 'canvas') {
+            const canvasData = canvas.toDataURL('image/png');
+            document.getElementById('canvas-data').value = canvasData;
+        }
+    });
 });
 </script>
 @endsection

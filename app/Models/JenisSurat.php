@@ -10,6 +10,12 @@ class JenisSurat extends Model
 {
     use HasFactory;
 
+    public const AKTIF_KULIAH = 'Surat Keterangan Aktif Kuliah';
+    public const ALUMNI = 'Surat Keterangan Alumni';
+    public const PENGUNDURAN_DIRI = 'Surat Keterangan Pengunduran Diri';
+    public const LULUS = 'Surat Keterangan Lulus (Statement Letter)';
+    public const CUTI_AKADEMIK = 'Surat Cuti Akademik';
+
     protected $table = 'jenis_surat';
     protected $primaryKey = 'id_jenis_surat';
     
@@ -18,10 +24,12 @@ class JenisSurat extends Model
         'template_path',
         'pejabat_yg_menandatangani',
         'perlu_validasi_staff',
+        'perlu_validasi_dekan',
     ];
 
     protected $casts = [
         'perlu_validasi_staff' => 'boolean',
+        'perlu_validasi_dekan' => 'boolean',
     ];
 
     /**

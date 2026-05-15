@@ -1,0 +1,427 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1050" viewBox="0 0 1800 1050"><rect width="100%" height="100%" fill="#fff"/><style>text{font-family:Arial,Helvetica,sans-serif;fill:#222}</style><rect x="80" y="120" width="132" height="58" fill="#d9eaf7" stroke="#5b8fc1" stroke-width="2"/>
+<text x="146" y="154" text-anchor="middle" font-size="15" font-weight="700">hak_akses</text>
+<rect x="300" y="120" width="132" height="58" fill="#d9eaf7" stroke="#5b8fc1" stroke-width="2"/>
+<text x="366" y="154" text-anchor="middle" font-size="15" font-weight="700">user</text>
+<rect x="80" y="360" width="132" height="58" fill="#d9eaf7" stroke="#5b8fc1" stroke-width="2"/>
+<text x="146" y="394" text-anchor="middle" font-size="15" font-weight="700">notifikasi</text>
+<rect x="80" y="600" width="132" height="58" fill="#d9eaf7" stroke="#5b8fc1" stroke-width="2"/>
+<text x="146" y="634" text-anchor="middle" font-size="15" font-weight="700">log_aktivitas</text>
+<rect x="560" y="60" width="132" height="58" fill="#d9eaf7" stroke="#5b8fc1" stroke-width="2"/>
+<text x="626" y="94" text-anchor="middle" font-size="15" font-weight="700">fakultas</text>
+<rect x="560" y="250" width="132" height="58" fill="#d9eaf7" stroke="#5b8fc1" stroke-width="2"/>
+<text x="626" y="284" text-anchor="middle" font-size="15" font-weight="700">program_studi</text>
+<rect x="560" y="460" width="132" height="58" fill="#d9eaf7" stroke="#5b8fc1" stroke-width="2"/>
+<text x="626" y="494" text-anchor="middle" font-size="15" font-weight="700">mahasiswa</text>
+<rect x="850" y="460" width="132" height="58" fill="#d9eaf7" stroke="#5b8fc1" stroke-width="2"/>
+<text x="916" y="494" text-anchor="middle" font-size="15" font-weight="700">pengajuan_surat</text>
+<rect x="850" y="720" width="132" height="58" fill="#d9eaf7" stroke="#5b8fc1" stroke-width="2"/>
+<text x="916" y="754" text-anchor="middle" font-size="15" font-weight="700">detail_pengajuan</text>
+<rect x="1080" y="720" width="132" height="58" fill="#d9eaf7" stroke="#5b8fc1" stroke-width="2"/>
+<text x="1146" y="754" text-anchor="middle" font-size="15" font-weight="700">validasi_staff</text>
+<rect x="1300" y="720" width="132" height="58" fill="#d9eaf7" stroke="#5b8fc1" stroke-width="2"/>
+<text x="1366" y="754" text-anchor="middle" font-size="15" font-weight="700">log_status_surat</text>
+<rect x="1520" y="720" width="132" height="58" fill="#d9eaf7" stroke="#5b8fc1" stroke-width="2"/>
+<text x="1586" y="754" text-anchor="middle" font-size="15" font-weight="700">arsip_surat</text>
+<rect x="1080" y="60" width="132" height="58" fill="#d9eaf7" stroke="#5b8fc1" stroke-width="2"/>
+<text x="1146" y="94" text-anchor="middle" font-size="15" font-weight="700">jabatan</text>
+<rect x="1080" y="250" width="132" height="58" fill="#d9eaf7" stroke="#5b8fc1" stroke-width="2"/>
+<text x="1146" y="284" text-anchor="middle" font-size="15" font-weight="700">pejabat</text>
+<rect x="1300" y="460" width="132" height="58" fill="#d9eaf7" stroke="#5b8fc1" stroke-width="2"/>
+<text x="1366" y="494" text-anchor="middle" font-size="15" font-weight="700">persetujuan_pejabat</text>
+<rect x="1300" y="250" width="132" height="58" fill="#d9eaf7" stroke="#5b8fc1" stroke-width="2"/>
+<text x="1366" y="284" text-anchor="middle" font-size="15" font-weight="700">jenis_surat</text>
+<rect x="1520" y="250" width="132" height="58" fill="#d9eaf7" stroke="#5b8fc1" stroke-width="2"/>
+<text x="1586" y="284" text-anchor="middle" font-size="15" font-weight="700">digital_signatures</text>
+<polygon points="262,118 309,149 262,180 215,149" fill="#fff2cc" stroke="#d6b656" stroke-width="2"/>
+<text x="262" y="144" text-anchor="middle" font-size="12">memiliki</text>
+<polygon points="262,340 309,371 262,402 215,371" fill="#fff2cc" stroke="#d6b656" stroke-width="2"/>
+<text x="262" y="366" text-anchor="middle" font-size="12">menerima</text>
+<polygon points="262,570 309,601 262,632 215,601" fill="#fff2cc" stroke="#d6b656" stroke-width="2"/>
+<text x="262" y="596" text-anchor="middle" font-size="12">melakukan</text>
+<polygon points="464,275 503,304 464,333 425,304" fill="#fff2cc" stroke="#d6b656" stroke-width="2"/>
+<text x="464" y="299" text-anchor="middle" font-size="12">profil</text>
+<polygon points="632,160 679,191 632,222 585,191" fill="#fff2cc" stroke="#d6b656" stroke-width="2"/>
+<text x="632" y="186" text-anchor="middle" font-size="12">memiliki</text>
+<polygon points="632,355 679,386 632,417 585,386" fill="#fff2cc" stroke="#d6b656" stroke-width="2"/>
+<text x="632" y="381" text-anchor="middle" font-size="12">terdaftar</text>
+<polygon points="767,460 814,491 767,522 720,491" fill="#fff2cc" stroke="#d6b656" stroke-width="2"/>
+<text x="767" y="486" text-anchor="middle" font-size="12">mengajukan</text>
+<polygon points="922,615 969,646 922,677 875,646" fill="#fff2cc" stroke="#d6b656" stroke-width="2"/>
+<text x="922" y="641" text-anchor="middle" font-size="12">memiliki</text>
+<polygon points="1017,615 1064,646 1017,677 970,646" fill="#fff2cc" stroke="#d6b656" stroke-width="2"/>
+<text x="1017" y="641" text-anchor="middle" font-size="12">divalidasi</text>
+<polygon points="1237,615 1284,646 1237,677 1190,646" fill="#fff2cc" stroke="#d6b656" stroke-width="2"/>
+<text x="1237" y="641" text-anchor="middle" font-size="12">mencatat</text>
+<polygon points="1457,615 1504,646 1457,677 1410,646" fill="#fff2cc" stroke="#d6b656" stroke-width="2"/>
+<text x="1457" y="641" text-anchor="middle" font-size="12">diarsipkan</text>
+<polygon points="1152,160 1199,191 1152,222 1105,191" fill="#fff2cc" stroke="#d6b656" stroke-width="2"/>
+<text x="1152" y="186" text-anchor="middle" font-size="12">memiliki</text>
+<polygon points="854,210 893,239 854,268 815,239" fill="#fff2cc" stroke="#d6b656" stroke-width="2"/>
+<text x="854" y="234" text-anchor="middle" font-size="12">profil</text>
+<polygon points="1237,355 1284,386 1237,417 1190,386" fill="#fff2cc" stroke="#d6b656" stroke-width="2"/>
+<text x="1237" y="381" text-anchor="middle" font-size="12">menyetujui</text>
+<polygon points="1162,460 1209,491 1162,522 1115,491" fill="#fff2cc" stroke="#d6b656" stroke-width="2"/>
+<text x="1162" y="486" text-anchor="middle" font-size="12">memiliki</text>
+<polygon points="1229,355 1268,384 1229,413 1190,384" fill="#fff2cc" stroke="#d6b656" stroke-width="2"/>
+<text x="1229" y="379" text-anchor="middle" font-size="12">dipilih</text>
+<polygon points="1457,120 1504,151 1457,182 1410,151" fill="#fff2cc" stroke="#d6b656" stroke-width="2"/>
+<text x="1457" y="146" text-anchor="middle" font-size="12">memiliki</text>
+<polygon points="1457,355 1504,386 1457,417 1410,386" fill="#fff2cc" stroke="#d6b656" stroke-width="2"/>
+<text x="1457" y="381" text-anchor="middle" font-size="12">digunakan</text>
+<polygon points="747,760 794,791 747,822 700,791" fill="#fff2cc" stroke="#d6b656" stroke-width="2"/>
+<text x="747" y="786" text-anchor="middle" font-size="12">memvalidasi</text>
+<polygon points="745,850 790,880 745,910 700,880" fill="#fff2cc" stroke="#d6b656" stroke-width="2"/>
+<text x="745" y="875" text-anchor="middle" font-size="12">mengubah</text>
+<polygon points="745,940 790,970 745,1000 700,970" fill="#fff2cc" stroke="#d6b656" stroke-width="2"/>
+<text x="745" y="965" text-anchor="middle" font-size="12">mengarsip</text>
+<line x1="146" y1="149" x2="262" y2="149" stroke="#555" stroke-width="1.5"/>
+<text x="166.88" y="144" text-anchor="middle" font-size="15" font-weight="700">1</text>
+<line x1="262" y1="149" x2="366" y2="149" stroke="#555" stroke-width="1.5"/>
+<text x="347.28" y="144" text-anchor="middle" font-size="15" font-weight="700">N</text>
+<line x1="366" y1="149" x2="262" y2="371" stroke="#555" stroke-width="1.5"/>
+<text x="347.28" y="183.96" text-anchor="middle" font-size="15" font-weight="700">1</text>
+<line x1="262" y1="371" x2="146" y2="389" stroke="#555" stroke-width="1.5"/>
+<text x="166.88" y="380.76" text-anchor="middle" font-size="15" font-weight="700">N</text>
+<line x1="366" y1="149" x2="262" y2="601" stroke="#555" stroke-width="1.5"/>
+<text x="347.28" y="225.36" text-anchor="middle" font-size="15" font-weight="700">1</text>
+<line x1="262" y1="601" x2="146" y2="629" stroke="#555" stroke-width="1.5"/>
+<text x="166.88" y="618.96" text-anchor="middle" font-size="15" font-weight="700">N</text>
+<line x1="366" y1="149" x2="464" y2="304" stroke="#555" stroke-width="1.5"/>
+<text x="383.64" y="171.9" text-anchor="middle" font-size="15" font-weight="700">1</text>
+<line x1="464" y1="304" x2="626" y2="489" stroke="#555" stroke-width="1.5"/>
+<text x="596.84" y="450.7" text-anchor="middle" font-size="15" font-weight="700">0..1</text>
+<line x1="626" y1="89" x2="632" y2="191" stroke="#555" stroke-width="1.5"/>
+<text x="627.08" y="102.36" text-anchor="middle" font-size="15" font-weight="700">1</text>
+<line x1="632" y1="191" x2="626" y2="279" stroke="#555" stroke-width="1.5"/>
+<text x="627.08" y="258.15999999999997" text-anchor="middle" font-size="15" font-weight="700">N</text>
+<line x1="626" y1="279" x2="632" y2="386" stroke="#555" stroke-width="1.5"/>
+<text x="627.08" y="293.26" text-anchor="middle" font-size="15" font-weight="700">1</text>
+<line x1="632" y1="386" x2="626" y2="489" stroke="#555" stroke-width="1.5"/>
+<text x="627.08" y="465.46" text-anchor="middle" font-size="15" font-weight="700">N</text>
+<line x1="626" y1="489" x2="767" y2="491" stroke="#555" stroke-width="1.5"/>
+<text x="651.38" y="484.36" text-anchor="middle" font-size="15" font-weight="700">1</text>
+<line x1="767" y1="491" x2="916" y2="489" stroke="#555" stroke-width="1.5"/>
+<text x="889.18" y="484.36" text-anchor="middle" font-size="15" font-weight="700">N</text>
+<line x1="916" y1="489" x2="922" y2="646" stroke="#555" stroke-width="1.5"/>
+<text x="917.08" y="512.26" text-anchor="middle" font-size="15" font-weight="700">1</text>
+<line x1="922" y1="646" x2="916" y2="749" stroke="#555" stroke-width="1.5"/>
+<text x="917.08" y="725.46" text-anchor="middle" font-size="15" font-weight="700">N</text>
+<line x1="916" y1="489" x2="1017" y2="646" stroke="#555" stroke-width="1.5"/>
+<text x="934.18" y="512.26" text-anchor="middle" font-size="15" font-weight="700">1</text>
+<line x1="1017" y1="646" x2="1146" y2="749" stroke="#555" stroke-width="1.5"/>
+<text x="1122.78" y="725.46" text-anchor="middle" font-size="15" font-weight="700">N</text>
+<line x1="916" y1="489" x2="1237" y2="646" stroke="#555" stroke-width="1.5"/>
+<text x="973.78" y="512.26" text-anchor="middle" font-size="15" font-weight="700">1</text>
+<line x1="1237" y1="646" x2="1366" y2="749" stroke="#555" stroke-width="1.5"/>
+<text x="1342.78" y="725.46" text-anchor="middle" font-size="15" font-weight="700">N</text>
+<line x1="916" y1="489" x2="1457" y2="646" stroke="#555" stroke-width="1.5"/>
+<text x="1013.38" y="512.26" text-anchor="middle" font-size="15" font-weight="700">1</text>
+<line x1="1457" y1="646" x2="1586" y2="749" stroke="#555" stroke-width="1.5"/>
+<text x="1562.78" y="725.46" text-anchor="middle" font-size="15" font-weight="700">N</text>
+<line x1="1146" y1="89" x2="1152" y2="191" stroke="#555" stroke-width="1.5"/>
+<text x="1147.08" y="102.36" text-anchor="middle" font-size="15" font-weight="700">1</text>
+<line x1="1152" y1="191" x2="1146" y2="279" stroke="#555" stroke-width="1.5"/>
+<text x="1147.08" y="258.15999999999997" text-anchor="middle" font-size="15" font-weight="700">N</text>
+<line x1="366" y1="149" x2="854" y2="239" stroke="#555" stroke-width="1.5"/>
+<text x="453.84000000000003" y="160.2" text-anchor="middle" font-size="15" font-weight="700">1</text>
+<line x1="854" y1="239" x2="1146" y2="279" stroke="#555" stroke-width="1.5"/>
+<text x="1093.44" y="266.8" text-anchor="middle" font-size="15" font-weight="700">0..1</text>
+<line x1="1146" y1="279" x2="1237" y2="386" stroke="#555" stroke-width="1.5"/>
+<text x="1162.38" y="293.26" text-anchor="middle" font-size="15" font-weight="700">1</text>
+<line x1="1237" y1="386" x2="1366" y2="489" stroke="#555" stroke-width="1.5"/>
+<text x="1342.78" y="465.46" text-anchor="middle" font-size="15" font-weight="700">N</text>
+<line x1="916" y1="489" x2="1162" y2="491" stroke="#555" stroke-width="1.5"/>
+<text x="960.28" y="484.36" text-anchor="middle" font-size="15" font-weight="700">1</text>
+<line x1="1162" y1="491" x2="1366" y2="489" stroke="#555" stroke-width="1.5"/>
+<text x="1329.28" y="484.36" text-anchor="middle" font-size="15" font-weight="700">N</text>
+<line x1="1366" y1="279" x2="1229" y2="384" stroke="#555" stroke-width="1.5"/>
+<text x="1341.34" y="292.9" text-anchor="middle" font-size="15" font-weight="700">1</text>
+<line x1="1229" y1="384" x2="916" y2="489" stroke="#555" stroke-width="1.5"/>
+<text x="972.34" y="465.1" text-anchor="middle" font-size="15" font-weight="700">N</text>
+<line x1="366" y1="149" x2="1457" y2="151" stroke="#555" stroke-width="1.5"/>
+<text x="562.38" y="144.36" text-anchor="middle" font-size="15" font-weight="700">1</text>
+<line x1="1457" y1="151" x2="1586" y2="279" stroke="#555" stroke-width="1.5"/>
+<text x="1562.78" y="250.95999999999998" text-anchor="middle" font-size="15" font-weight="700">N</text>
+<line x1="1586" y1="279" x2="1457" y2="386" stroke="#555" stroke-width="1.5"/>
+<text x="1562.78" y="293.26" text-anchor="middle" font-size="15" font-weight="700">1</text>
+<line x1="1457" y1="386" x2="916" y2="489" stroke="#555" stroke-width="1.5"/>
+<text x="1013.3800000000001" y="465.46" text-anchor="middle" font-size="15" font-weight="700">N</text>
+<line x1="366" y1="149" x2="747" y2="791" stroke="#555" stroke-width="1.5"/>
+<text x="434.58" y="259.56" text-anchor="middle" font-size="15" font-weight="700">1</text>
+<line x1="747" y1="791" x2="1146" y2="749" stroke="#555" stroke-width="1.5"/>
+<text x="1074.18" y="751.56" text-anchor="middle" font-size="15" font-weight="700">N</text>
+<line x1="366" y1="149" x2="745" y2="880" stroke="#555" stroke-width="1.5"/>
+<text x="434.22" y="275.58" text-anchor="middle" font-size="15" font-weight="700">1</text>
+<line x1="745" y1="880" x2="1366" y2="749" stroke="#555" stroke-width="1.5"/>
+<text x="1254.22" y="767.58" text-anchor="middle" font-size="15" font-weight="700">N</text>
+<line x1="366" y1="149" x2="745" y2="970" stroke="#555" stroke-width="1.5"/>
+<text x="434.22" y="291.78" text-anchor="middle" font-size="15" font-weight="700">1</text>
+<line x1="745" y1="970" x2="1586" y2="749" stroke="#555" stroke-width="1.5"/>
+<text x="1434.62" y="783.78" text-anchor="middle" font-size="15" font-weight="700">N</text>
+<ellipse cx="94" cy="73" rx="59" ry="18" fill="#f8cecc" stroke="#b85450" stroke-width="1.5"/>
+<text x="94" y="77" text-anchor="middle" font-size="12" font-weight="700" text-decoration="underline">id_hak_akses</text>
+<line x1="94" y1="73" x2="146" y2="149" stroke="#777" stroke-width="1"/>
+<ellipse cx="105" cy="213" rx="70" ry="18" fill="#fff" stroke="#82b366" stroke-width="1.5"/>
+<text x="105" y="217" text-anchor="middle" font-size="12" font-weight="400" text-decoration="">nama_hak_akses</text>
+<line x1="105" y1="213" x2="146" y2="149" stroke="#777" stroke-width="1"/>
+<ellipse cx="337" cy="73" rx="59" ry="18" fill="#f8cecc" stroke="#b85450" stroke-width="1.5"/>
+<text x="337" y="77" text-anchor="middle" font-size="12" font-weight="700" text-decoration="underline">id_user</text>
+<line x1="337" y1="73" x2="366" y2="149" stroke="#777" stroke-width="1"/>
+<ellipse cx="457" cy="73" rx="59" ry="18" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5"/>
+<text x="457" y="77" text-anchor="middle" font-size="12" font-weight="400" text-decoration="underline">id_hak_akses</text>
+<line x1="457" y1="73" x2="366" y2="149" stroke="#777" stroke-width="1"/>
+<ellipse cx="309" cy="213" rx="59" ry="18" fill="#fff" stroke="#82b366" stroke-width="1.5"/>
+<text x="309" y="217" text-anchor="middle" font-size="12" font-weight="400" text-decoration="">username</text>
+<line x1="309" y1="213" x2="366" y2="149" stroke="#777" stroke-width="1"/>
+<ellipse cx="434" cy="213" rx="59" ry="18" fill="#fff" stroke="#82b366" stroke-width="1.5"/>
+<text x="434" y="217" text-anchor="middle" font-size="12" font-weight="400" text-decoration="">email</text>
+<line x1="434" y1="213" x2="366" y2="149" stroke="#777" stroke-width="1"/>
+<ellipse cx="320" cy="256" rx="70" ry="18" fill="#fff" stroke="#82b366" stroke-width="1.5"/>
+<text x="320" y="260" text-anchor="middle" font-size="12" font-weight="400" text-decoration="">nama_lengkap</text>
+<line x1="320" y1="256" x2="366" y2="149" stroke="#777" stroke-width="1"/>
+<ellipse cx="451" cy="256" rx="61" ry="18" fill="#fff" stroke="#82b366" stroke-width="1.5"/>
+<text x="451" y="260" text-anchor="middle" font-size="12" font-weight="400" text-decoration="">status_aktif</text>
+<line x1="451" y1="256" x2="366" y2="149" stroke="#777" stroke-width="1"/>
+<ellipse cx="94" cy="318" rx="66" ry="18" fill="#f8cecc" stroke="#b85450" stroke-width="1.5"/>
+<text x="94" y="322" text-anchor="middle" font-size="12" font-weight="700" text-decoration="underline">id_notifikasi</text>
+<line x1="94" y1="318" x2="146" y2="389" stroke="#777" stroke-width="1"/>
+<ellipse cx="97.5" cy="448" rx="77.5" ry="18" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5"/>
+<text x="97.5" y="452" text-anchor="middle" font-size="12" font-weight="400" text-decoration="underline">id_user_penerima</text>
+<line x1="97.5" y1="448" x2="146" y2="389" stroke="#777" stroke-width="1"/>
+<ellipse cx="89" cy="496" rx="59" ry="18" fill="#fff" stroke="#82b366" stroke-width="1.5"/>
+<text x="89" y="500" text-anchor="middle" font-size="12" font-weight="400" text-decoration="">judul</text>
+<line x1="89" y1="496" x2="146" y2="389" stroke="#777" stroke-width="1"/>
+<ellipse cx="214" cy="496" rx="59" ry="18" fill="#fff" stroke="#82b366" stroke-width="1.5"/>
+<text x="214" y="500" text-anchor="middle" font-size="12" font-weight="400" text-decoration="">pesan</text>
+<line x1="214" y1="496" x2="146" y2="389" stroke="#777" stroke-width="1"/>
+<ellipse cx="89" cy="538" rx="59" ry="18" fill="#fff" stroke="#82b366" stroke-width="1.5"/>
+<text x="89" y="542" text-anchor="middle" font-size="12" font-weight="400" text-decoration="">tgl_kirim</text>
+<line x1="89" y1="538" x2="146" y2="389" stroke="#777" stroke-width="1"/>
+<ellipse cx="214" cy="538" rx="59" ry="18" fill="#fff" stroke="#82b366" stroke-width="1.5"/>
+<text x="214" y="542" text-anchor="middle" font-size="12" font-weight="400" text-decoration="">is_read</text>
+<line x1="214" y1="538" x2="146" y2="389" stroke="#777" stroke-width="1"/>
+<ellipse cx="89" cy="563" rx="59" ry="18" fill="#f8cecc" stroke="#b85450" stroke-width="1.5"/>
+<text x="89" y="567" text-anchor="middle" font-size="12" font-weight="700" text-decoration="underline">id_log</text>
+<line x1="89" y1="563" x2="146" y2="629" stroke="#777" stroke-width="1"/>
+<ellipse cx="89" cy="693" rx="59" ry="18" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5"/>
+<text x="89" y="697" text-anchor="middle" font-size="12" font-weight="400" text-decoration="underline">id_user</text>
+<line x1="89" y1="693" x2="146" y2="629" stroke="#777" stroke-width="1"/>
+<ellipse cx="214" cy="693" rx="59" ry="18" fill="#fff" stroke="#82b366" stroke-width="1.5"/>
+<text x="214" y="697" text-anchor="middle" font-size="12" font-weight="400" text-decoration="">waktu</text>
+<line x1="214" y1="693" x2="146" y2="629" stroke="#777" stroke-width="1"/>
+<ellipse cx="101" cy="738" rx="71" ry="18" fill="#fff" stroke="#82b366" stroke-width="1.5"/>
+<text x="101" y="742" text-anchor="middle" font-size="12" font-weight="400" text-decoration="">tipe_aktivitas</text>
+<line x1="101" y1="738" x2="146" y2="629" stroke="#777" stroke-width="1"/>
+<ellipse cx="234" cy="738" rx="59" ry="18" fill="#fff" stroke="#82b366" stroke-width="1.5"/>
+<text x="234" y="742" text-anchor="middle" font-size="12" font-weight="400" text-decoration="">deskripsi</text>
+<line x1="234" y1="738" x2="146" y2="629" stroke="#777" stroke-width="1"/>
+<ellipse cx="569" cy="28" rx="59" ry="18" fill="#f8cecc" stroke="#b85450" stroke-width="1.5"/>
+<text x="569" y="32" text-anchor="middle" font-size="12" font-weight="700" text-decoration="underline">id_fakultas</text>
+<line x1="569" y1="28" x2="626" y2="89" stroke="#777" stroke-width="1"/>
+<ellipse cx="761" cy="43" rx="71" ry="18" fill="#fff" stroke="#82b366" stroke-width="1.5"/>
+<text x="761" y="47" text-anchor="middle" font-size="12" font-weight="400" text-decoration="">nama_fakultas</text>
+<line x1="761" y1="43" x2="626" y2="89" stroke="#777" stroke-width="1"/>
+<ellipse cx="756" cy="88" rx="66" ry="18" fill="#fff" stroke="#82b366" stroke-width="1.5"/>
+<text x="756" y="92" text-anchor="middle" font-size="12" font-weight="400" text-decoration="">kode_fakultas</text>
+<line x1="756" y1="88" x2="626" y2="89" stroke="#777" stroke-width="1"/>
+<ellipse cx="569" cy="223" rx="59" ry="18" fill="#f8cecc" stroke="#b85450" stroke-width="1.5"/>
+<text x="569" y="227" text-anchor="middle" font-size="12" font-weight="700" text-decoration="underline">id_prodi</text>
+<line x1="569" y1="223" x2="626" y2="279" stroke="#777" stroke-width="1"/>
+<ellipse cx="749" cy="233" rx="59" ry="18" fill="#fff" stroke="#82b366" stroke-width="1.5"/>
+<text x="749" y="237" text-anchor="middle" font-size="12" font-weight="400" text-decoration="">kode_prodi</text>
+<line x1="749" y1="233" x2="626" y2="279" stroke="#777" stroke-width="1"/>
+<ellipse cx="749" cy="278" rx="59" ry="18" fill="#fff" stroke="#82b366" stroke-width="1.5"/>
+<text x="749" y="282" text-anchor="middle" font-size="12" font-weight="400" text-decoration="">nama_prodi</text>
+<line x1="749" y1="278" x2="626" y2="279" stroke="#777" stroke-width="1"/>
+<ellipse cx="749" cy="323" rx="59" ry="18" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5"/>
+<text x="749" y="327" text-anchor="middle" font-size="12" font-weight="400" text-decoration="underline">id_fakultas</text>
+<line x1="749" y1="323" x2="626" y2="279" stroke="#777" stroke-width="1"/>
+<ellipse cx="566" cy="423" rx="66" ry="18" fill="#f8cecc" stroke="#b85450" stroke-width="1.5"/>
+<text x="566" y="427" text-anchor="middle" font-size="12" font-weight="700" text-decoration="underline">id_mahasiswa</text>
+<line x1="566" y1="423" x2="626" y2="489" stroke="#777" stroke-width="1"/>
+<ellipse cx="559" cy="548" rx="59" ry="18" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5"/>
+<text x="559" y="552" text-anchor="middle" font-size="12" font-weight="400" text-decoration="underline">id_user</text>
+<line x1="559" y1="548" x2="626" y2="489" stroke="#777" stroke-width="1"/>
+<ellipse cx="559" cy="590" rx="59" ry="18" fill="#fff" stroke="#82b366" stroke-width="1.5"/>
+<text x="559" y="594" text-anchor="middle" font-size="12" font-weight="400" text-decoration="">nim</text>
+<line x1="559" y1="590" x2="626" y2="489" stroke="#777" stroke-width="1"/>
+<ellipse cx="559" cy="632" rx="59" ry="18" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5"/>
+<text x="559" y="636" text-anchor="middle" font-size="12" font-weight="400" text-decoration="underline">id_prodi</text>
+<line x1="559" y1="632" x2="626" y2="489" stroke="#777" stroke-width="1"/>
+<ellipse cx="701" cy="423" rx="59" ry="18" fill="#fff" stroke="#82b366" stroke-width="1.5"/>
+<text x="701" y="427" text-anchor="middle" font-size="12" font-weight="400" text-decoration="">angkatan</text>
+<line x1="701" y1="423" x2="626" y2="489" stroke="#777" stroke-width="1"/>
+<ellipse cx="761" cy="548" rx="76" ry="18" fill="#fff" stroke="#82b366" stroke-width="1.5"/>
+<text x="761" y="552" text-anchor="middle" font-size="12" font-weight="400" text-decoration="">status_mahasiswa</text>
+<line x1="761" y1="548" x2="626" y2="489" stroke="#777" stroke-width="1"/>
+<ellipse cx="751" cy="590" rx="66" ry="18" fill="#fff" stroke="#82b366" stroke-width="1.5"/>
+<text x="751" y="594" text-anchor="middle" font-size="12" font-weight="400" text-decoration="">ipk_terakhir</text>
+<line x1="751" y1="590" x2="626" y2="489" stroke="#777" stroke-width="1"/>
+<ellipse cx="751" cy="632" rx="66" ry="18" fill="#fff" stroke="#82b366" stroke-width="1.5"/>
+<text x="751" y="636" text-anchor="middle" font-size="12" font-weight="400" text-decoration="">tanggal_lahir</text>
+<line x1="751" y1="632" x2="626" y2="489" stroke="#777" stroke-width="1"/>
+<ellipse cx="891" cy="423" rx="66" ry="18" fill="#f8cecc" stroke="#b85450" stroke-width="1.5"/>
+<text x="891" y="427" text-anchor="middle" font-size="12" font-weight="700" text-decoration="underline">id_pengajuan</text>
+<line x1="891" y1="423" x2="916" y2="489" stroke="#777" stroke-width="1"/>
+<ellipse cx="871" cy="548" rx="66" ry="18" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5"/>
+<text x="871" y="552" text-anchor="middle" font-size="12" font-weight="400" text-decoration="underline">id_mahasiswa</text>
+<line x1="871" y1="548" x2="916" y2="489" stroke="#777" stroke-width="1"/>
+<ellipse cx="874" cy="590" rx="69" ry="18" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5"/>
+<text x="874" y="594" text-anchor="middle" font-size="12" font-weight="400" text-decoration="underline">id_jenis_surat</text>
+<line x1="874" y1="590" x2="916" y2="489" stroke="#777" stroke-width="1"/>
+<ellipse cx="870" cy="632" rx="85" ry="18" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5"/>
+<text x="870" y="636" text-anchor="middle" font-size="12" font-weight="400" text-decoration="underline">digital_signature_id</text>
+<line x1="870" y1="632" x2="916" y2="489" stroke="#777" stroke-width="1"/>
+<ellipse cx="1056" cy="423" rx="71" ry="18" fill="#fff" stroke="#82b366" stroke-width="1.5"/>
+<text x="1056" y="427" text-anchor="middle" font-size="12" font-weight="400" text-decoration="">tgl_pengajuan</text>
+<line x1="1056" y1="423" x2="916" y2="489" stroke="#777" stroke-width="1"/>
+<ellipse cx="1057.5" cy="548" rx="72.5" ry="18" fill="#fff" stroke="#82b366" stroke-width="1.5"/>
+<text x="1057.5" y="552" text-anchor="middle" font-size="12" font-weight="400" text-decoration="">status_saat_ini</text>
+<line x1="1057.5" y1="548" x2="916" y2="489" stroke="#777" stroke-width="1"/>
+<ellipse cx="1067.5" cy="590" rx="82.5" ry="18" fill="#fff" stroke="#82b366" stroke-width="1.5"/>
+<text x="1067.5" y="594" text-anchor="middle" font-size="12" font-weight="400" text-decoration="">nomor_surat_resmi</text>
+<line x1="1067.5" y1="590" x2="916" y2="489" stroke="#777" stroke-width="1"/>
+<ellipse cx="1065" cy="632" rx="80" ry="18" fill="#fff" stroke="#82b366" stroke-width="1.5"/>
+<text x="1065" y="636" text-anchor="middle" font-size="12" font-weight="400" text-decoration="">file_surat_content</text>
+<line x1="1065" y1="632" x2="916" y2="489" stroke="#777" stroke-width="1"/>
+<ellipse cx="859" cy="838" rx="59" ry="18" fill="#f8cecc" stroke="#b85450" stroke-width="1.5"/>
+<text x="859" y="842" text-anchor="middle" font-size="12" font-weight="700" text-decoration="underline">id_detail</text>
+<line x1="859" y1="838" x2="916" y2="749" stroke="#777" stroke-width="1"/>
+<ellipse cx="1021" cy="838" rx="66" ry="18" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5"/>
+<text x="1021" y="842" text-anchor="middle" font-size="12" font-weight="400" text-decoration="underline">id_pengajuan</text>
+<line x1="1021" y1="838" x2="916" y2="749" stroke="#777" stroke-width="1"/>
+<ellipse cx="875" cy="880" rx="85" ry="18" fill="#fff" stroke="#82b366" stroke-width="1.5"/>
+<text x="875" y="884" text-anchor="middle" font-size="12" font-weight="400" text-decoration="">kode_field_template</text>
+<line x1="875" y1="880" x2="916" y2="749" stroke="#777" stroke-width="1"/>
+<ellipse cx="1029" cy="880" rx="59" ry="18" fill="#fff" stroke="#82b366" stroke-width="1.5"/>
+<text x="1029" y="884" text-anchor="middle" font-size="12" font-weight="400" text-decoration="">label_field</text>
+<line x1="1029" y1="880" x2="916" y2="749" stroke="#777" stroke-width="1"/>
+<ellipse cx="939" cy="923" rx="59" ry="18" fill="#fff" stroke="#82b366" stroke-width="1.5"/>
+<text x="939" y="927" text-anchor="middle" font-size="12" font-weight="400" text-decoration="">nilai_field</text>
+<line x1="939" y1="923" x2="916" y2="749" stroke="#777" stroke-width="1"/>
+<ellipse cx="1094" cy="838" rx="59" ry="18" fill="#f8cecc" stroke="#b85450" stroke-width="1.5"/>
+<text x="1094" y="842" text-anchor="middle" font-size="12" font-weight="700" text-decoration="underline">id_validasi</text>
+<line x1="1094" y1="838" x2="1146" y2="749" stroke="#777" stroke-width="1"/>
+<ellipse cx="1231" cy="838" rx="66" ry="18" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5"/>
+<text x="1231" y="842" text-anchor="middle" font-size="12" font-weight="400" text-decoration="underline">id_pengajuan</text>
+<line x1="1231" y1="838" x2="1146" y2="749" stroke="#777" stroke-width="1"/>
+<ellipse cx="1101" cy="880" rx="66" ry="18" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5"/>
+<text x="1101" y="884" text-anchor="middle" font-size="12" font-weight="400" text-decoration="underline">id_user_staff</text>
+<line x1="1101" y1="880" x2="1146" y2="749" stroke="#777" stroke-width="1"/>
+<ellipse cx="1240" cy="880" rx="65" ry="18" fill="#fff" stroke="#82b366" stroke-width="1.5"/>
+<text x="1240" y="884" text-anchor="middle" font-size="12" font-weight="400" text-decoration="">tgl_validasi</text>
+<line x1="1240" y1="880" x2="1146" y2="749" stroke="#777" stroke-width="1"/>
+<ellipse cx="1172.5" cy="923" rx="72.5" ry="18" fill="#fff" stroke="#82b366" stroke-width="1.5"/>
+<text x="1172.5" y="927" text-anchor="middle" font-size="12" font-weight="400" text-decoration="">status_validasi</text>
+<line x1="1172.5" y1="923" x2="1146" y2="749" stroke="#777" stroke-width="1"/>
+<ellipse cx="1328" cy="838" rx="70" ry="18" fill="#f8cecc" stroke="#b85450" stroke-width="1.5"/>
+<text x="1328" y="842" text-anchor="middle" font-size="12" font-weight="700" text-decoration="underline">id_log_status</text>
+<line x1="1328" y1="838" x2="1366" y2="749" stroke="#777" stroke-width="1"/>
+<ellipse cx="1476" cy="838" rx="66" ry="18" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5"/>
+<text x="1476" y="842" text-anchor="middle" font-size="12" font-weight="400" text-decoration="underline">id_pengajuan</text>
+<line x1="1476" y1="838" x2="1366" y2="749" stroke="#777" stroke-width="1"/>
+<ellipse cx="1333" cy="880" rx="65" ry="18" fill="#fff" stroke="#82b366" stroke-width="1.5"/>
+<text x="1333" y="884" text-anchor="middle" font-size="12" font-weight="400" text-decoration="">status_lama</text>
+<line x1="1333" y1="880" x2="1366" y2="749" stroke="#777" stroke-width="1"/>
+<ellipse cx="1473" cy="880" rx="65" ry="18" fill="#fff" stroke="#82b366" stroke-width="1.5"/>
+<text x="1473" y="884" text-anchor="middle" font-size="12" font-weight="400" text-decoration="">status_baru</text>
+<line x1="1473" y1="880" x2="1366" y2="749" stroke="#777" stroke-width="1"/>
+<ellipse cx="1402.5" cy="923" rx="82.5" ry="18" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5"/>
+<text x="1402.5" y="927" text-anchor="middle" font-size="12" font-weight="400" text-decoration="underline">diubah_oleh_user</text>
+<line x1="1402.5" y1="923" x2="1366" y2="749" stroke="#777" stroke-width="1"/>
+<ellipse cx="1549" cy="838" rx="59" ry="18" fill="#f8cecc" stroke="#b85450" stroke-width="1.5"/>
+<text x="1549" y="842" text-anchor="middle" font-size="12" font-weight="700" text-decoration="underline">id_arsip</text>
+<line x1="1549" y1="838" x2="1586" y2="749" stroke="#777" stroke-width="1"/>
+<ellipse cx="1691" cy="838" rx="66" ry="18" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5"/>
+<text x="1691" y="842" text-anchor="middle" font-size="12" font-weight="400" text-decoration="underline">id_pengajuan</text>
+<line x1="1691" y1="838" x2="1586" y2="749" stroke="#777" stroke-width="1"/>
+<ellipse cx="1549" cy="880" rx="59" ry="18" fill="#fff" stroke="#82b366" stroke-width="1.5"/>
+<text x="1549" y="884" text-anchor="middle" font-size="12" font-weight="400" text-decoration="">tgl_arsip</text>
+<line x1="1549" y1="880" x2="1586" y2="749" stroke="#777" stroke-width="1"/>
+<ellipse cx="1695" cy="880" rx="75" ry="18" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5"/>
+<text x="1695" y="884" text-anchor="middle" font-size="12" font-weight="400" text-decoration="underline">arsiparis_user_id</text>
+<line x1="1695" y1="880" x2="1586" y2="749" stroke="#777" stroke-width="1"/>
+<ellipse cx="1091" cy="28" rx="59" ry="18" fill="#f8cecc" stroke="#b85450" stroke-width="1.5"/>
+<text x="1091" y="32" text-anchor="middle" font-size="12" font-weight="700" text-decoration="underline">id_jabatan</text>
+<line x1="1091" y1="28" x2="1146" y2="89" stroke="#777" stroke-width="1"/>
+<ellipse cx="1280" cy="43" rx="70" ry="18" fill="#fff" stroke="#82b366" stroke-width="1.5"/>
+<text x="1280" y="47" text-anchor="middle" font-size="12" font-weight="400" text-decoration="">nama_jabatan</text>
+<line x1="1280" y1="43" x2="1146" y2="89" stroke="#777" stroke-width="1"/>
+<ellipse cx="1280" cy="88" rx="70" ry="18" fill="#fff" stroke="#82b366" stroke-width="1.5"/>
+<text x="1280" y="92" text-anchor="middle" font-size="12" font-weight="400" text-decoration="">kode_jabatan</text>
+<line x1="1280" y1="88" x2="1146" y2="89" stroke="#777" stroke-width="1"/>
+<ellipse cx="1089" cy="223" rx="59" ry="18" fill="#f8cecc" stroke="#b85450" stroke-width="1.5"/>
+<text x="1089" y="227" text-anchor="middle" font-size="12" font-weight="700" text-decoration="underline">id_pejabat</text>
+<line x1="1089" y1="223" x2="1146" y2="279" stroke="#777" stroke-width="1"/>
+<ellipse cx="1254" cy="223" rx="59" ry="18" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5"/>
+<text x="1254" y="227" text-anchor="middle" font-size="12" font-weight="400" text-decoration="underline">id_user</text>
+<line x1="1254" y1="223" x2="1146" y2="279" stroke="#777" stroke-width="1"/>
+<ellipse cx="1254" cy="268" rx="59" ry="18" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5"/>
+<text x="1254" y="272" text-anchor="middle" font-size="12" font-weight="400" text-decoration="underline">id_jabatan</text>
+<line x1="1254" y1="268" x2="1146" y2="279" stroke="#777" stroke-width="1"/>
+<ellipse cx="1254" cy="313" rx="59" ry="18" fill="#fff" stroke="#82b366" stroke-width="1.5"/>
+<text x="1254" y="317" text-anchor="middle" font-size="12" font-weight="400" text-decoration="">nip</text>
+<line x1="1254" y1="313" x2="1146" y2="279" stroke="#777" stroke-width="1"/>
+<ellipse cx="1092.5" cy="343" rx="62.5" ry="18" fill="#fff" stroke="#82b366" stroke-width="1.5"/>
+<text x="1092.5" y="347" text-anchor="middle" font-size="12" font-weight="400" text-decoration="">is_aktif_ttd</text>
+<line x1="1092.5" y1="343" x2="1146" y2="279" stroke="#777" stroke-width="1"/>
+<ellipse cx="1335" cy="423" rx="75" ry="18" fill="#f8cecc" stroke="#b85450" stroke-width="1.5"/>
+<text x="1335" y="427" text-anchor="middle" font-size="12" font-weight="700" text-decoration="underline">id_persetujuan</text>
+<line x1="1335" y1="423" x2="1366" y2="489" stroke="#777" stroke-width="1"/>
+<ellipse cx="1326" cy="548" rx="66" ry="18" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5"/>
+<text x="1326" y="552" text-anchor="middle" font-size="12" font-weight="400" text-decoration="underline">id_pengajuan</text>
+<line x1="1326" y1="548" x2="1366" y2="489" stroke="#777" stroke-width="1"/>
+<ellipse cx="1489" cy="423" rx="59" ry="18" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5"/>
+<text x="1489" y="427" text-anchor="middle" font-size="12" font-weight="400" text-decoration="underline">id_pejabat</text>
+<line x1="1489" y1="423" x2="1366" y2="489" stroke="#777" stroke-width="1"/>
+<ellipse cx="1504" cy="548" rx="74" ry="18" fill="#fff" stroke="#82b366" stroke-width="1.5"/>
+<text x="1504" y="552" text-anchor="middle" font-size="12" font-weight="400" text-decoration="">tgl_persetujuan</text>
+<line x1="1504" y1="548" x2="1366" y2="489" stroke="#777" stroke-width="1"/>
+<ellipse cx="1425" cy="590" rx="85" ry="18" fill="#fff" stroke="#82b366" stroke-width="1.5"/>
+<text x="1425" y="594" text-anchor="middle" font-size="12" font-weight="400" text-decoration="">status_persetujuan</text>
+<line x1="1425" y1="590" x2="1366" y2="489" stroke="#777" stroke-width="1"/>
+<ellipse cx="1331" cy="223" rx="71" ry="18" fill="#f8cecc" stroke="#b85450" stroke-width="1.5"/>
+<text x="1331" y="227" text-anchor="middle" font-size="12" font-weight="700" text-decoration="underline">id_jenis_surat</text>
+<line x1="1331" y1="223" x2="1366" y2="279" stroke="#777" stroke-width="1"/>
+<ellipse cx="1505" cy="223" rx="65" ry="18" fill="#fff" stroke="#82b366" stroke-width="1.5"/>
+<text x="1505" y="227" text-anchor="middle" font-size="12" font-weight="400" text-decoration="">nama_surat</text>
+<line x1="1505" y1="223" x2="1366" y2="279" stroke="#777" stroke-width="1"/>
+<ellipse cx="1510" cy="268" rx="70" ry="18" fill="#fff" stroke="#82b366" stroke-width="1.5"/>
+<text x="1510" y="272" text-anchor="middle" font-size="12" font-weight="400" text-decoration="">template_path</text>
+<line x1="1510" y1="268" x2="1366" y2="279" stroke="#777" stroke-width="1"/>
+<ellipse cx="1500" cy="313" rx="95" ry="18" fill="#fff" stroke="#82b366" stroke-width="1.5"/>
+<text x="1500" y="317" text-anchor="middle" font-size="12" font-weight="400" text-decoration="">pejabat_menandatangani</text>
+<line x1="1500" y1="313" x2="1366" y2="279" stroke="#777" stroke-width="1"/>
+<ellipse cx="1350" cy="343" rx="90" ry="18" fill="#fff" stroke="#82b366" stroke-width="1.5"/>
+<text x="1350" y="347" text-anchor="middle" font-size="12" font-weight="400" text-decoration="">perlu_validasi_dekan</text>
+<line x1="1350" y1="343" x2="1366" y2="279" stroke="#777" stroke-width="1"/>
+<ellipse cx="1557" cy="223" rx="59" ry="18" fill="#f8cecc" stroke="#b85450" stroke-width="1.5"/>
+<text x="1557" y="227" text-anchor="middle" font-size="12" font-weight="700" text-decoration="underline">id</text>
+<line x1="1557" y1="223" x2="1586" y2="279" stroke="#777" stroke-width="1"/>
+<ellipse cx="1699" cy="223" rx="59" ry="18" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5"/>
+<text x="1699" y="227" text-anchor="middle" font-size="12" font-weight="400" text-decoration="underline">user_id</text>
+<line x1="1699" y1="223" x2="1586" y2="279" stroke="#777" stroke-width="1"/>
+<ellipse cx="1699" cy="268" rx="59" ry="18" fill="#fff" stroke="#82b366" stroke-width="1.5"/>
+<text x="1699" y="272" text-anchor="middle" font-size="12" font-weight="400" text-decoration="">name</text>
+<line x1="1699" y1="268" x2="1586" y2="279" stroke="#777" stroke-width="1"/>
+<ellipse cx="1699" cy="313" rx="59" ry="18" fill="#fff" stroke="#82b366" stroke-width="1.5"/>
+<text x="1699" y="317" text-anchor="middle" font-size="12" font-weight="400" text-decoration="">type</text>
+<line x1="1699" y1="313" x2="1586" y2="279" stroke="#777" stroke-width="1"/>
+<ellipse cx="1557" cy="343" rx="59" ry="18" fill="#fff" stroke="#82b366" stroke-width="1.5"/>
+<text x="1557" y="347" text-anchor="middle" font-size="12" font-weight="400" text-decoration="">path</text>
+<line x1="1557" y1="343" x2="1586" y2="279" stroke="#777" stroke-width="1"/>
+<ellipse cx="1701" cy="353" rx="61" ry="18" fill="#fff" stroke="#82b366" stroke-width="1.5"/>
+<text x="1701" y="357" text-anchor="middle" font-size="12" font-weight="400" text-decoration="">is_active</text>
+<line x1="1701" y1="353" x2="1586" y2="279" stroke="#777" stroke-width="1"/>
+<rect x="80" y="850" width="450" height="54" fill="#f5f5f5" stroke="#ccc"/>
+<text x="92" y="872" text-anchor="start" font-size="12">PK = primary</text>
+<text x="92" y="886" text-anchor="start" font-size="12">key, FK =</text>
+<text x="92" y="900" text-anchor="start" font-size="12">foreign key.</text>
+<text x="92" y="914" text-anchor="start" font-size="12">Atribut</text>
+<text x="92" y="928" text-anchor="start" font-size="12">timestamp</text>
+<text x="92" y="942" text-anchor="start" font-size="12">sengaja</text>
+<text x="92" y="956" text-anchor="start" font-size="12">tidak</text>
+<text x="92" y="970" text-anchor="start" font-size="12">ditampilkan</text>
+<text x="92" y="984" text-anchor="start" font-size="12">agar ERD</text>
+<text x="92" y="998" text-anchor="start" font-size="12">lebih</text>
+<text x="92" y="1012" text-anchor="start" font-size="12">bersih.</text></svg>

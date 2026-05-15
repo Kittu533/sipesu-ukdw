@@ -92,20 +92,88 @@
             <div class="bg-blue-50 border border-blue-200 rounded-xl p-6">
                 <h3 class="text-lg font-semibold text-blue-800 mb-4 flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
-                    Format File
+                    Kolom Template CSV
                 </h3>
-                <div class="text-sm text-blue-700 space-y-2">
-                    <p class="font-medium">Kolom yang diperlukan:</p>
-                    <ul class="space-y-1 ml-4">
-                        <li>• <code class="bg-blue-100 px-1 rounded">nama_lengkap</code></li>
-                        <li>• <code class="bg-blue-100 px-1 rounded">nim</code></li>
-                        <li>• <code class="bg-blue-100 px-1 rounded">email</code></li>
-                        <li>• <code class="bg-blue-100 px-1 rounded">id_prodi</code></li>
-                        <li>• <code class="bg-blue-100 px-1 rounded">angkatan</code></li>
-                        <li>• <code class="bg-blue-100 px-1 rounded">ipk_terakhir</code> (opsional)</li>
-                    </ul>
+                <div class="text-sm text-blue-700 space-y-3">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-xs">
+                            <thead>
+                                <tr class="bg-blue-100">
+                                    <th class="px-2 py-1 text-left">Kolom</th>
+                                    <th class="px-2 py-1 text-left">Deskripsi</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-blue-100">
+                                <tr>
+                                    <td class="px-2 py-1"><code class="bg-blue-100 px-1 rounded">nama_lengkap</code></td>
+                                    <td class="px-2 py-1">Nama lengkap mahasiswa (wajib)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-2 py-1"><code class="bg-blue-100 px-1 rounded">email</code></td>
+                                    <td class="px-2 py-1">Email student (@students.ukdw.ac.id) (wajib)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-2 py-1"><code class="bg-blue-100 px-1 rounded">id_prodi</code></td>
+                                    <td class="px-2 py-1">Kode Prodi 2 digit (wajib)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-2 py-1"><code class="bg-blue-100 px-1 rounded">tahun_masuk</code></td>
+                                    <td class="px-2 py-1">Tahun masuk 4 digit, misal 2025 (wajib)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-2 py-1"><code class="bg-blue-100 px-1 rounded">ipk_terakhir</code></td>
+                                    <td class="px-2 py-1">IPK terakhir (0.00 - 4.00, opsional)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-2 py-1"><code class="bg-blue-100 px-1 rounded">status_mahasiswa</code></td>
+                                    <td class="px-2 py-1">aktif, tidak_aktif, lulus, undur_diri, cuti (default: aktif)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-2 py-1"><code class="bg-blue-100 px-1 rounded">tempat_lahir</code></td>
+                                    <td class="px-2 py-1">Tempat lahir (opsional)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-2 py-1"><code class="bg-blue-100 px-1 rounded">tanggal_lahir</code></td>
+                                    <td class="px-2 py-1">Format YYYY-MM-DD, contoh: 1995-03-15 (opsional)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-2 py-1"><code class="bg-blue-100 px-1 rounded">nama_orang_tua</code></td>
+                                    <td class="px-2 py-1">Nama orang tua/wali (opsional)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-2 py-1"><code class="bg-blue-100 px-1 rounded">nip_orang_tua</code></td>
+                                    <td class="px-2 py-1">NIP orang tua (opsional)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-2 py-1"><code class="bg-blue-100 px-1 rounded">pangkat_orang_tua</code></td>
+                                    <td class="px-2 py-1">Pangkat/golongan orang tua (opsional)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-2 py-1"><code class="bg-blue-100 px-1 rounded">instansi_orang_tua</code></td>
+                                    <td class="px-2 py-1">Instansi kerja orang tua (opsional)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="text-xs mt-2 p-2 bg-blue-100 rounded"><strong>Catatan:</strong> NIM/NPM akan di-generate otomatis sistem: [Kode Prodi 2 digit][Tahun Masuk 2 digit][No. Urut 4 digit]. Contoh: 71250001 = Informatika(71) + 2025(25) + 0001</p>
+                </div>
+            </div>
+
+            <!-- Kode Program Studi -->
+            <div class="bg-purple-50 border border-purple-200 rounded-xl p-6">
+                <h3 class="text-lg font-semibold text-purple-800 mb-4 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                    </svg>
+                    Kode Program Studi
+                </h3>
+                <div class="text-sm text-purple-700 space-y-1">
+                    <p><code class="bg-purple-100 px-1 rounded">61</code> = Arsitektur</p>
+                    <p><code class="bg-purple-100 px-1 rounded">62</code> = Desain Produk</p>
+                    <p><code class="bg-purple-100 px-1 rounded">71</code> = Informatika</p>
+                    <p><code class="bg-purple-100 px-1 rounded">72</code> = Sistem Informasi</p>
                 </div>
             </div>
 
@@ -130,11 +198,14 @@
                     Tips Import
                 </h3>
                 <div class="text-sm text-yellow-700 space-y-2">
-                    <p>• Pastikan format kolom sesuai template</p>
-                    <p>• ID Program Studi harus valid</p>
-                    <p>• NIM harus unik (tidak boleh duplikat)</p>
-                    <p>• Email harus valid dan unik</p>
-                    <p>• Password default = NIM mahasiswa</p>
+                    <p>• <strong>NIM di-generate otomatis</strong> - jangan填写 kolom NIM di file</p>
+                    <p>• id_prodi gunakan kode 2 digit (71=Informatika, 72=Sistem Informasi)</p>
+                    <p>• Email harus unik dan berakhiran @students.ukdw.ac.id</p>
+                    <p>• Password default user = NIM yang di-generate</p>
+                    <p>• Format tanggal lahir: <strong>YYYY-MM-DD</strong> (contoh: 1995-03-15)</p>
+                    <p>• IPK harus bernilai 0.00 - 4.00</p>
+                    <p>• Status default = <strong>aktif</strong> jika tidak diisi</p>
+                    <p>• Sistem otomatis membuat akun user mahasiswa</p>
                 </div>
             </div>
         </div>

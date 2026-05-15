@@ -29,6 +29,7 @@
         <div>
             <h2 class="text-2xl font-bold text-gray-900">Preview Data Import</h2>
             <p class="text-gray-500 text-sm mt-1">Periksa data sebelum disimpan ke database. Total: {{ $totalData }} data (Halaman {{ $currentPage }} dari {{ $totalPages }})</p>
+            <p class="text-blue-600 text-xs mt-1">NPM akan di-generate otomatis oleh sistem: [Kode Prodi 2 digit][Tahun Masuk 2 digit][No. Urut 4 digit]</p>
             @if(config('app.debug'))
             <details class="mt-2">
                 <summary class="text-xs text-gray-400 cursor-pointer">Debug Info</summary>
@@ -57,11 +58,14 @@
                         <tr class="bg-gray-50 text-gray-600 text-xs uppercase tracking-wider font-semibold">
                             <th class="px-4 py-4 w-8">#</th>
                             <th class="px-4 py-4">Nama Lengkap</th>
-                            <th class="px-4 py-4">NIM</th>
                             <th class="px-4 py-4">Email</th>
-                            <th class="px-4 py-4">Program Studi</th>
-                            <th class="px-4 py-4">Angkatan</th>
+                            <th class="px-4 py-4">Prodi (Kode)</th>
+                            <th class="px-4 py-4">Tahun Masuk</th>
                             <th class="px-4 py-4">IPK</th>
+                            <th class="px-4 py-4">Status</th>
+                            <th class="px-4 py-4">Tempat Lahir</th>
+                            <th class="px-4 py-4">Tanggal Lahir</th>
+                            <th class="px-4 py-4">Nama Orang Tua</th>
                             <th class="px-4 py-4 w-16">Aksi</th>
                         </tr>
                     </thead>
@@ -71,32 +75,70 @@
                         <tr class="hover:bg-gray-50 transition duration-150" id="row-{{ $actualIndex }}">
                             <td class="px-4 py-4 text-sm text-gray-500">{{ ($currentPage - 1) * $perPage + $loop->iteration }}</td>
                             <td class="px-4 py-4">
-                                <div class="text-sm font-medium text-gray-900">{{ $row['nama_lengkap'] ?? $row['Nama Lengkap'] ?? $row['nama'] ?? '-' }}</div>
-                                <input type="hidden" name="data[{{ $actualIndex }}][nama_lengkap]" value="{{ $row['nama_lengkap'] ?? $row['Nama Lengkap'] ?? $row['nama'] ?? '' }}">
+                                <div class="text-sm font-medium text-gray-900">{{ $row['nama_lengkap'] ?? '-' }}</div>
+                                <input type="hidden" name="data[{{ $actualIndex }}][nama_lengkap]" value="{{ $row['nama_lengkap'] ?? '' }}">
                             </td>
                             <td class="px-4 py-4">
-                                <div class="text-sm font-mono text-gray-900">{{ $row['nim'] ?? $row['NIM'] ?? $row['Nim'] ?? '-' }}</div>
-                                <input type="hidden" name="data[{{ $actualIndex }}][nim]" value="{{ $row['nim'] ?? $row['NIM'] ?? $row['Nim'] ?? '' }}">
-                            </td>
-                            <td class="px-4 py-4">
-                                <div class="text-sm text-gray-900">{{ $row['email'] ?? $row['Email'] ?? '-' }}</div>
-                                <input type="hidden" name="data[{{ $actualIndex }}][email]" value="{{ $row['email'] ?? $row['Email'] ?? '' }}">
+                                <div class="text-sm text-gray-900">{{ $row['email'] ?? '-' }}</div>
+                                <input type="hidden" name="data[{{ $actualIndex }}][email]" value="{{ $row['email'] ?? '' }}">
                             </td>
                             <td class="px-4 py-4">
                                 @php
-                                    $prodiId = $row['id_prodi'] ?? $row['Id Prodi'] ?? '';
-                                    $prodi = $prodiList->firstWhere('kode_prodi', $prodiId);
+                                    $prodiId = $row['id_prodi'] ?? '';
+                                    $prodi = $prodiList->firstWhere('kode_prodi', $prodiId) ?? $prodiList->find($prodiId);
                                 @endphp
-                                <div class="text-sm text-gray-900">{{ $prodi->nama_prodi ?? ($prodiId ? "ID: $prodiId" : '-') }}</div>
+                                <div class="text-sm text-gray-900">
+                                    {{ $prodi->nama_prodi ?? ($prodiId ? "ID: $prodiId" : '-') }}
+                                    <span class="text-gray-400 text-xs">({{ str_pad($prodiId, 2, '0', STR_PAD_LEFT) }})</span>
+                                </div>
                                 <input type="hidden" name="data[{{ $actualIndex }}][id_prodi]" value="{{ $prodiId }}">
                             </td>
                             <td class="px-4 py-4">
-                                <div class="text-sm text-gray-900">{{ $row['angkatan'] ?? $row['Angkatan'] ?? '-' }}</div>
-                                <input type="hidden" name="data[{{ $actualIndex }}][angkatan]" value="{{ $row['angkatan'] ?? $row['Angkatan'] ?? '' }}">
+                                <div class="text-sm text-gray-900">{{ $row['tahun_masuk'] ?? ($row['angkatan'] ?? '-') }}</div>
+                                <input type="hidden" name="data[{{ $actualIndex }}][tahun_masuk]" value="{{ $row['tahun_masuk'] ?? ($row['angkatan'] ?? '') }}">
                             </td>
                             <td class="px-4 py-4">
-                                <div class="text-sm text-gray-900">{{ $row['ipk_terakhir'] ?? $row['IPK'] ?? $row['ipk'] ?? '-' }}</div>
-                                <input type="hidden" name="data[{{ $actualIndex }}][ipk_terakhir]" value="{{ $row['ipk_terakhir'] ?? $row['IPK'] ?? $row['ipk'] ?? '' }}">
+                                <div class="text-sm text-gray-900">{{ $row['ipk_terakhir'] ?? '-' }}</div>
+                                <input type="hidden" name="data[{{ $actualIndex }}][ipk_terakhir]" value="{{ $row['ipk_terakhir'] ?? '' }}">
+                            </td>
+                            <td class="px-4 py-4">
+                                @php
+                                    $statusClass = match(strtolower($row['status_mahasiswa'] ?? 'aktif')) {
+                                        'aktif' => 'bg-green-100 text-green-800',
+                                        'tidak_aktif' => 'bg-gray-100 text-gray-800',
+                                        'lulus' => 'bg-blue-100 text-blue-800',
+                                        'undur_diri' => 'bg-red-100 text-red-800',
+                                        'cuti' => 'bg-yellow-100 text-yellow-800',
+                                        default => 'bg-gray-100 text-gray-800'
+                                    };
+                                    $statusLabel = match(strtolower($row['status_mahasiswa'] ?? 'aktif')) {
+                                        'aktif' => 'Aktif',
+                                        'tidak_aktif' => 'Tidak Aktif',
+                                        'lulus' => 'Lulus',
+                                        'undur_diri' => 'Undur Diri',
+                                        'cuti' => 'Cuti',
+                                        default => $row['status_mahasiswa'] ?? 'Aktif'
+                                    };
+                                @endphp
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium {{ $statusClass }}">
+                                    {{ $statusLabel }}
+                                </span>
+                                <input type="hidden" name="data[{{ $actualIndex }}][status_mahasiswa]" value="{{ $row['status_mahasiswa'] ?? 'aktif' }}">
+                            </td>
+                            <td class="px-4 py-4">
+                                <div class="text-sm text-gray-900">{{ $row['tempat_lahir'] ?? '-' }}</div>
+                                <input type="hidden" name="data[{{ $actualIndex }}][tempat_lahir]" value="{{ $row['tempat_lahir'] ?? '' }}">
+                            </td>
+                            <td class="px-4 py-4">
+                                <div class="text-sm text-gray-900">{{ $row['tanggal_lahir'] ?? '-' }}</div>
+                                <input type="hidden" name="data[{{ $actualIndex }}][tanggal_lahir]" value="{{ $row['tanggal_lahir'] ?? '' }}">
+                            </td>
+                            <td class="px-4 py-4">
+                                <div class="text-sm text-gray-900">{{ $row['nama_orang_tua'] ?? '-' }}</div>
+                                <input type="hidden" name="data[{{ $actualIndex }}][nama_orang_tua]" value="{{ $row['nama_orang_tua'] ?? '' }}">
+                                <input type="hidden" name="data[{{ $actualIndex }}][nip_orang_tua]" value="{{ $row['nip_orang_tua'] ?? '' }}">
+                                <input type="hidden" name="data[{{ $actualIndex }}][pangkat_orang_tua]" value="{{ $row['pangkat_orang_tua'] ?? '' }}">
+                                <input type="hidden" name="data[{{ $actualIndex }}][instansi_orang_tua]" value="{{ $row['instansi_orang_tua'] ?? '' }}">
                             </td>
                             <td class="px-4 py-4">
                                 <button type="button" onclick="removeRow({{ $actualIndex }})" 
@@ -110,7 +152,7 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="8" class="px-6 py-12 text-center text-gray-500">
+                            <td colspan="11" class="px-6 py-12 text-center text-gray-500">
                                 <p class="font-medium text-gray-900">Tidak ada data untuk ditampilkan.</p>
                                 <p class="text-sm">Pastikan file Excel/CSV memiliki data yang valid.</p>
                             </td>

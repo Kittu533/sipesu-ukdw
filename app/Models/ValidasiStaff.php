@@ -26,7 +26,7 @@ class ValidasiStaff extends Model
     ];
 
     /**
-     * Relationship: Validasi Staff untuk Pengajuan Surat
+     * Relationship: Validasi Dekan untuk Pengajuan Surat
      */
     public function pengajuanSurat(): BelongsTo
     {
@@ -34,7 +34,7 @@ class ValidasiStaff extends Model
     }
 
     /**
-     * Relationship: Validasi Staff dilakukan oleh User (Staff)
+     * Relationship: Validasi Dekan dilakukan oleh User (Dekan)
      */
     public function userStaff(): BelongsTo
     {

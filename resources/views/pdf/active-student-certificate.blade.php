@@ -179,7 +179,7 @@
                 <td>{{ $signatory['nik'] }}</td>
             </tr>
             <tr>
-                <td class="label">Pangkat, Golongan ruang</td>
+                <td class="label">Pangkat</td>
                 <td class="colon">:</td>
                 <td>{{ $signatory['pangkat'] }}</td>
             </tr>

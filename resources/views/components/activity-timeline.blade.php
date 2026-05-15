@@ -3,7 +3,7 @@
         $activities = [
             ['time' => '10:30 WIB', 'action' => 'Pejabat Berwenang memberikan persetujuan pada surat "Izin Penelitian" (Siti Aisyah).', 'color' => 'blue'],
             ['time' => '09:15 WIB', 'action' => 'Admin Akademik mencetak dan mengirim surat "Keterangan Aktif Kuliah" (Budi Santoso).', 'color' => 'emerald'],
-            ['time' => 'Kemarin', 'action' => 'Staff Jurusan memvalidasi surat "Cuti Akademik" (Joko Permana).', 'color' => 'yellow'],
+            ['time' => 'Kemarin', 'action' => 'Dekan memvalidasi surat "Cuti Akademik" (Joko Permana).', 'color' => 'yellow'],
             ['time' => '2 Hari Lalu', 'action' => 'Mahasiswa mengajukan surat baru "Permohonan Magang" (Maya Sari).', 'color' => 'gray'],
         ];
     @endphp

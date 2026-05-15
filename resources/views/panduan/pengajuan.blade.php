@@ -36,22 +36,36 @@
 
             <!-- Step 3 -->
             <div class="relative pl-8">
-                <span class="absolute -left-3 top-0 h-6 w-6 rounded-full bg-yellow-500 border-4 border-white"></span>
-                <h3 class="font-bold text-gray-900 text-lg">3. Verifikasi Staff (Menunggu Verifikasi)</h3>
-                <p class="text-gray-600 mt-1">Staff Pelayanan Informatika akan memeriksa kelengkapan data Anda. Jika ada kekurangan, pengajuan akan ditolak dengan catatan perbaikan.</p>
+                <span class="absolute -left-3 top-0 h-6 w-6 rounded-full bg-orange-500 border-4 border-white"></span>
+                <h3 class="font-bold text-gray-900 text-lg">3. Verifikasi Admin (Menunggu Verifikasi Admin)</h3>
+                <p class="text-gray-600 mt-1">Admin akan melakukan verifikasi awal terhadap pengajuan Anda sebelum diteruskan ke Administrasi.</p>
             </div>
 
             <!-- Step 4 -->
             <div class="relative pl-8">
-                <span class="absolute -left-3 top-0 h-6 w-6 rounded-full bg-blue-500 border-4 border-white"></span>
-                <h3 class="font-bold text-gray-900 text-lg">4. Persetujuan Pejabat (Menunggu Tanda Tangan)</h3>
-                <p class="text-gray-600 mt-1">Setelah diverifikasi, surat akan diteruskan ke Pejabat Berwenang (Kaprodi/Dekan) untuk ditandatangani secara digital.</p>
+                <span class="absolute -left-3 top-0 h-6 w-6 rounded-full bg-yellow-500 border-4 border-white"></span>
+                <h3 class="font-bold text-gray-900 text-lg">4. Verifikasi Administrasi (Menunggu Verifikasi)</h3>
+                <p class="text-gray-600 mt-1">Administrasi akan melakukan verifikasi lanjutan sebelum surat diteruskan ke Kepala Biro untuk ditandatangani.</p>
             </div>
 
             <!-- Step 5 -->
             <div class="relative pl-8">
+                <span class="absolute -left-3 top-0 h-6 w-6 rounded-full bg-blue-500 border-4 border-white"></span>
+                <h3 class="font-bold text-gray-900 text-lg">5. Persetujuan Kepala Biro (Menunggu Tanda Tangan)</h3>
+                <p class="text-gray-600 mt-1">Surat akan diteruskan ke Pejabat Berwenang (Kepala Biro) untuk ditandatangani secara digital.</p>
+            </div>
+
+            <!-- Step 6 -->
+            <div class="relative pl-8">
+                <span class="absolute -left-3 top-0 h-6 w-6 rounded-full bg-purple-500 border-4 border-white"></span>
+                <h3 class="font-bold text-gray-900 text-lg">6. Validasi Dekan (Menunggu Validasi Dekan)</h3>
+                <p class="text-gray-600 mt-1">Dekan Fakultas akan memvalidasi surat setelah ditandatangani oleh Kepala Biro. Jika ada kekurangan, pengajuan akan ditolak dengan catatan perbaikan.</p>
+            </div>
+
+            <!-- Step 7 -->
+            <div class="relative pl-8">
                 <span class="absolute -left-3 top-0 h-6 w-6 rounded-full bg-emerald-600 border-4 border-white"></span>
-                <h3 class="font-bold text-gray-900 text-lg">5. Selesai & Unduh</h3>
+                <h3 class="font-bold text-gray-900 text-lg">7. Selesai & Unduh</h3>
                 <p class="text-gray-600 mt-1">Surat resmi diterbitkan. Anda akan menerima notifikasi dan dapat mengunduh surat di menu <strong>"Riwayat Selesai"</strong>.</p>
             </div>
         </div>

@@ -20,6 +20,7 @@ class Mahasiswa extends Model
         'id_prodi',
         'angkatan',
         'ipk_terakhir',
+        'status_mahasiswa',
         'tempat_lahir',
         'tanggal_lahir',
         'nama_orang_tua',
@@ -32,6 +33,28 @@ class Mahasiswa extends Model
         'ipk_terakhir' => 'decimal:2',
         'tanggal_lahir' => 'date',
     ];
+
+    public const STATUS_AKTIF = 'aktif';
+    public const STATUS_TIDAK_AKTIF = 'tidak_aktif';
+    public const STATUS_LULUS = 'lulus';
+    public const STATUS_UNDUR_DIRI = 'undur_diri';
+    public const STATUS_CUTI = 'cuti';
+
+    public static function getStatusOptions(): array
+    {
+        return [
+            self::STATUS_AKTIF => 'Aktif',
+            self::STATUS_TIDAK_AKTIF => 'Tidak Aktif',
+            self::STATUS_LULUS => 'Lulus',
+            self::STATUS_UNDUR_DIRI => 'Undur Diri',
+            self::STATUS_CUTI => 'Cuti',
+        ];
+    }
+
+    public function getStatusLabelAttribute(): string
+    {
+        return self::getStatusOptions()[$this->status_mahasiswa] ?? $this->status_mahasiswa;
+    }
 
     /**
      * Relationship: Mahasiswa terdaftar sebagai User
