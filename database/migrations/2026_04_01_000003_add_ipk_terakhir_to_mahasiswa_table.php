@@ -11,6 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
+        if (Schema::hasColumn('mahasiswa', 'ipk_terakhir')) {
+            return;
+        }
+
         Schema::table('mahasiswa', function (Blueprint $table) {
             $table->decimal('ipk_terakhir', 3, 2)->nullable()->after('status_mahasiswa');
         });
@@ -21,6 +25,10 @@ return new class extends Migration
      */
     public function down(): void
     {
+        if (! Schema::hasColumn('mahasiswa', 'ipk_terakhir')) {
+            return;
+        }
+
         Schema::table('mahasiswa', function (Blueprint $table) {
             $table->dropColumn('ipk_terakhir');
         });
